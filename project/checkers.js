@@ -141,6 +141,7 @@ function finishMovement(td,tdb,color,x,y){ // move piece
       var parentEl1 = removetab.parentElement;
           parentEl1.removeChild(removetab);
       }
+      //piece removal id logic checks out not sure why its not working
   //place pieces in new area 
   //jump mechanics here
   //remove piece from previous area
@@ -185,7 +186,7 @@ function pieceBlack(td,x,y){
  // circle.setAttribute("id",td+1);
   svg.appendChild(circle);
   svg.setAttribute("id",x+'c'+y);
-  alert(x+"C"+y);
+  //alert(x+"C"+y);
   td.appendChild(svg);
 
 }
