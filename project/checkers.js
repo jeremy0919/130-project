@@ -35,12 +35,15 @@ function createTable(){
             td.style.width = "40px";
             }
                 if(j%2 == 1){
-           
+                  
               td.appendChild(input);
                 td.style.backgroundColor = "black";
               
                 td.style.height = "40px";
                 td.style.width = "40px";
+                td.addEventListener('click', function() { 
+                  newClick();
+                });
             }}
             if(i%2==1){
                 if(j%2 ==0){
@@ -49,6 +52,9 @@ function createTable(){
                 td.appendChild(input);
                 td.style.height = "40px";
                 td.style.width = "40px";
+                td.addEventListener('click', function() { 
+                  newClick();
+                });
                 }
                 if(j%2 == 1){
                
@@ -56,9 +62,9 @@ function createTable(){
                     td.appendChild(input2);
                     td.style.height = "40px";
                     td.style.width = "40px";
-                }a
+                }
             }
-            td.setAttribute("id",x + "," + y) // sets id for later use in movement
+            td.setAttribute("id",i + "," + j) // sets id for later use in movement
             if(i<=2&& td.style.backgroundColor=="black"){
               var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
               svg.setAttribute("width", "40");
@@ -106,19 +112,26 @@ function createTable(){
     }
     document.getElementsByClassName("table")[0].appendChild(table);
 }
-function MovePiece(x,y,color){ // determines y based off of color ie direction
+function MovePiece(y,x,color){ // determines y based off of color ie direction
 
   if(color == "white"){
-    y = y+1;
+    y = y-1;
     highlight(x,y)
   }
   if(color == "gray"){
-    y = y-1;
+    y = y+1;
     highlight(x,y);
   }
 }
 
 function highlight(x,y){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
+  x=x-1;
+  let td = document.getElementById(y+","+x);
+  x=x+2;
+  let td2 = document.getElementById(y+","+x);
+  td.style.backgroundColor ="blue";
+  td2.style.backgroundColor = "blue";
+ 
   //highlight spaces
   //add on click attribute
   //conditional checks for movement here
@@ -131,4 +144,7 @@ function finishMovement(x,y){ // move piece
   //jump mechanics here
   //remove piece from previous area
   //remove on click
+}
+function newClick(){
+
 }
