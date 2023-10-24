@@ -66,14 +66,16 @@ function createTable(){
             }
             td.setAttribute("id",i + "," + j) // sets id for later use in movement
             if(i<=2&& td.style.backgroundColor=="black"){
-              pieceBlack(td);
+              pieceBlack(td,i,j);
               td.addEventListener('click', function() { // function for piece movement
+                alert("ij is" + i+","+j)
                 MovePiece(i, j,"gray");
               });
             }
             if(i>=7&&td.style.backgroundColor=="black"){
-              pieceWhite(td);
+              pieceWhite(td,i,j);
               td.addEventListener('click', function() { // function for piece movement
+                alert("ij is" + i+","+j)
                 MovePiece(i, j,"white");
               });
             }
@@ -99,6 +101,8 @@ function MovePiece(y,x,color){ // determines y based off of color ie direction
 }
 
 function highlight(x,y,color){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
+  let x1 = x;
+  let y1=y;
   let tdb = document.getElementById(y+","+x)
   x=x-1;
   let td = document.getElementById(y+","+x);
@@ -108,10 +112,10 @@ function highlight(x,y,color){ // will highlight associated areas and add on cli
   td2.style.backgroundColor = "blue";
   td.addEventListener('click', function() { // function for piece movement
     
-    finishMovement(td,tdb,color);
+    finishMovement(td,tdb,color,x1,y1);
   });
   td2.addEventListener('click', function() { // function for piece movement
-    finishMovement(td2,tdb,color);
+    finishMovement(td2,tdb,color,x1,y1);
   });
   //highlight spaces
   //add on click attribute
@@ -120,15 +124,19 @@ function highlight(x,y,color){ // will highlight associated areas and add on cli
   //remove on click attribute in next function
 }
 
-function finishMovement(td,tdb,color){ // move piece
+function finishMovement(td,tdb,color,x,y){ // move piece
   if(color== "white"){
-    pieceWhite(td);
+    pieceWhite(td,x,y);
+    y=y+1;
   }
   if(color == "gray"){
-    pieceBlack(td);
+    pieceBlack(td,x,y);
+    y=y-1;
+
     
   }
-  var removetab = document.getElementById(td+1);
+ // alert(x+"c"+y);
+  var removetab = document.getElementById(x+'c'+y);
   if(removetab!=null){
       var parentEl1 = removetab.parentElement;
           parentEl1.removeChild(removetab);
@@ -142,7 +150,7 @@ function newClick(){
 
 }
 
-function pieceWhite(td){
+function pieceWhite(td,x,y){
   //let td = document.getElementById(y+","+x);
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
@@ -155,12 +163,13 @@ function pieceWhite(td){
   circle.setAttribute("stroke", "black");
   circle.setAttribute("stroke-width", "3");
   circle.setAttribute("fill", "white");
-  circle.setAttribute("id",td+1);
+//  circle.setAttribute("id",td+1);
   svg.appendChild(circle);
+  svg.setAttribute("id",x+'c'+y);
   td.appendChild(svg);
 
 }
-function pieceBlack(td){
+function pieceBlack(td,x,y){
  // let td = document.getElementById(y+","+x);
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
@@ -173,8 +182,10 @@ function pieceBlack(td){
   circle.setAttribute("stroke", "black");
   circle.setAttribute("stroke-width", "3");
   circle.setAttribute("fill", "gray");
-  circle.setAttribute("id",td+1);
+ // circle.setAttribute("id",td+1);
   svg.appendChild(circle);
+  svg.setAttribute("id",x+'c'+y);
+  alert(x+"C"+y);
   td.appendChild(svg);
 
 }
