@@ -66,39 +66,13 @@ function createTable(){
             }
             td.setAttribute("id",i + "," + j) // sets id for later use in movement
             if(i<=2&& td.style.backgroundColor=="black"){
-              var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-              svg.setAttribute("width", "40");
-              svg.setAttribute("height", "40");
-  
-              var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-              circle.setAttribute("cx", "20");
-              circle.setAttribute("cy", "20");
-              circle.setAttribute("r", "15");
-              circle.setAttribute("stroke", "black");
-              circle.setAttribute("stroke-width", "3");
-              circle.setAttribute("fill", "gray");
-  
-              svg.appendChild(circle);
-              td.appendChild(svg);
+              pieceBlack(td);
               td.addEventListener('click', function() { // function for piece movement
                 MovePiece(i, j,"gray");
               });
             }
             if(i>=7&&td.style.backgroundColor=="black"){
-              var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-              svg.setAttribute("width", "40");
-              svg.setAttribute("height", "40");
-  
-              var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-              circle.setAttribute("cx", "20");
-              circle.setAttribute("cy", "20");
-              circle.setAttribute("r", "15");
-              circle.setAttribute("stroke", "black");
-              circle.setAttribute("stroke-width", "3");
-              circle.setAttribute("fill", "white");
-  
-              svg.appendChild(circle);
-              td.appendChild(svg);
+              pieceWhite(td);
               td.addEventListener('click', function() { // function for piece movement
                 MovePiece(i, j,"white");
               });
@@ -116,22 +90,29 @@ function MovePiece(y,x,color){ // determines y based off of color ie direction
 
   if(color == "white"){
     y = y-1;
-    highlight(x,y)
+    highlight(x,y,color)
   }
   if(color == "gray"){
     y = y+1;
-    highlight(x,y);
+    highlight(x,y,color);
   }
 }
 
-function highlight(x,y){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
+function highlight(x,y,color){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
+  let tdb = document.getElementById(y+","+x)
   x=x-1;
   let td = document.getElementById(y+","+x);
   x=x+2;
   let td2 = document.getElementById(y+","+x);
   td.style.backgroundColor ="blue";
   td2.style.backgroundColor = "blue";
- 
+  td.addEventListener('click', function() { // function for piece movement
+    
+    finishMovement(td,tdb,color);
+  });
+  td2.addEventListener('click', function() { // function for piece movement
+    finishMovement(td2,tdb,color);
+  });
   //highlight spaces
   //add on click attribute
   //conditional checks for movement here
@@ -139,12 +120,61 @@ function highlight(x,y){ // will highlight associated areas and add on click, wi
   //remove on click attribute in next function
 }
 
-function finishMovement(x,y){ // move piece
+function finishMovement(td,tdb,color){ // move piece
+  if(color== "white"){
+    pieceWhite(td);
+  }
+  if(color == "gray"){
+    pieceBlack(td);
+    
+  }
+  var removetab = document.getElementById(td+1);
+  if(removetab!=null){
+      var parentEl1 = removetab.parentElement;
+          parentEl1.removeChild(removetab);
+      }
   //place pieces in new area 
   //jump mechanics here
   //remove piece from previous area
   //remove on click
 }
 function newClick(){
+
+}
+
+function pieceWhite(td){
+  //let td = document.getElementById(y+","+x);
+  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "40");
+  svg.setAttribute("height", "40");
+
+  var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "20");
+  circle.setAttribute("cy", "20");
+  circle.setAttribute("r", "15");
+  circle.setAttribute("stroke", "black");
+  circle.setAttribute("stroke-width", "3");
+  circle.setAttribute("fill", "white");
+  circle.setAttribute("id",td+1);
+  svg.appendChild(circle);
+  td.appendChild(svg);
+
+}
+function pieceBlack(td){
+ // let td = document.getElementById(y+","+x);
+  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "40");
+  svg.setAttribute("height", "40");
+
+  var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "20");
+  circle.setAttribute("cy", "20");
+  circle.setAttribute("r", "15");
+  circle.setAttribute("stroke", "black");
+  circle.setAttribute("stroke-width", "3");
+  circle.setAttribute("fill", "gray");
+  circle.setAttribute("id",td+1);
+  svg.appendChild(circle);
+  td.appendChild(svg);
 
 }
