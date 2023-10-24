@@ -2,7 +2,7 @@ function createTable(){
   
     table = document.createElement('table');
 
-    
+    table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
     table.style.width = "400px";
     let n = 10;
@@ -42,7 +42,7 @@ function createTable(){
                 td.style.height = "40px";
                 td.style.width = "40px";
                 td.addEventListener('click', function() { 
-                  newClick();
+                  newClick(n);
                 });
             }}
             if(i%2==1){
@@ -53,7 +53,7 @@ function createTable(){
                 td.style.height = "40px";
                 td.style.width = "40px";
                 td.addEventListener('click', function() { 
-                  newClick();
+                  newClick(n);
                 });
                 }
                 if(j%2 == 1){
@@ -147,7 +147,21 @@ function finishMovement(td,tdb,color,x,y){ // move piece
   //remove piece from previous area
   //remove on click
 }
-function newClick(){
+
+function newClick(n){
+  let b = getElementById("Board");
+ 
+  for(let i =0; i<n;++i){
+    var trd = b.tr[i];
+   // var tdl = tr.getElementsByTagName("td").length;
+    
+    for(j=0;j<n;j++){
+      let td = trd.td[j];
+      if(td.backgroundColor =="blue"){
+        td.backgroundColor = "black";
+      }
+    }
+  }
 
 }
 
