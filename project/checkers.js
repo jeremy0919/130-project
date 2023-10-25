@@ -148,6 +148,10 @@ function finishMovement(td,tdb,color,x,y){ // move piece
   //remove on click
 }
 
+/*
+might use php to recreate page every move, not sure
+*/
+
 function newClick(n){
   let b = getElementById("Board");
  
