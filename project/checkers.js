@@ -1,5 +1,5 @@
 function createTable(){
-  
+  //use data attribute to store piece location
     table = document.createElement('table');
 
     table.setAttribute("td","Board");
@@ -13,7 +13,7 @@ function createTable(){
       
         let tr = document.createElement("trow");
   
-        for(let j =0; j<n; ++j){ // talbe data
+        for(let j =0; j<n; ++j){ // table data
             let td = document.createElement("td");
       
             let input = document.createElement("canvas");
@@ -42,7 +42,7 @@ function createTable(){
                 td.style.height = "40px";
                 td.style.width = "40px";
                 td.addEventListener('click', function() { 
-                  newClick(n);
+                  newClick(n,table);
                 });
             }}
             if(i%2==1){
@@ -53,7 +53,7 @@ function createTable(){
                 td.style.height = "40px";
                 td.style.width = "40px";
                 td.addEventListener('click', function() { 
-                  newClick(n);
+                  newClick(n,table);
                 });
                 }
                 if(j%2 == 1){
@@ -108,7 +108,7 @@ function highlight(x,y,color){ // will highlight associated areas and add on cli
   let td = document.getElementById(y+","+x);
   x=x+2;
   let td2 = document.getElementById(y+","+x);
-  td.style.backgroundColor ="blue";
+  td.style.backgroundColor ="blue"; // use css box shadow
   td2.style.backgroundColor = "blue";
   td.addEventListener('click', function() { // function for piece movement
     
@@ -152,8 +152,8 @@ function finishMovement(td,tdb,color,x,y){ // move piece
 might use php to recreate page every move, not sure
 */
 
-function newClick(n){
-  let b = getElementById("Board");
+function newClick(n,table){
+  let b = table;
  
   for(let i =0; i<n;++i){
     var trd = b.tr[i];
