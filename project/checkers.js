@@ -66,18 +66,20 @@ function createTable(){
             }
             td.setAttribute("id",i + "," + j) // sets id for later use in movement
             if(i<=2&& td.style.backgroundColor=="black"){
-              pieceBlack(td,i,j);
+           
               td.addEventListener('click', function() { // function for piece movement
-                alert("ij is" + i+","+j)
+           
                 MovePiece(i, j,"gray");
               });
+              pieceBlack(td,i,j);
             }
             if(i>=7&&td.style.backgroundColor=="black"){
-              pieceWhite(td,i,j);
+            
               td.addEventListener('click', function() { // function for piece movement
-                alert("ij is" + i+","+j)
+          
                 MovePiece(i, j,"white");
               });
+              pieceWhite(td,i,j);
             }
             tr.appendChild(td); 
   
@@ -113,9 +115,11 @@ function highlight(x,y,color){ // will highlight associated areas and add on cli
   td.addEventListener('click', function() { // function for piece movement
     
     finishMovement(td,tdb,color,x1,y1);
+    this.removeEventListener('click', MovePiece);
   });
   td2.addEventListener('click', function() { // function for piece movement
     finishMovement(td2,tdb,color,x1,y1);
+    this.removeEventListener('click', MovePiece);
   });
   //highlight spaces
   //add on click attribute
@@ -125,6 +129,18 @@ function highlight(x,y,color){ // will highlight associated areas and add on cli
 }
 
 function finishMovement(td,tdb,color,x,y){ // move piece
+  y = y+1;
+  var removetab = document.getElementById(x+'s'+y);
+  alert(" fM x is "+ x+ " y is "+ y)
+  console.log(removetab)
+  if(removetab!=null){
+      var parentEl1 = removetab.parentElement;
+      console.log(parentEl1)
+          parentEl1.removeChild(removetab);
+          
+      }
+    var removtd = document.getElementById(x+','+y);
+    removtd.removeEventListener('click', MovePiece);
   if(color== "white"){
     pieceWhite(td,x,y);
     y=y+1;
@@ -136,11 +152,7 @@ function finishMovement(td,tdb,color,x,y){ // move piece
     
   }
  // alert(x+"c"+y);
-  var removetab = document.getElementById(x+'c'+y);
-  if(removetab!=null){
-      var parentEl1 = removetab.parentElement;
-          parentEl1.removeChild(removetab);
-      }
+
       //piece removal id logic checks out not sure why its not working
   //place pieces in new area 
   //jump mechanics here
@@ -152,22 +164,7 @@ function finishMovement(td,tdb,color,x,y){ // move piece
 might use php to recreate page every move, not sure
 */
 
-function newClick(n,table){
-  let b = table;
- 
-  for(let i =0; i<n;++i){
-    var trd = b.tr[i];
-   // var tdl = tr.getElementsByTagName("td").length;
-    
-    for(j=0;j<n;j++){
-      let td = trd.td[j];
-      if(td.backgroundColor =="blue"){
-        td.backgroundColor = "black";
-      }
-    }
-  }
 
-}
 
 function pieceWhite(td,x,y){
   //let td = document.getElementById(y+","+x);
@@ -182,9 +179,10 @@ function pieceWhite(td,x,y){
   circle.setAttribute("stroke", "black");
   circle.setAttribute("stroke-width", "3");
   circle.setAttribute("fill", "white");
-//  circle.setAttribute("id",td+1);
+  circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
-  svg.setAttribute("id",x+'c'+y);
+ // alert("PW x is "+ x+ " y is "+ y)
+  svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
 
 }
@@ -201,10 +199,27 @@ function pieceBlack(td,x,y){
   circle.setAttribute("stroke", "black");
   circle.setAttribute("stroke-width", "3");
   circle.setAttribute("fill", "gray");
- // circle.setAttribute("id",td+1);
+  circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
-  svg.setAttribute("id",x+'c'+y);
+  svg.setAttribute("id",x+'s'+y);
   //alert(x+"C"+y);
   td.appendChild(svg);
 
+}
+function newClick(n,table){
+  /*
+  let b = table;
+ 
+  for(let i =0; i<n;++i){
+    var trd = b.tr[i];
+   // var tdl = tr.getElementsByTagName("td").length;
+    
+    for(j=0;j<n;j++){
+      let td = trd.td[j];
+      if(td.backgroundColor =="blue"){
+        td.backgroundColor = "black";
+      }
+    }
+  }
+*/
 }
