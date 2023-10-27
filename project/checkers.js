@@ -1,5 +1,14 @@
 function createTable(){
-  //use data attribute to store piece location
+    //discover why remove event listener isnt working
+
+/*
+current notes: x and y are flipped for id making it confusing 
+new click function is supposed to go through and change any blue color to black
+likely gonna have it then remove event listeners just in case
+
+*/
+
+
     table = document.createElement('table');
 
     table.setAttribute("td","Board");
@@ -30,13 +39,13 @@ function createTable(){
                 if(j%2 ==0){
          
             td.style.backgroundColor ="red";
-            td.appendChild(input);
+          //  td.appendChild(input);
             td.style.height = "40px";
             td.style.width = "40px";
             }
                 if(j%2 == 1){
                   
-              td.appendChild(input);
+          //    td.appendChild(input);
                 td.style.backgroundColor = "black";
               
                 td.style.height = "40px";
@@ -49,7 +58,7 @@ function createTable(){
                 if(j%2 ==0){
           
                 td.style.backgroundColor ="black";
-                td.appendChild(input);
+           //     td.appendChild(input);
                 td.style.height = "40px";
                 td.style.width = "40px";
                 td.addEventListener('click', function() { 
@@ -59,7 +68,7 @@ function createTable(){
                 if(j%2 == 1){
                
                     td.style.backgroundColor = "red";
-                    td.appendChild(input2);
+            //        td.appendChild(input2);
                     td.style.height = "40px";
                     td.style.width = "40px";
                 }
@@ -76,7 +85,8 @@ function createTable(){
             if(i>=7&&td.style.backgroundColor=="black"){
             
               td.addEventListener('click', function() { // function for piece movement
-          
+             //could be moved into place piece function but needs more debugging
+              alert("id is "+i+","+j);
                 MovePiece(i, j,"white");
               });
               pieceWhite(td,i,j);
@@ -91,35 +101,47 @@ function createTable(){
     document.getElementsByClassName("table")[0].appendChild(table);
 }
 function MovePiece(y,x,color){ // determines y based off of color ie direction
-
+let y1 = y;
   if(color == "white"){
     y = y-1;
-    highlight(x,y,color)
+    highlight(x,y,y1,color)
   }
   if(color == "gray"){
     y = y+1;
-    highlight(x,y,color);
+    highlight(x,y,y1,color);
   }
 }
 
-function highlight(x,y,color){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
+function highlight(x,y,y1,color){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
   let x1 = x;
-  let y1=y;
-  let tdb = document.getElementById(y+","+x)
+  alert(y1+","+x)
+  let tdb = document.getElementById(y1+","+x)
   x=x-1;
   let td = document.getElementById(y+","+x);
   x=x+2;
   let td2 = document.getElementById(y+","+x);
-  td.style.backgroundColor ="blue"; // use css box shadow
+  td.style.backgroundColor ="blue"; // change to css box shadow
   td2.style.backgroundColor = "blue";
   td.addEventListener('click', function() { // function for piece movement
     
     finishMovement(td,tdb,color,x1,y1);
-    this.removeEventListener('click', MovePiece);
+   // td.removeEventListener('click', MovePiece); // removes both event listeners after piece is moved
+    td2.removeEventListener('click', MovePiece);
+    tdb.removeEventListener('click',MovePiece);
+    td2.removeEventListener('click',finishMovement);
+    td.removeEventListener('click',finishMovement);
+    td.style.backgroundColor="black";
+    td2.style.backgroundColor="black";
   });
   td2.addEventListener('click', function() { // function for piece movement
     finishMovement(td2,tdb,color,x1,y1);
-    this.removeEventListener('click', MovePiece);
+   // td2.removeEventListener('click', MovePiece);
+    td.removeEventListener('click', MovePiece);
+    tdb.removeEventListener('click',MovePiece);
+    td2.removeEventListener('click',finishMovement);
+    td.removeEventListener('click',finishMovement);
+    td.style.backgroundColor="black";
+    td2.style.backgroundColor="black";
   });
   //highlight spaces
   //add on click attribute
@@ -129,18 +151,17 @@ function highlight(x,y,color){ // will highlight associated areas and add on cli
 }
 
 function finishMovement(td,tdb,color,x,y){ // move piece
-  y = y+1;
   var removetab = document.getElementById(x+'s'+y);
   alert(" fM x is "+ x+ " y is "+ y)
-  console.log(removetab)
+ 
   if(removetab!=null){
       var parentEl1 = removetab.parentElement;
-      console.log(parentEl1)
+
           parentEl1.removeChild(removetab);
           
       }
-    var removtd = document.getElementById(x+','+y);
-    removtd.removeEventListener('click', MovePiece);
+  //  var removtd = document.getElementById(x+','+y);
+    //removtd.removeEventListener('click', MovePiece);
   if(color== "white"){
     pieceWhite(td,x,y);
     y=y+1;
@@ -182,7 +203,7 @@ function pieceWhite(td,x,y){
   circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
  // alert("PW x is "+ x+ " y is "+ y)
-  svg.setAttribute("id",x+'s'+y);
+  svg.setAttribute("id",y+'s'+x);
   td.appendChild(svg);
 
 }
@@ -201,7 +222,7 @@ function pieceBlack(td,x,y){
   circle.setAttribute("fill", "gray");
   circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
-  svg.setAttribute("id",x+'s'+y);
+  svg.setAttribute("id",y+'s'+x);
   //alert(x+"C"+y);
   td.appendChild(svg);
 
