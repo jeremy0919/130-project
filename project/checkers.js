@@ -116,11 +116,12 @@ function highlight(x, y, y1, color) {
   let x1 = x;
   let tdb = document.getElementById(y1 + "," + x);
   x = x - 1;
+  let z1 =x;
   let td = document.getElementById(y + "," + x);
   x = x + 2;
   let td2 = document.getElementById(y + "," + x);
-
-  function movePieceListener() {
+  let z2 = x;
+ /* function movePieceListener() {
     finishMovement(this, tdb, color, x1, y1);
     this.removeEventListener('click', movePieceListener);
     tdb.removeEventListener('click', movePieceListener);
@@ -128,16 +129,36 @@ function highlight(x, y, y1, color) {
     td.style.backgroundColor = "black";
     td2.style.backgroundColor = "black";
   }
+  */
 
   td.style.backgroundColor = "blue";
   td2.style.backgroundColor = "blue";
+  function movement1(){
 
-  td.addEventListener('click', movePieceListener);
-  td2.addEventListener('click', movePieceListener);
+      finishMovement(this, tdb, color,x1, z1, y1);
+      this.removeEventListener('click', movement1);
+      tdb.removeEventListener('click', MovePiece);
+      this.removeEventListener('click', finishMovement);
+      td.style.backgroundColor = "black";
+      td2.style.backgroundColor = "black";
+
+  }
+  function movement2(){
+    
+    finishMovement(this, tdb, color, x1, z2, y1);
+    this.removeEventListener('click', movement2);
+    tdb.removeEventListener('click', MovePiece);
+    this.removeEventListener('click', finishMovement);
+    td.style.backgroundColor = "black";
+    td2.style.backgroundColor = "black";
+  
+}
+  td.addEventListener('click', movement1 );
+  td2.addEventListener('click', movement2 );
 }
 
-function finishMovement(td,tdb,color,x,y){ // move piece
-  var removetab = document.getElementById(x+'s'+y);
+function finishMovement(td,tdb,color,x1,x,y){ // move piece
+  var removetab = document.getElementById(x1+'s'+y);
 //  alert(" fM x is "+ x+ " y is "+ y)
  
   if(removetab!=null){
@@ -149,10 +170,10 @@ function finishMovement(td,tdb,color,x,y){ // move piece
   if(color== "white"){
     y=y-1;
     pieceWhite(td,x,y);
-    
+   // alert("location is: "+x+" "+y)  
    // x=x+1;
     td.addEventListener('click', function() { // function for piece movement
-           
+     // alert("location is: "+x+" "+y)  
       MovePiece(y, x,"white");
     });
   }
