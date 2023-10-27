@@ -114,7 +114,7 @@ let y1 = y;
 
 function highlight(x,y,y1,color){ // will highlight associated areas and add on click, will need something in case another piece is clicked to dehilight area
   let x1 = x;
-  alert(y1+","+x)
+ // alert(y1+","+x)
   let tdb = document.getElementById(y1+","+x)
   x=x-1;
   let td = document.getElementById(y+","+x);
@@ -152,7 +152,7 @@ function highlight(x,y,y1,color){ // will highlight associated areas and add on 
 
 function finishMovement(td,tdb,color,x,y){ // move piece
   var removetab = document.getElementById(x+'s'+y);
-  alert(" fM x is "+ x+ " y is "+ y)
+//  alert(" fM x is "+ x+ " y is "+ y)
  
   if(removetab!=null){
       var parentEl1 = removetab.parentElement;
