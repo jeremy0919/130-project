@@ -135,20 +135,20 @@ function highlight(x, y, y1, color) {
   td.style.backgroundColor = "blue";
   td2.style.backgroundColor = "blue";
   function movement1(){
-
+    tdb.removeEventListener('click', MovePiece);
       finishMovement(this, tdb, color,x1, z1, y1);
       this.removeEventListener('click', movement1);
-      tdb.removeEventListener('click', MovePiece);
+   
       this.removeEventListener('click', finishMovement);
       td.style.backgroundColor = "black";
       td2.style.backgroundColor = "black";
 
   }
   function movement2(){
-    
+    tdb.removeEventListener('click', MovePiece);
     finishMovement(this, tdb, color, x1, z2, y1);
     this.removeEventListener('click', movement2);
-    tdb.removeEventListener('click', MovePiece);
+   
     this.removeEventListener('click', finishMovement);
     td.style.backgroundColor = "black";
     td2.style.backgroundColor = "black";
@@ -161,7 +161,7 @@ function highlight(x, y, y1, color) {
 function finishMovement(td,tdb,color,x1,x,y){ // move piece
   var removetab = document.getElementById(x1+'s'+y);
 //  alert(" fM x is "+ x+ " y is "+ y)
- 
+tdb.removeEventListener('click', MovePiece);
   if(removetab!=null){
       var parentEl1 = removetab.parentElement;
 
