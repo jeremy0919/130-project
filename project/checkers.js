@@ -73,23 +73,23 @@ likely gonna have it then remove event listeners just in case
                     td.style.width = "40px";
                 }
             }
-            td.setAttribute("id",i + "," + j) // sets id for later use in movement
+            td.setAttribute("id",j + "," + i) // sets id for later use in movement
             if(i<=2&& td.style.backgroundColor=="black"){
            
               td.addEventListener('click', function() { // function for piece movement
            
                 MovePiece(i, j,"gray");
               });
-              pieceBlack(td,i,j);
+              pieceBlack(td,j,i);
             }
             if(i>=7&&td.style.backgroundColor=="black"){
             
               td.addEventListener('click', function() { // function for piece movement
              //could be moved into place piece function but needs more debugging
-              alert("id is "+i+","+j);
+            //  alert("id is "+i+","+j);
                 MovePiece(i, j,"white");
               });
-              pieceWhite(td,i,j);
+              pieceWhite(td,j,i);
             }
             tr.appendChild(td); 
   
@@ -114,22 +114,23 @@ let y1 = y;
 
 function highlight(x, y, y1, color) {
   let x1 = x;
-  let tdb = document.getElementById(y1 + "," + x);
+  let tdb = document.getElementById(x + "," + y1);
   x = x - 1;
   let z1 =x;
-  let td = document.getElementById(y + "," + x);
+  let td = document.getElementById(x + "," + y);
   x = x + 2;
-  let td2 = document.getElementById(y + "," + x);
+  let td2 = document.getElementById(x + "," + y);
   let z2 = x;
- /* function movePieceListener() {
-    finishMovement(this, tdb, color, x1, y1);
-    this.removeEventListener('click', movePieceListener);
-    tdb.removeEventListener('click', movePieceListener);
-    this.removeEventListener('click', finishMovement);
-    td.style.backgroundColor = "black";
-    td2.style.backgroundColor = "black";
+  var temp = td.parentElement;
+  var temp1 = td2.parentElement;
+  var isjump = null;
+  if(temp!=null){ // need piece interaction 
+   // MovePiece(z1,y,color);
+    
   }
-  */
+  if(temp1!=null){
+   // MovePiece(z2,y,color);
+  }
 
   td.style.backgroundColor = "blue";
   td2.style.backgroundColor = "blue";
@@ -219,7 +220,7 @@ function pieceWhite(td,x,y){
  // circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
  // alert("PW x is "+ x+ " y is "+ y)
-  svg.setAttribute("id",y+'s'+x);
+  svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
 
 }
@@ -238,7 +239,7 @@ function pieceBlack(td,x,y){
   circle.setAttribute("fill", "gray");
  // circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
-  svg.setAttribute("id",y+'s'+x);
+  svg.setAttribute("id",x+'s'+y);
   //alert(x+"C"+y);
   td.appendChild(svg);
 
