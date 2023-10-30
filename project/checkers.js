@@ -117,9 +117,6 @@ function highlight(x, y, y1, color) {
   let td = document.getElementById(x + "," + y);
 
   var existingPieceL = document.getElementById(z1 + 's' + y);
-  if (existingPieceL != null) {
-      // add jump highlight here
-  }
 
   x = x + 2;
   let td2 = document.getElementById(x + "," + y);
@@ -127,16 +124,19 @@ function highlight(x, y, y1, color) {
   let z2 = x;
 
   var existingPieceR = document.getElementById(z2 + 's' + y);
-  if (existingPieceR != null) {
-    //add jump highlight here
-  }
-
-
-
-
-  td.style.backgroundColor = "blue";
-  td2.style.backgroundColor = "blue";
-
+  if (existingPieceR != null && existingPieceL != null) {
+    return;
+  } else if (existingPieceL != null) {
+    td2.style.backgroundColor = "blue";
+    td2.addEventListener('click', movement2);
+  } else if (existingPieceR != null) {
+    td.style.backgroundColor = "blue";
+    td.addEventListener('click', movement1);
+  } else if (existingPieceR == null && existingPieceL == null) {
+    td.style.backgroundColor = "blue";
+    td2.style.backgroundColor = "blue";
+ //   td.addEventListener('click', movement1);
+   // td2.addEventListener('click', movement2);
   function movement1() {
     finishMovement(this, tdb, color, x1, z1, y1);
     td.removeEventListener('click', movement1);
@@ -154,6 +154,7 @@ function highlight(x, y, y1, color) {
   td.addEventListener('click', movement1);
   td2.addEventListener('click', movement2);
 }
+}
 
 function finishMovement(td, tdb, color, x1, x, y) {
   var removetab = document.getElementById(x1 + 's' + y);
@@ -163,7 +164,6 @@ function finishMovement(td, tdb, color, x1, x, y) {
     parentEl1.removeChild(removetab);
   }
 
-  // Remove existing piece on td
   var existingPiece = document.getElementById(x + 's' + y);
   if (existingPiece != null) {
     var parentEl2 = existingPiece.parentElement;
