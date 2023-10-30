@@ -58,7 +58,7 @@ likely gonna have it then remove event listeners just in case
                 if(j%2 ==0){
           
                 td.style.backgroundColor ="black";
-           //     td.appendChild(input);
+  
                 td.style.height = "40px";
                 td.style.width = "40px";
                 td.addEventListener('click', function() { 
@@ -68,47 +68,44 @@ likely gonna have it then remove event listeners just in case
                 if(j%2 == 1){
                
                     td.style.backgroundColor = "red";
-            //        td.appendChild(input2);
                     td.style.height = "40px";
                     td.style.width = "40px";
                 }
             }
             td.setAttribute("id",j + "," + i) // sets id for later use in movement
-            if(i<=2&& td.style.backgroundColor=="black"){
-           
-              td.addEventListener('click', function() { // function for piece movement
-           
-                MovePiece(i, j,"gray");
-              });
+            if(i<=2 && td.style.backgroundColor=="black"){
+              td.grayMove = function() {
+                  MovePiece(i, j,"gray");
+              }
+              td.addEventListener('click', td.grayMove);
               pieceBlack(td,j,i);
-            }
-            if(i>=7&&td.style.backgroundColor=="black"){
-            
-              td.addEventListener('click', function() { // function for piece movement
-             //could be moved into place piece function but needs more debugging
-            //  alert("id is "+i+","+j);
-                MovePiece(i, j,"white");
-              });
+          }
+          
+          if(i>=7 && td.style.backgroundColor=="black"){
+              td.whiteMove = function() {
+                  MovePiece(i, j,"white");
+              }
+              td.addEventListener('click', td.whiteMove);
               pieceWhite(td,j,i);
-            }
-            tr.appendChild(td); 
+          }
+          tr.appendChild(td); 
+      }
   
-        }
-        tablebody.appendChild(tr);
-     
-        
-    }
-    document.getElementsByClassName("table")[0].appendChild(table);
-}
-function MovePiece(y,x,color){ // determines y based off of color ie direction
-let y1 = y;
-  if(color == "white"){
-    y = y-1;
-    highlight(x,y,y1,color)
+      tablebody.appendChild(tr);
   }
-  if(color == "gray"){
-    y = y+1;
-    highlight(x,y,y1,color);
+  
+  document.getElementsByClassName("table")[0].appendChild(table);
+}
+function MovePiece(y, x, color) {
+  let y1 = y;
+  
+  if (color == "white") {
+    y = y - 1;
+    highlight(x, y, y1, color);
+  }
+  if (color == "gray") {
+    y = y + 1;
+    highlight(x, y, y1, color);
   }
 }
 
@@ -116,86 +113,82 @@ function highlight(x, y, y1, color) {
   let x1 = x;
   let tdb = document.getElementById(x + "," + y1);
   x = x - 1;
-  let z1 =x;
+  let z1 = x;
   let td = document.getElementById(x + "," + y);
+
+  var existingPieceL = document.getElementById(z1 + 's' + y);
+  if (existingPieceL != null) {
+      // add jump highlight here
+  }
+
   x = x + 2;
   let td2 = document.getElementById(x + "," + y);
+  
   let z2 = x;
-  var temp = td.parentElement;
-  var temp1 = td2.parentElement;
-  var isjump = null;
-  if(temp!=null){ // need piece interaction 
-   // MovePiece(z1,y,color);
-    
+
+  var existingPieceR = document.getElementById(z2 + 's' + y);
+  if (existingPieceR != null) {
+    //add jump highlight here
   }
-  if(temp1!=null){
-   // MovePiece(z2,y,color);
-  }
+
+
+
 
   td.style.backgroundColor = "blue";
   td2.style.backgroundColor = "blue";
-  function movement1(){
-    tdb.removeEventListener('click', MovePiece,x,y,color);
-      finishMovement(this, tdb, color,x1, z1, y1);
-      this.removeEventListener('click', movement1);
-   
-      this.removeEventListener('click', finishMovement,td,tdb,color,x1,x,y);
-      td.style.backgroundColor = "black";
-      td2.style.backgroundColor = "black";
 
-  }
-  function movement2(){
-    tdb.removeEventListener('click', MovePiece,x,y,color);
-    finishMovement(this, tdb, color, x1, z2, y1);
-    this.removeEventListener('click', movement2);
-   
-    this.removeEventListener('click', finishMovement,td,tdb,color,x1,x,y);
+  function movement1() {
+    finishMovement(this, tdb, color, x1, z1, y1);
+    td.removeEventListener('click', movement1);
     td.style.backgroundColor = "black";
     td2.style.backgroundColor = "black";
-  
-}
-  td.addEventListener('click', movement1 );
-  td2.addEventListener('click', movement2 );
+  }
+
+  function movement2() {
+    finishMovement(this, tdb, color, x1, z2, y1);
+    td2.removeEventListener('click', movement2);
+    td.style.backgroundColor = "black";
+    td2.style.backgroundColor = "black";
+  }
+
+  td.addEventListener('click', movement1);
+  td2.addEventListener('click', movement2);
 }
 
-function finishMovement(td,tdb,color,x1,x,y){ // move piece
-  var removetab = document.getElementById(x1+'s'+y);
-//  alert(" fM x is "+ x+ " y is "+ y)
-tdb.removeEventListener('click', MovePiece,x,y,color); // have the chat gods assist
-  if(removetab!=null){
-      var parentEl1 = removetab.parentElement;
+function finishMovement(td, tdb, color, x1, x, y) {
+  var removetab = document.getElementById(x1 + 's' + y);
 
-          parentEl1.removeChild(removetab);
-          
-      }
-  if(color== "white"){
-    y=y-1;
-    pieceWhite(td,x,y);
-   // alert("location is: "+x+" "+y)  
-   // x=x+1;
-    td.addEventListener('click', function() { // function for piece movement
-     // alert("location is: "+x+" "+y)  
+  if (removetab != null) {
+    var parentEl1 = removetab.parentElement;
+    parentEl1.removeChild(removetab);
+  }
+
+  // Remove existing piece on td
+  var existingPiece = document.getElementById(x + 's' + y);
+  if (existingPiece != null) {
+    var parentEl2 = existingPiece.parentElement;
+    parentEl2.removeChild(existingPiece);
+  }
+
+  if (color == "white") {
+    y = y - 1;
+    pieceWhite(td, x, y);
+    tdb.removeEventListener('click', tdb.whiteMove); 
+    td.whiteMove = function() {
       MovePiece(y, x,"white");
-    });
+    }
+    td.addEventListener('click', td.whiteMove);
   }
-  if(color == "gray"){
-    y=y+1;
-    pieceBlack(td,x,y);
-   
-   // x=x+1;
-    td.addEventListener('click', function() { // function for piece movement
-           
-      MovePiece(y, x,"gray");
-    });
-    
-  }
- // alert(x+"c"+y);
 
-      //piece removal id logic checks out not sure why its not working
-  //place pieces in new area 
-  //jump mechanics here
-  //remove piece from previous area
-  //remove on click
+  if (color == "gray") {
+    y = y + 1;
+    pieceBlack(td,x,y);
+    tdb.removeEventListener('click', tdb.grayMove); 
+    td.grayMove = function() {
+      MovePiece(y, x,"gray");
+    }
+    td.addEventListener('click', td.grayMove);
+  }
 }
 
 /*
