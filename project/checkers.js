@@ -123,37 +123,164 @@ function highlight(x, y, y1, color) {
   
   let z2 = x;
 
-  var existingPieceR = document.getElementById(z2 + 's' + y);
-  if (existingPieceR != null && existingPieceL != null) {
-    return;
-  } else if (existingPieceL != null) {
-    td2.style.backgroundColor = "blue";
-    td2.addEventListener('click', movement2);
-  } else if (existingPieceR != null) {
-    td.style.backgroundColor = "blue";
-    td.addEventListener('click', movement1);
-  } else if (existingPieceR == null && existingPieceL == null) {
-    td.style.backgroundColor = "blue";
-    td2.style.backgroundColor = "blue";
- //   td.addEventListener('click', movement1);
-   // td2.addEventListener('click', movement2);
+  var Rdata = document.getElementById(z2 + ',' + y);
+  var Ldata = document.getElementById(z1 + ',' + y);
+
   function movement1() {
+ 
     finishMovement(this, tdb, color, x1, z1, y1);
     td.removeEventListener('click', movement1);
-    td.style.backgroundColor = "black";
-    td2.style.backgroundColor = "black";
-  }
-
-  function movement2() {
-    finishMovement(this, tdb, color, x1, z2, y1);
     td2.removeEventListener('click', movement2);
     td.style.backgroundColor = "black";
     td2.style.backgroundColor = "black";
   }
 
+  function movement2() {
+
+    finishMovement(this, tdb, color, x1, z2, y1);
+    td2.removeEventListener('click', movement2);
+    td.removeEventListener('click', movement1);
+    td.style.backgroundColor = "black";
+    td2.style.backgroundColor = "black";
+  }
+  function movement3() {
+    this.removeEventListener('click',movement3)
+    td2.removeEventListener('click', movement2);
+    td.removeEventListener('click', movement1);
+    if(color=="white"){
+      Ldata.removeEventListener('click', Ldata.grayMove); 
+    }
+    else if(color=="gray"){
+      Rdata.removeEventListener('click', Rdata.whiteMove); 
+    }
+    this.style.backgroundColor = 'black';
+    td2.style.backgroundColor = "black";
+    z1 = z1+1;
+    jumpMovement(this,tdb,Ldata,z1,y,color);
+   
+  }
+  function movement4() {
+    this.removeEventListener('click',movement4);
+    td2.removeEventListener('click', movement2);
+    td.removeEventListener('click', movement1);
+    if(color=="gray"){
+      Rdata.removeEventListener('click', Rdata.whiteMove); 
+    }
+    else if(color=="white"){
+      Ldata.removeEventListener('click', Ldata.grayMove); 
+    }
+    this.style.backgroundColor = 'black';
+    td.style.backgroundColor = "black";
+    z2 = z2-1;
+    jumpMovement(this,tdb,Rdata,z2,y,color);
+    
+  }
+
+  var existingPieceR = document.getElementById(z2 + 's' + y);
+
+  if (existingPieceR != null && existingPieceL != null) {
+    return;
+  } else if (existingPieceL != null) {
+    let childElement = td.firstChild; 
+
+  if (childElement) {
+    let circleElement = childElement.firstChild;
+    let circleColor = circleElement.getAttribute('fill');
+    if(circleColor != color){
+      let zT = z1-1;
+      let yt = y;
+      if(color == 'gray'){
+        yt = yt + 1;
+      }
+      if(color == 'white'){
+        yt = yt - 1;
+      }
+      let tj = document.getElementById(zT+','+yt);
+      let tj1 = document.getElementById(zT+'s'+yt);
+      if(tj1 == null){
+        tj.style.backgroundColor = "blue";
+        tj.addEventListener('click',movement3);
+      }
+    }
+    
+  }
+    td2.addEventListener('click', movement2);
+    td2.style.backgroundColor = "blue";
+    
+  } else if (existingPieceR != null) {
+    let childElement = td2.firstChild; 
+    if (childElement) {
+      let circleElement = childElement.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z2+1;
+        let yt = y;
+        if(color == 'gray'){
+          yt = yt + 1;
+        }
+        if(color == 'white'){
+          yt = yt - 1;
+        }
+        let tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement4);
+        }
+
+      }
+      
+    }
+    td.addEventListener('click', movement1);
+    td.style.backgroundColor = "blue";
+  } else if (existingPieceR == null && existingPieceL == null) {
+    td.style.backgroundColor = "blue";
+    td2.style.backgroundColor = "blue";
   td.addEventListener('click', movement1);
   td2.addEventListener('click', movement2);
 }
+}
+
+function jumpMovement(tdest,td,tj,x,y,color){
+  let childElement = td.firstChild; 
+
+  if (childElement) {
+    let circleElement = childElement.firstChild;
+    if (circleElement != null) {
+      var parentEl1 = circleElement.parentElement;
+      parentEl1.removeChild(circleElement);
+    }
+  }
+   childElement = tj.firstChild; 
+
+  if (childElement) {
+    let circleElement = childElement.firstChild;
+    if (circleElement != null) {
+      var parentEl1 = circleElement.parentElement;
+      parentEl1.removeChild(circleElement);
+    }
+  }
+
+  if (color == "white") {
+    y = y - 1;
+    pieceWhite(tdest, x, y);
+    td.removeEventListener('click', td.whiteMove); 
+    tdest.whiteMove = function() {
+      MovePiece(y, x,"white");
+    }
+    tdest.addEventListener('click', tdest.whiteMove);
+  }
+
+  if (color == "gray") {
+    y = y + 1;
+    pieceBlack(tdest,x,y);
+    td.removeEventListener('click', td.grayMove); 
+    tdest.grayMove = function() {
+      MovePiece(y, x,"gray");
+    }
+    tdest.addEventListener('click', tdest.grayMove);
+  }
+
 }
 
 function finishMovement(td, tdb, color, x1, x, y) {
@@ -164,6 +291,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
     parentEl1.removeChild(removetab);
   }
 
+  // Remove existing piece on td
   var existingPiece = document.getElementById(x + 's' + y);
   if (existingPiece != null) {
     var parentEl2 = existingPiece.parentElement;
@@ -191,14 +319,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   }
 }
 
-/*
-might use php to recreate page every move, not sure
-*/
-
-
-
 function pieceWhite(td,x,y){
-  //let td = document.getElementById(y+","+x);
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
   svg.setAttribute("height", "40");
@@ -210,15 +331,12 @@ function pieceWhite(td,x,y){
   circle.setAttribute("stroke", "black");
   circle.setAttribute("stroke-width", "3");
   circle.setAttribute("fill", "white");
- // circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
- // alert("PW x is "+ x+ " y is "+ y)
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
 
 }
 function pieceBlack(td,x,y){
- // let td = document.getElementById(y+","+x);
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
   svg.setAttribute("height", "40");
@@ -230,10 +348,8 @@ function pieceBlack(td,x,y){
   circle.setAttribute("stroke", "black");
   circle.setAttribute("stroke-width", "3");
   circle.setAttribute("fill", "gray");
- // circle.setAttribute("id",x+'c'+y);
   svg.appendChild(circle);
   svg.setAttribute("id",x+'s'+y);
-  //alert(x+"C"+y);
   td.appendChild(svg);
 
 }
