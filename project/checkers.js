@@ -1,4 +1,4 @@
-function createTable(){
+function createTable1(){
 
     table = document.createElement('table');
 
@@ -233,18 +233,28 @@ function highlight(x, y, y1, color) {
 }
 
 function jumpMovement(tdest,td,tj,x,y,color){
-  let childElement = td.firstChild; //gets first child of origional location
+  // Remove event listeners before removing child elements
+  if (color == "white") {
+    td.removeEventListener('click', td.whiteMove); 
+    tj.removeEventListener('click', tj.grayMove);
+  } else if (color == "gray") {
+    tj.removeEventListener('click', tj.whiteMove);
+    td.removeEventListener('click', td.grayMove); 
+  }
 
-  if (childElement) { // removes it, might still need to remove event listeners
+  let childElement = td.firstChild; //gets first child of original location
+
+  if (childElement) { // removes it
     let circleElement = childElement.firstChild;
     if (circleElement != null) {
       var parentEl1 = circleElement.parentElement;
       parentEl1.removeChild(circleElement);
     }
   }
-   childElement = tj.firstChild; //gets child ie piece of location being jumped
+  
+  childElement = tj.firstChild; //gets child ie piece of location being jumped
 
-  if (childElement) {// removes it, might still need to remove event listeners
+  if (childElement) { // removes it
     let circleElement = childElement.firstChild;
     if (circleElement != null) {
       var parentEl1 = circleElement.parentElement;
@@ -255,8 +265,6 @@ function jumpMovement(tdest,td,tj,x,y,color){
   if (color == "white") { //adds piece to the destination
     y = y - 1;
     pieceWhite(tdest, x, y);
-    td.removeEventListener('click', td.whiteMove); 
-    tj.removeEventListener('click',tj.grayMove);
     tdest.whiteMove = function() {
       MovePiece(y, x,"white");
     }
@@ -266,8 +274,6 @@ function jumpMovement(tdest,td,tj,x,y,color){
   if (color == "gray") {
     y = y + 1;
     pieceBlack(tdest,x,y);
-    tj.removeEventListener('click',tj.whiteMove);
-    td.removeEventListener('click', td.grayMove); 
     tdest.grayMove = function() {
       MovePiece(y, x,"gray");
     }
