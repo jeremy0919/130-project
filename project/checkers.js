@@ -81,6 +81,7 @@ function createTable(){
               }
               td.addEventListener('click', td.grayMove);
               pieceBlack(td,j,i);
+              td.isking = 0;
           }
           
           if(i>=7 && td.style.backgroundColor=="black"){
@@ -89,6 +90,7 @@ function createTable(){
               }
               td.addEventListener('click', td.whiteMove);
               pieceWhite(td,j,i);
+              td.isKing = 0;
           }
           tr.appendChild(td); 
       }
@@ -99,7 +101,10 @@ function createTable(){
   document.getElementsByClassName("table")[0].appendChild(table);
 }
 
-function MovePiece(y, x, color) { // not overly needed but incriments or decrimetns 1 based off of direction of piece
+function MovePiece(y, x, color) { 
+  let td = document.getElementById(x+','+y)
+  let king = td.isking;
+  if(king == 0){
   if(lastClickedx==null){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
   if(currentPlayer == "white"){ // remove event listeners from last piece clicked
@@ -146,6 +151,10 @@ if(currentPlayer == "black"){
     lastclickedC = null;
     lastclickedy = null;
     MovePiece(y,x,color)
+  }}
+  else if( king == 1){
+    kingMovement(x,y,color);
+    //worth adding in lastclicked check here or making it its own function
   }
 }
 
@@ -398,7 +407,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   }
 }
 
-function pieceWhite(td,x,y){
+function pieceWhite(td,x,y){ // add is king set here
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
   svg.setAttribute("height", "40");
@@ -446,4 +455,98 @@ function newClick(n, table) { // i want to take in the table, if any space witho
     }
   }
   */
+}
+
+function kingMovement(x, y, color){
+  let temp = y+1;
+  let y1 = temp;
+  let temp1 = x+1;
+  let xl = temp1;
+  let td = document.getElementById(x+','+y); // origional location
+
+  let ttl = document.getElementById(temp1+','+temp) // top left 
+  temp1 = x-1;
+  let xr = temp1;
+  let ttr = document.getElementById(temp1+','+temp); //top right
+  temp = y-1;
+  let y2 = temp;
+  let tdr = document.getElementById(temp1+','+temp); // bottom right
+  temp1 = x+1;
+  let tdl = document.getElementById(temp1+','+temp); // bottom left
+
+
+
+  function movement1() { // moves left and calls finish movement
+    // add in remove event listener calls and change color
+    kingFinishMovement(this, td, color,x,y, xl,y1);
+
+  }
+  function movement2() { // moves left and calls finish movement
+ 
+    kingFinishMovement(this, td, color,x,y, xr,y1);
+
+  }
+  function movement3() { // moves left and calls finish movement
+ 
+    kingFinishMovement(this, td, color,x,y, xl,y2);
+
+  }
+  function movement4() { // moves left and calls finish movement
+ 
+    kingFinishMovement(this, td, color,x,y, xr,y2);
+
+  }
+
+
+
+  ttl.style.backgroundColor = "blue";
+  ttl.addEventListener('click',movement1);
+  ttr.style.backgroundColor = "blue";
+  ttr.addEventListener('click',movement2);
+  tdr.style.backgroundColor = "blue";
+  tdr.addEventListener('click',movement3);
+  tdl.style.backgroundColor = "blue";
+  tdl.addEventListener('click',movement4)
+
+
+
+
+}
+
+function kingFinishMovement(tdb,td,color,x1,y1,x,y){
+  var removetab = document.getElementById(x1 + 's' + y1); // removes piece at origional location
+
+  if (removetab != null) {
+    var parentEl1 = removetab.parentElement;
+    parentEl1.removeChild(removetab);
+  }
+
+  // Remove existing piece on td
+  var existingPiece = document.getElementById(x + 's' + y); // extra check so no two pieces can be in one spot 
+  if (existingPiece != null) {
+    var parentEl2 = existingPiece.parentElement;
+    parentEl2.removeChild(existingPiece);
+  }
+
+  if (color == "white") {
+   // y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
+    pieceWhite(td, x, y);
+    currentPlayer = "black"; 
+    tdb.removeEventListener('click', tdb.whiteMove); 
+    td.whiteMove = function() {
+      MovePiece(y, x,"white");
+    }
+    td.addEventListener('click', td.whiteMove);
+  }
+
+  if (color == "gray") {
+  //  y = y + 1;
+    pieceBlack(td,x,y);
+    currentPlayer = "white"; 
+    tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
+    td.grayMove = function() {
+      MovePiece(y, x,"gray");
+    }
+    td.addEventListener('click', td.grayMove);
+  }
 }
