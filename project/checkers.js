@@ -1,13 +1,4 @@
 function createTable(){
-    //discover why remove event listener isnt working
-
-/*
-current notes: x and y are flipped for id making it confusing 
-new click function is supposed to go through and change any blue color to black
-likely gonna have it then remove event listeners just in case
-
-*/
-
 
     table = document.createElement('table');
 
@@ -96,7 +87,7 @@ likely gonna have it then remove event listeners just in case
   
   document.getElementsByClassName("table")[0].appendChild(table);
 }
-function MovePiece(y, x, color) {
+function MovePiece(y, x, color) { // not overly needed but incriments or decrimetns 1 based off of direction of piece
   let y1 = y;
   
   if (color == "white") {
@@ -111,31 +102,31 @@ function MovePiece(y, x, color) {
 
 function highlight(x, y, y1, color) {
   let x1 = x;
-  let tdb = document.getElementById(x + "," + y1);
+  let tdb = document.getElementById(x + "," + y1); // gets origional piece location
   x = x - 1;
   let z1 = x;
-  let td = document.getElementById(x + "," + y);
+  let td = document.getElementById(x + "," + y); // gets left board location
 
-  var existingPieceL = document.getElementById(z1 + 's' + y);
+  var existingPieceL = document.getElementById(z1 + 's' + y); // gets piece id on left
 
   x = x + 2;
-  let td2 = document.getElementById(x + "," + y);
+  let td2 = document.getElementById(x + "," + y);// gets right board location
   
   let z2 = x;
 
-  var Rdata = document.getElementById(z2 + ',' + y);
+  var Rdata = document.getElementById(z2 + ',' + y); // same as td and td2 used for jump function
   var Ldata = document.getElementById(z1 + ',' + y);
 
-  function movement1() {
+  function movement1() { // moves left and calls finish movement
  
     finishMovement(this, tdb, color, x1, z1, y1);
-    td.removeEventListener('click', movement1);
+    td.removeEventListener('click', movement1); // removes event listener 
     td2.removeEventListener('click', movement2);
-    td.style.backgroundColor = "black";
+    td.style.backgroundColor = "black"; //changes background style
     td2.style.backgroundColor = "black";
   }
 
-  function movement2() {
+  function movement2() {// moves right and calls finish movement
 
     finishMovement(this, tdb, color, x1, z2, y1);
     td2.removeEventListener('click', movement2);
@@ -143,7 +134,7 @@ function highlight(x, y, y1, color) {
     td.style.backgroundColor = "black";
     td2.style.backgroundColor = "black";
   }
-  function movement3() {
+  function movement3() { // jump movement
     this.removeEventListener('click',movement3)
     td2.removeEventListener('click', movement2);
     td.removeEventListener('click', movement1);
@@ -159,7 +150,7 @@ function highlight(x, y, y1, color) {
     jumpMovement(this,tdb,Ldata,z1,y,color);
    
   }
-  function movement4() {
+  function movement4() { // jump movement
     this.removeEventListener('click',movement4);
     td2.removeEventListener('click', movement2);
     td.removeEventListener('click', movement1);
@@ -176,20 +167,20 @@ function highlight(x, y, y1, color) {
     
   }
 
-  var existingPieceR = document.getElementById(z2 + 's' + y);
+  var existingPieceR = document.getElementById(z2 + 's' + y); // checks for piece at td2
 
   if (existingPieceR != null && existingPieceL != null) {
-    return;
+    return; //needs jump functionality
   } else if (existingPieceL != null) {
     let childElement = td.firstChild; 
 
-  if (childElement) {
+  if (childElement) { // checks if piece on the left is the same color to see if jump is needed
     let circleElement = childElement.firstChild;
     let circleColor = circleElement.getAttribute('fill');
     if(circleColor != color){
       let zT = z1-1;
       let yt = y;
-      if(color == 'gray'){
+      if(color == 'gray'){ // if it can jump increments y accordingly
         yt = yt + 1;
       }
       if(color == 'white'){
@@ -197,25 +188,25 @@ function highlight(x, y, y1, color) {
       }
       let tj = document.getElementById(zT+','+yt);
       let tj1 = document.getElementById(zT+'s'+yt);
-      if(tj1 == null){
+      if(tj1 == null){ // if no piece is being the piece trying to jump
         tj.style.backgroundColor = "blue";
-        tj.addEventListener('click',movement3);
+        tj.addEventListener('click',movement3); // allow for jump movement
       }
     }
     
   }
-    td2.addEventListener('click', movement2);
-    td2.style.backgroundColor = "blue";
+    td2.addEventListener('click', movement2); // adds regular movement to the other side
+    td2.style.backgroundColor = "blue"; 
     
   } else if (existingPieceR != null) {
     let childElement = td2.firstChild; 
-    if (childElement) {
+    if (childElement) { // checks if piece on the left is the same color to see if jump is needed
       let circleElement = childElement.firstChild;
       let circleColor = circleElement.getAttribute('fill');
       if(circleColor != color){
         let zT = z2+1;
         let yt = y;
-        if(color == 'gray'){
+        if(color == 'gray'){// if it can jump increments y accordingly
           yt = yt + 1;
         }
         if(color == 'white'){
@@ -223,7 +214,7 @@ function highlight(x, y, y1, color) {
         }
         let tj = document.getElementById(zT+','+yt);
         let tj1 = document.getElementById(zT+'s'+yt);
-        if(tj1 == null){
+        if(tj1 == null){ // if no piece is being the piece trying to jump
           tj.style.backgroundColor = "blue";
           tj.addEventListener('click',movement4);
         }
@@ -231,9 +222,9 @@ function highlight(x, y, y1, color) {
       }
       
     }
-    td.addEventListener('click', movement1);
+    td.addEventListener('click', movement1);// adds regular movement to the other side 
     td.style.backgroundColor = "blue";
-  } else if (existingPieceR == null && existingPieceL == null) {
+  } else if (existingPieceR == null && existingPieceL == null) { // if no pieces regular movement 
     td.style.backgroundColor = "blue";
     td2.style.backgroundColor = "blue";
   td.addEventListener('click', movement1);
@@ -242,18 +233,18 @@ function highlight(x, y, y1, color) {
 }
 
 function jumpMovement(tdest,td,tj,x,y,color){
-  let childElement = td.firstChild; 
+  let childElement = td.firstChild; //gets first child of origional location
 
-  if (childElement) {
+  if (childElement) { // removes it, might still need to remove event listeners
     let circleElement = childElement.firstChild;
     if (circleElement != null) {
       var parentEl1 = circleElement.parentElement;
       parentEl1.removeChild(circleElement);
     }
   }
-   childElement = tj.firstChild; 
+   childElement = tj.firstChild; //gets child ie piece of location being jumped
 
-  if (childElement) {
+  if (childElement) {// removes it, might still need to remove event listeners
     let circleElement = childElement.firstChild;
     if (circleElement != null) {
       var parentEl1 = circleElement.parentElement;
@@ -261,10 +252,11 @@ function jumpMovement(tdest,td,tj,x,y,color){
     }
   }
 
-  if (color == "white") {
+  if (color == "white") { //adds piece to the destination
     y = y - 1;
     pieceWhite(tdest, x, y);
     td.removeEventListener('click', td.whiteMove); 
+    tj.removeEventListener('click',tj.grayMove);
     tdest.whiteMove = function() {
       MovePiece(y, x,"white");
     }
@@ -274,6 +266,7 @@ function jumpMovement(tdest,td,tj,x,y,color){
   if (color == "gray") {
     y = y + 1;
     pieceBlack(tdest,x,y);
+    tj.removeEventListener('click',tj.whiteMove);
     td.removeEventListener('click', td.grayMove); 
     tdest.grayMove = function() {
       MovePiece(y, x,"gray");
@@ -284,7 +277,7 @@ function jumpMovement(tdest,td,tj,x,y,color){
 }
 
 function finishMovement(td, tdb, color, x1, x, y) {
-  var removetab = document.getElementById(x1 + 's' + y);
+  var removetab = document.getElementById(x1 + 's' + y); // removes piece at origional location
 
   if (removetab != null) {
     var parentEl1 = removetab.parentElement;
@@ -292,14 +285,14 @@ function finishMovement(td, tdb, color, x1, x, y) {
   }
 
   // Remove existing piece on td
-  var existingPiece = document.getElementById(x + 's' + y);
+  var existingPiece = document.getElementById(x + 's' + y); // extra check so no two pieces can be in one spot 
   if (existingPiece != null) {
     var parentEl2 = existingPiece.parentElement;
     parentEl2.removeChild(existingPiece);
   }
 
   if (color == "white") {
-    y = y - 1;
+    y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
     pieceWhite(td, x, y);
     tdb.removeEventListener('click', tdb.whiteMove); 
     td.whiteMove = function() {
