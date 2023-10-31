@@ -134,9 +134,13 @@ if(currentPlayer == "black"){
     if(color1 == 'gray'){
       temp1 =temp1+1;
     }
-    let reset1 = document.getElementById(temp2+','+temp1);
+    let reset1 = document.getElementById(temp2+','+temp1); // chatgpt the best approach to removing these
     reset1.style.backgroundColor = "black";
+    reset1.removeEventListener('click',movement1());
+    reset1.removeEventListener('click',movement2());
     let reset2 = document.getElementById(temp3+','+temp1);
+    reset2.removeEventListener('click',movement1());
+    reset2.removeEventListener('click',movement2());
     reset2.style.backgroundColor = "black";
     lastClickedx = null;
     lastclickedC = null;
