@@ -4,10 +4,12 @@ var lastclickedy = null;
 var lastclickedC = null;
 function createTable(){
   /*
+  need to fix is king value and update accordingly
   need double jump logic
-  need king logic
+  need remove event lsiteners and edge cases of king logic
+  check turn into king logic
   need certain edge case handling
-  need removal of highlight if different piece is clicked
+  need removal of event listeners if different piece is clicked
 
   */
  //test and test2 are gpt attempts at checkers for ideas
@@ -91,6 +93,7 @@ function createTable(){
               td.addEventListener('click', td.whiteMove);
               pieceWhite(td,j,i);
               td.isKing = 0;
+              alert(td.isking)
           }
           tr.appendChild(td); 
       }
@@ -104,6 +107,7 @@ function createTable(){
 function MovePiece(y, x, color) { 
   let td = document.getElementById(x+','+y)
   let king = td.isking;
+  alert(king);
   if(king == 0){
   if(lastClickedx==null){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
@@ -336,23 +340,44 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   }
 
   if (color === "white") {
-    
     currentPlayer = "black"; 
+    if(yDest ==0){
+      kingWHite(td, x, y);
+      currentPlayer = "black"; 
+      tdb.removeEventListener('click', tdb.whiteMove); 
+      td.whiteMove = function() {
+        kingMovement(y, x,"white");
+      }
+      td.addEventListener('click', td.whiteMove);
+    }
+   else{
     pieceWhite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove);
     tdest.whiteMove = function () {
       MovePiece(yDest, xDest, "white");
     };
     tdest.addEventListener('click', tdest.whiteMove);
+  }
   } else if (color === "gray") {
    
     currentPlayer = "white"; 
+    if(yDest == 0){
+      kingBlack(td,x,y);
+      currentPlayer = "white"; 
+      tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
+      td.grayMove = function() {
+        kingMovement(y, x,"gray");
+      }
+      td.addEventListener('click', td.grayMove);
+    }
+    else{
     pieceBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     tdest.grayMove = function () {
       MovePiece(yDest, xDest, "gray");
     };
     tdest.addEventListener('click', tdest.grayMove);
+  }
   }
 
   // Clear the event listeners for td and tj
@@ -386,6 +411,18 @@ function finishMovement(td, tdb, color, x1, x, y) {
 
   if (color == "white") {
     y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
+    if(y ==0){
+      if(yDest ==0){
+        kingWHite(td, x, y);
+        currentPlayer = "black"; 
+        tdb.removeEventListener('click', tdb.whiteMove); 
+        td.whiteMove = function() {
+          kingMovement(y, x,"white");
+        }
+        td.addEventListener('click', td.whiteMove);
+      }
+    }
+    else{
     pieceWhite(td, x, y);
     currentPlayer = "black"; 
     tdb.removeEventListener('click', tdb.whiteMove); 
@@ -394,17 +431,29 @@ function finishMovement(td, tdb, color, x1, x, y) {
     }
     td.addEventListener('click', td.whiteMove);
   }
+  }
 
   if (color == "gray") {
     y = y + 1;
-    pieceBlack(td,x,y);
     currentPlayer = "white"; 
+    if(y == 10){
+      kingBlack(td,x,y);
+      currentPlayer = "white"; 
+      tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
+      td.grayMove = function() {
+        kingMovement(y, x,"gray");
+      }
+      td.addEventListener('click', td.grayMove);
+    }
+    else{
+      pieceBlack(td,x,y);
     tdb.removeEventListener('click', tdb.grayMove); 
     td.grayMove = function() {
       MovePiece(y, x,"gray");
     }
     td.addEventListener('click', td.grayMove);
   }
+}
 }
 
 function pieceWhite(td,x,y){ // add is king set here
@@ -422,7 +471,6 @@ function pieceWhite(td,x,y){ // add is king set here
   svg.appendChild(circle);
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
-
 }
 function pieceBlack(td,x,y){
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -441,20 +489,56 @@ function pieceBlack(td,x,y){
   td.appendChild(svg);
 
 }
-function newClick(n, table) { // i want to take in the table, if any space without a piece as a child has an event listener remove it(idk if that will work)
-  /* // also if any piece is blue set it to black
-  for (let i = 0; i < n; ++i) {
-    var tr = table.getElementsByTagName("tr")[i];
 
-    for (let j = 0; j < n; j++) {
-      let td = tr.getElementsByTagName("td")[j];
-      if (td.style.backgroundColor === "blue") {
-        td.style.backgroundColor = "black";
-        td.removeEventListener('click', movePiece); // Remove event listener
-      }
-    }
-  }
-  */
+function kingWHite(td,x,y){ // add is king set here
+  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "40");
+  svg.setAttribute("height", "40");
+
+  var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "20");
+  circle.setAttribute("cy", "20");
+  circle.setAttribute("r", "15");
+  circle.setAttribute("stroke", "black");
+  circle.setAttribute("stroke-width", "3");
+  circle.setAttribute("fill", "white");
+  svg.appendChild(circle);
+  svg.appendChild(createKingCrown());
+  svg.setAttribute("id",x+'s'+y);
+  td.appendChild(svg);
+  td.isKing = 1;
+}
+function kingBlack(td,x,y){
+  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", "40");
+  svg.setAttribute("height", "40");
+
+  var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "20");
+  circle.setAttribute("cy", "20");
+  circle.setAttribute("r", "15");
+  circle.setAttribute("stroke", "black");
+  circle.setAttribute("stroke-width", "3");
+  circle.setAttribute("fill", "gray");
+  svg.appendChild(circle);
+  svg.appendChild(createKingCrown());
+  svg.setAttribute("id",x+'s'+y);
+  td.appendChild(svg);
+  td.isking =1;
+}
+
+function newClick(n, table) { // i want to take in the table, if any space without a piece as a child has an event listener remove it(idk if that will work)
+
+}
+
+
+
+
+function createKingCrown() {
+  const crown = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  crown.setAttribute("d", "M20 10 L20 5 L25 5 L20 15 L15 5 L20 5 Z");
+  crown.setAttribute("fill", "gold");
+  return crown;
 }
 
 function kingMovement(x, y, color){
@@ -463,7 +547,7 @@ function kingMovement(x, y, color){
   let temp1 = x+1;
   let xl = temp1;
   let td = document.getElementById(x+','+y); // origional location
-
+  td.isking =0;
   let ttl = document.getElementById(temp1+','+temp) // top left 
   temp1 = x-1;
   let xr = temp1;
@@ -530,22 +614,22 @@ function kingFinishMovement(tdb,td,color,x1,y1,x,y){
 
   if (color == "white") {
    // y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
-    pieceWhite(td, x, y);
+    kingWHite(td, x, y);
     currentPlayer = "black"; 
     tdb.removeEventListener('click', tdb.whiteMove); 
     td.whiteMove = function() {
-      MovePiece(y, x,"white");
+      kingMovement(y, x,"white");
     }
     td.addEventListener('click', td.whiteMove);
   }
 
   if (color == "gray") {
   //  y = y + 1;
-    pieceBlack(td,x,y);
+    kingBlack(td,x,y);
     currentPlayer = "white"; 
     tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
     td.grayMove = function() {
-      MovePiece(y, x,"gray");
+      kingMovement(y, x,"gray");
     }
     td.addEventListener('click', td.grayMove);
   }
