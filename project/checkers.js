@@ -1,6 +1,7 @@
 let currentPlayer = "white";
-
-
+var lastClickedx = null;
+var lastclickedy = null;
+var lastclickedC = null;
 function createTable(){
   /*
   need double jump logic
@@ -99,21 +100,49 @@ function createTable(){
 }
 
 function MovePiece(y, x, color) { // not overly needed but incriments or decrimetns 1 based off of direction of piece
+  if(lastClickedx==null){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
   if(currentPlayer == "white"){ // remove event listeners from last piece clicked
   if (color == "white") { // set last piece as global vars, set to null at the end of movement functions
     y = y - 1;
-    highlight(x, y, y1, color);
-    currentPlayer = "black"; // needs to be moved assumes player cant click elsewhere
+    highlight(x, y, y1, color); //still need to remove event listeners
+    lastClickedx = x;
+    lastclickedy = y1;
+    lastclickedC = color; // needs to be moved assumes player cant click elsewhere
   }
 }
 if(currentPlayer == "black"){
   if (color == "gray") {
     y = y + 1;
     highlight(x, y, y1, color);
+    lastClickedx = x;
+    lastclickedy = y1;
+    lastclickedC = color;
     currentPlayer = "white";
   }
 }
+  }
+  else{
+   // let reset = document.getElementById(lastClickedx+','+lastclickedy);
+    let color1 = lastclickedC;
+    let temp1 = lastclickedy;
+    let temp2 = lastClickedx+1;
+    let temp3 = lastClickedx-1;
+    if(color1 == 'white'){
+      temp1 =temp1-1;
+    }
+    if(color1 == 'gray'){
+      temp1 =temp1+1;
+    }
+    let reset1 = document.getElementById(temp2+','+temp1);
+    reset1.style.backgroundColor = "black";
+    let reset2 = document.getElementById(temp3+','+temp1);
+    reset2.style.backgroundColor = "black";
+    lastClickedx = null;
+    lastclickedC = null;
+    lastclickedy = null;
+    MovePiece(y,x,color)
+  }
 }
 
 function highlight(x, y, y1, color) {
@@ -295,7 +324,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
 
   if (color === "white") {
     
-
+    currentPlayer = "black"; 
     pieceWhite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove);
     tdest.whiteMove = function () {
@@ -304,7 +333,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     tdest.addEventListener('click', tdest.whiteMove);
   } else if (color === "gray") {
    
-  
+    currentPlayer = "white"; 
     pieceBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     tdest.grayMove = function () {
@@ -345,6 +374,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color == "white") {
     y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
     pieceWhite(td, x, y);
+    currentPlayer = "black"; 
     tdb.removeEventListener('click', tdb.whiteMove); 
     td.whiteMove = function() {
       MovePiece(y, x,"white");
@@ -355,6 +385,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color == "gray") {
     y = y + 1;
     pieceBlack(td,x,y);
+    currentPlayer = "white"; 
     tdb.removeEventListener('click', tdb.grayMove); 
     td.grayMove = function() {
       MovePiece(y, x,"gray");
