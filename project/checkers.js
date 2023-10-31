@@ -1,5 +1,14 @@
-function createTable1(){
+function createTable(){
+  /*
+  need double jump logic
+  need king logic
+  need certain edge case handling
+  need alternating turn logic
+  need removal of highlight if different piece is clicked
+  need removal of highlight if jump is not clicked
 
+  */
+ //test and test2 are gpt attempts at checkers for ideas
     table = document.createElement('table');
 
     table.setAttribute("td","Board");
@@ -146,8 +155,8 @@ function highlight(x, y, y1, color) {
     }
     this.style.backgroundColor = 'black';
     td2.style.backgroundColor = "black";
-    z1 = z1+1;
-    jumpMovement(this,tdb,Ldata,z1,y,color);
+    let temp = z1-1;
+    jumpMovement(this,tdb,Ldata,temp,y,color); // should work
    
   }
   function movement4() { // jump movement
@@ -162,8 +171,8 @@ function highlight(x, y, y1, color) {
     }
     this.style.backgroundColor = 'black';
     td.style.backgroundColor = "black";
-    z2 = z2-1;
-    jumpMovement(this,tdb,Rdata,z2,y,color);
+    let temp = z2+1;
+    jumpMovement(this,tdb,Rdata,temp,y,color);
     
   }
 
@@ -231,55 +240,73 @@ function highlight(x, y, y1, color) {
   td2.addEventListener('click', movement2);
 }
 }
-
-function jumpMovement(tdest,td,tj,x,y,color){
+function jumpMovement(tdest, td, tj, x, y, color) {
   // Remove event listeners before removing child elements
-  if (color == "white") {
-    td.removeEventListener('click', td.whiteMove); 
+  if (color === "white") {
     tj.removeEventListener('click', tj.grayMove);
-  } else if (color == "gray") {
+  } else if (color === "gray") {
     tj.removeEventListener('click', tj.whiteMove);
-    td.removeEventListener('click', td.grayMove); 
   }
 
-  let childElement = td.firstChild; //gets first child of original location
-
-  if (childElement) { // removes it
+  // Remove the jumped piece from td
+  let childElement = td.firstChild;
+  if (childElement) {
     let circleElement = childElement.firstChild;
-    if (circleElement != null) {
-      var parentEl1 = circleElement.parentElement;
-      parentEl1.removeChild(circleElement);
+    if (circleElement) {
+      td.removeChild(td.firstChild);
     }
   }
-  
-  childElement = tj.firstChild; //gets child ie piece of location being jumped
 
-  if (childElement) { // removes it
+  // Remove the jumped piece from tj
+  childElement = tj.firstChild;
+  if (childElement) {
     let circleElement = childElement.firstChild;
-    if (circleElement != null) {
-      var parentEl1 = circleElement.parentElement;
-      parentEl1.removeChild(circleElement);
+    if (circleElement) {
+      tj.removeChild(tj.firstChild);
     }
   }
 
-  if (color == "white") { //adds piece to the destination
-    y = y - 1;
-    pieceWhite(tdest, x, y);
-    tdest.whiteMove = function() {
-      MovePiece(y, x,"white");
-    }
+  // Add the current piece to tdest
+  let xDest = x;
+  let yDest = y;
+  if (color === "white") {
+    yDest -= 1;
+  } else if (color === "gray") {
+    yDest += 1;
+  }
+
+  if (color === "white") {
+    
+    alert("x:"+xDest+" y:"+yDest)
+    pieceWhite(tdest, xDest, yDest);
+    tdest.removeEventListener('click', tdest.whiteMove);
+    tdest.whiteMove = function () {
+      MovePiece(yDest, xDest, "white");
+    };
     tdest.addEventListener('click', tdest.whiteMove);
-  }
-
-  if (color == "gray") {
-    y = y + 1;
-    pieceBlack(tdest,x,y);
-    tdest.grayMove = function() {
-      MovePiece(y, x,"gray");
-    }
+  } else if (color === "gray") {
+   
+    alert("x:"+xDest+" y:"+yDest)
+    pieceBlack(tdest, xDest, yDest);
+    tdest.removeEventListener('click', tdest.grayMove);
+    tdest.grayMove = function () {
+      MovePiece(yDest, xDest, "gray");
+    };
     tdest.addEventListener('click', tdest.grayMove);
   }
 
+  // Clear the event listeners for td and tj
+  td.removeEventListener('click', td.grayMove);
+  td.removeEventListener('click', td.whiteMove);
+  tj.removeEventListener('click', tj.grayMove);
+  tj.removeEventListener('click', tj.whiteMove);
+
+  // Remove the jump destination's background color
+  tdest.style.backgroundColor = 'black';
+
+  // Update the background color of td and tj
+  td.style.backgroundColor = 'black';
+  tj.style.backgroundColor = 'black';
 }
 
 function finishMovement(td, tdb, color, x1, x, y) {
@@ -352,20 +379,18 @@ function pieceBlack(td,x,y){
   td.appendChild(svg);
 
 }
-function newClick(n,table){
+function newClick(n, table) {
   /*
-  let b = table;
- 
-  for(let i =0; i<n;++i){
-    var trd = b.tr[i];
-   // var tdl = tr.getElementsByTagName("td").length;
-    
-    for(j=0;j<n;j++){
-      let td = trd.td[j];
-      if(td.backgroundColor =="blue"){
-        td.backgroundColor = "black";
+  for (let i = 0; i < n; ++i) {
+    var tr = table.getElementsByTagName("tr")[i];
+
+    for (let j = 0; j < n; j++) {
+      let td = tr.getElementsByTagName("td")[j];
+      if (td.style.backgroundColor === "blue") {
+        td.style.backgroundColor = "black";
+        td.removeEventListener('click', movePiece); // Remove event listener
       }
     }
   }
-*/
+  */
 }
