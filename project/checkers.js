@@ -1,11 +1,12 @@
+let currentPlayer = "white";
+
+
 function createTable(){
   /*
   need double jump logic
   need king logic
   need certain edge case handling
-  need alternating turn logic
   need removal of highlight if different piece is clicked
-  need removal of highlight if jump is not clicked
 
   */
  //test and test2 are gpt attempts at checkers for ideas
@@ -96,21 +97,28 @@ function createTable(){
   
   document.getElementsByClassName("table")[0].appendChild(table);
 }
+
 function MovePiece(y, x, color) { // not overly needed but incriments or decrimetns 1 based off of direction of piece
-  let y1 = y;
-  
-  if (color == "white") {
+  let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
+  if(currentPlayer == "white"){ // remove event listeners from last piece clicked
+  if (color == "white") { // set last piece as global vars, set to null at the end of movement functions
     y = y - 1;
     highlight(x, y, y1, color);
+    currentPlayer = "black"; // needs to be moved assumes player cant click elsewhere
   }
+}
+if(currentPlayer == "black"){
   if (color == "gray") {
     y = y + 1;
     highlight(x, y, y1, color);
+    currentPlayer = "white";
   }
+}
 }
 
 function highlight(x, y, y1, color) {
   let x1 = x;
+  var tj = null;
   let tdb = document.getElementById(x + "," + y1); // gets origional piece location
   x = x - 1;
   let z1 = x;
@@ -133,13 +141,23 @@ function highlight(x, y, y1, color) {
     td2.removeEventListener('click', movement2);
     td.style.backgroundColor = "black"; //changes background style
     td2.style.backgroundColor = "black";
+    if(tj!=null){
+      tj.removeEventListener('click',movement3);
+      tj.removeEventListener('click',movement4);
+      tj.style.backgroundColor = "black";
+    }
   }
 
   function movement2() {// moves right and calls finish movement
-
+    // needs something where if jump is an option and not taken removes event listener
     finishMovement(this, tdb, color, x1, z2, y1);
     td2.removeEventListener('click', movement2);
     td.removeEventListener('click', movement1);
+    if(tj!=null){
+      tj.removeEventListener('click',movement3);
+      tj.removeEventListener('click',movement4);
+      tj.style.backgroundColor = "black";
+    }
     td.style.backgroundColor = "black";
     td2.style.backgroundColor = "black";
   }
@@ -195,7 +213,7 @@ function highlight(x, y, y1, color) {
       if(color == 'white'){
         yt = yt - 1;
       }
-      let tj = document.getElementById(zT+','+yt);
+      tj = document.getElementById(zT+','+yt);
       let tj1 = document.getElementById(zT+'s'+yt);
       if(tj1 == null){ // if no piece is being the piece trying to jump
         tj.style.backgroundColor = "blue";
@@ -221,7 +239,7 @@ function highlight(x, y, y1, color) {
         if(color == 'white'){
           yt = yt - 1;
         }
-        let tj = document.getElementById(zT+','+yt);
+        tj = document.getElementById(zT+','+yt);
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
           tj.style.backgroundColor = "blue";
@@ -277,7 +295,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
 
   if (color === "white") {
     
-    alert("x:"+xDest+" y:"+yDest)
+
     pieceWhite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove);
     tdest.whiteMove = function () {
@@ -286,7 +304,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     tdest.addEventListener('click', tdest.whiteMove);
   } else if (color === "gray") {
    
-    alert("x:"+xDest+" y:"+yDest)
+  
     pieceBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     tdest.grayMove = function () {
@@ -379,8 +397,8 @@ function pieceBlack(td,x,y){
   td.appendChild(svg);
 
 }
-function newClick(n, table) {
-  /*
+function newClick(n, table) { // i want to take in the table, if any space without a piece as a child has an event listener remove it(idk if that will work)
+  /* // also if any piece is blue set it to black
   for (let i = 0; i < n; ++i) {
     var tr = table.getElementsByTagName("tr")[i];
 
