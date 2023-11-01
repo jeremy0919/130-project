@@ -632,7 +632,7 @@ function createKingCrown() {
   return crown;
 }
 
-function kingMovement(x, y, color){
+function kingMovement(y, x, color){ // very broken logic needs improvement
   let temp = y+1;
   let y1 = temp;
   let temp1 = x+1;
@@ -654,28 +654,85 @@ function kingMovement(x, y, color){
   function movement1() { // moves left and calls finish movement
     // add in remove event listener calls and change color
     kingFinishMovement(this, td, color,x,y, xl,y1);
-
+    if((xl<n&&xl>=0)&&y1<n-1){
+      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
+      ttl.removeEventListener('click',movement1);
+      }
+      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      ttr.style.backgroundColor = "black";
+      ttr.removeEventListener('click',movement2);
+      }
+      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+        tdl.style.backgroundColor = "black";
+        tdl.removeEventListener('click',movement3);
+        }
+        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        tdr.style.backgroundColor = "black";
+        tdr.removeEventListener('click',movement4)
+        }
   }
   function movement2() { // moves left and calls finish movement
  
     kingFinishMovement(this, td, color,x,y, xr,y1);
-
+    if((xl<n&&xl>=0)&&y1<n-1){
+      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
+      ttl.removeEventListener('click',movement1);
+      }
+      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      ttr.style.backgroundColor = "black";
+      ttr.removeEventListener('click',movement2);
+      }
+      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+        tdl.style.backgroundColor = "black";
+        tdl.removeEventListener('click',movement3);
+        }
+        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        tdr.style.backgroundColor = "black";
+        tdr.removeEventListener('click',movement4)
+        }
   }
   function movement3() { // moves left and calls finish movement
  
     kingFinishMovement(this, td, color,x,y, xl,y2);
-
+    if((xl<n&&xl>=0)&&y1<n-1){
+      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
+      ttl.removeEventListener('click',movement1);
+      }
+      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      ttr.style.backgroundColor = "black";
+      ttr.removeEventListener('click',movement2);
+      }
+      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+        tdl.style.backgroundColor = "black";
+        tdl.removeEventListener('click',movement3);
+        }
+        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        tdr.style.backgroundColor = "black";
+        tdr.removeEventListener('click',movement4)
+        }
   }
   function movement4() { // moves left and calls finish movement
  
     kingFinishMovement(this, td, color,x,y, xr,y2);
-
+    if((xl<n&&xl>=0)&&y1<n-1){
+      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
+      ttl.removeEventListener('click',movement1);
+      }
+      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      ttr.style.backgroundColor = "black";
+      ttr.removeEventListener('click',movement2);
+      }
+      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      tdl.style.backgroundColor = "black";
+      tdl.removeEventListener('click',movement3);
+      }
+      if(xr<n&&xr>=0&&y2>=0&&y2<n){
+      tdr.style.backgroundColor = "black";
+      tdr.removeEventListener('click',movement4)
+      }
   }
 
-  alert("xr: "+xr);
-  alert("xl: "+xl);
-  alert("y1: "+y1);
-  alert("y2: "+y2);
+
   if((xl<n&&xl>=0)&&y1<n-1){
   ttl.style.backgroundColor = "blue";//runs error check logic likely all run error
   ttl.addEventListener('click',movement1);
@@ -685,12 +742,12 @@ function kingMovement(x, y, color){
   ttr.addEventListener('click',movement2);
   }
   if(xl>=0 && xl<n&&y2>=0&&y2<n){
-  tdr.style.backgroundColor = "blue";
-  tdr.addEventListener('click',movement3);
+  tdl.style.backgroundColor = "blue";
+  tdl.addEventListener('click',movement3);
   }
   if(xr<n&&xr>=0&&y2>=0&&y2<n){
-  tdl.style.backgroundColor = "blue";
-  tdl.addEventListener('click',movement4)
+  tdr.style.backgroundColor = "blue";
+  tdr.addEventListener('click',movement4)
   }
 
 
@@ -698,7 +755,7 @@ function kingMovement(x, y, color){
 
 }
 
-function kingFinishMovement(tdb,td,color,x1,y1,x,y){
+function kingFinishMovement(td,tdb,color,x1,y1,x,y){
   var removetab = document.getElementById(x1 + 's' + y1); // removes piece at origional location
 
   if (removetab != null) {
