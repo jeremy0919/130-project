@@ -635,14 +635,22 @@ function kingMovement(y, x, color){ //needs jump functionality
   let td = document.getElementById(x+','+y); // origional location
   td.attributes.isking = 1;
   let ttl = document.getElementById(temp1+','+temp) // top left 
+  var existingPieceTL = document.getElementById(temp1 + 's' + temp); // gets piece id on left
+
   temp1 = x-1;
   let xr = temp1;
   let ttr = document.getElementById(temp1+','+temp); //top right
+  var existingPieceTR = document.getElementById(temp1 + 's' + temp); // gets piece id on left
+
   temp = y-1;
   let y2 = temp;
   let tdr = document.getElementById(temp1+','+temp); // bottom right
+  var existingPieceBR = document.getElementById(temp1 + 's' + temp); // gets piece id on left
+
   temp1 = x+1;
   let tdl = document.getElementById(temp1+','+temp); // bottom left
+  var existingPieceBL = document.getElementById(temp1 + 's' + temp); // gets piece id on left
+
 
 
 
@@ -726,28 +734,217 @@ function kingMovement(y, x, color){ //needs jump functionality
       tdr.removeEventListener('click',movement4)
       }
   }
+  function movement5(){
+
+  }
+  function movement6(){
+
+  }
+  function movement7(){
+
+  }
+  function movement8(){
+
+  }
 
 
   if((xl<n&&xl>=0)&&y1<n-1){
-  ttl.style.backgroundColor = "blue";
-  ttl.addEventListener('click',movement1);
+  var childElement1 = ttl.firstChild; 
   }
   if(xr<n && xr>=0&&y1<n&&y1>=0){
-  ttr.style.backgroundColor = "blue";
-  ttr.addEventListener('click',movement2);
+  var childElement2 = ttr.firstChild; 
   }
   if(xl>=0 && xl<n&&y2>=0&&y2<n){
-  tdl.style.backgroundColor = "blue";
-  tdl.addEventListener('click',movement3);
+  var childElement3 = tdl.firstChild; 
   }
   if(xr<n&&xr>=0&&y2>=0&&y2<n){
-  tdr.style.backgroundColor = "blue";
-  tdr.addEventListener('click',movement4)
+  var childElement4 = tdr.firstChild; 
   }
 
 
 //add movements 4-8 for jump movement, copy and paste of previous jump movement but doubled
 
+
+
+if (existingPieceTR != null && existingPieceTL != null) { // needs removing of second jump square and event listener
+  if (childElement1) { // checks if piece on the left is the same color to see if jump is needed
+    let circleElement = childElement1.firstChild;
+    let circleColor = circleElement.getAttribute('fill');
+    if(circleColor != color){
+      let zT = z2+1;
+      let yt = y-1;
+      tj = document.getElementById(zT+','+yt);
+      let tj1 = document.getElementById(zT+'s'+yt);
+      if(tj1 == null){ // if no piece is being the piece trying to jump
+        if(tj!=null){
+        tj.style.backgroundColor = "blue";
+        tj.addEventListener('click',movement5);
+        }
+      }
+    }
+    }
+  if (childElement2) { // checks if piece on the left is the same color to see if jump is needed
+    let circleElement = childElement2.firstChild;
+    let circleColor = circleElement.getAttribute('fill');
+    if(circleColor != color){
+      let zT = z2-1;
+      let yt = y-1;
+      tj = document.getElementById(zT+','+yt);
+      let tj1 = document.getElementById(zT+'s'+yt);
+      if(tj1 == null){ // if no piece is being the piece trying to jump
+        if(tj!=null){
+        tj.style.backgroundColor = "blue";
+        tj.addEventListener('click',movement6);
+        }
+      }
+    }
+    }
+  }
+  else if (existingPieceTR != null) { // needs removing of second jump square and event listener
+    if (childElement1) { // checks if piece on the left is the same color to see if jump is needed
+      let circleElement = childElement1.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z2+1;
+        let yt = y-1;
+        tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){ // if no piece is being the piece trying to jump
+          if(tj!=null){
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement5);
+          }
+        }
+      }
+      }
+      if((xl<n&&xl>=0)&&y1<n-1){
+        ttl.style.backgroundColor = "blue";
+        ttl.addEventListener('click',movement1);
+      }
+    }
+    else if( existingPieceTL!=null){
+        if (childElement2) { // checks if piece on the left is the same color to see if jump is needed
+          let circleElement = childElement2.firstChild;
+          let circleColor = circleElement.getAttribute('fill');
+          if(circleColor != color){
+            let zT = z2-1;
+            let yt = y-1;
+            tj = document.getElementById(zT+','+yt);
+            let tj1 = document.getElementById(zT+'s'+yt);
+            if(tj1 == null){ // if no piece is being the piece trying to jump
+              if(tj!=null){
+              tj.style.backgroundColor = "blue";
+              tj.addEventListener('click',movement6);
+              }
+            }
+          }
+          }
+          if(xr<n && xr>=0&&y1<n&&y1>=0){
+            ttr.style.backgroundColor = "blue";
+            ttr.addEventListener('click',movement2);
+            }
+        }
+  if(existingPieceBL!=null&&existingPieceBR!=null){
+    if (childElement3) { // checks if piece on the left is the same color to see if jump is needed
+      let circleElement = childElement3.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z2+1;
+        let yt = y+1;
+        tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){ // if no piece is being the piece trying to jump
+          if(tj!=null){
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement7);
+          }
+        }
+      }
+      }
+      if (childElement4) { // checks if piece on the left is the same color to see if jump is needed
+        let circleElement = childElement3.firstChild;
+        let circleColor = circleElement.getAttribute('fill');
+        if(circleColor != color){
+          let zT = z2-1;
+          let yt = y+1;
+          tj = document.getElementById(zT+','+yt);
+          let tj1 = document.getElementById(zT+'s'+yt);
+          if(tj1 == null){ // if no piece is being the piece trying to jump
+            if(tj!=null){
+            tj.style.backgroundColor = "blue";
+            tj.addEventListener('click',movement8);
+            }
+          }
+        }
+        }
+  }
+  else if(existingPieceBL!=null){
+    if (childElement3) { // checks if piece on the left is the same color to see if jump is needed
+      let circleElement = childElement3.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z2+1;
+        let yt = y+1;
+        tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){ // if no piece is being the piece trying to jump
+          if(tj!=null){
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement7);
+          }
+        }
+      }
+      }
+      if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        tdr.style.backgroundColor = "blue";
+        tdr.addEventListener('click',movement4)
+        }
+
+}
+if(existingPieceBR!=null){
+    if (childElement4) { // checks if piece on the left is the same color to see if jump is needed
+      let circleElement = childElement3.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z2-1;
+        let yt = y+1;
+        tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){ // if no piece is being the piece trying to jump
+          if(tj!=null){
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement8);
+          }
+        }
+      }
+      }
+        if(xl>=0 && xl<n&&y2>=0&&y2<n){
+          tdl.style.backgroundColor = "blue";
+          tdl.addEventListener('click',movement3);
+          }
+    }
+    if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&existingPieceTR){
+      if((xl<n&&xl>=0)&&y1<n-1){
+        ttl.style.backgroundColor = "blue";
+        ttl.addEventListener('click',movement1);
+        var childElement1 = ttl.firstChild; 
+        }
+        if(xr<n && xr>=0&&y1<n&&y1>=0){
+        ttr.style.backgroundColor = "blue";
+        ttr.addEventListener('click',movement2);
+        var childElement2 = ttr.firstChild; 
+        }
+        if(xl>=0 && xl<n&&y2>=0&&y2<n){
+        tdl.style.backgroundColor = "blue";
+        tdl.addEventListener('click',movement3);
+        var childElement3 = tdl.firstChild; 
+        }
+        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        tdr.style.backgroundColor = "blue";
+        tdr.addEventListener('click',movement4)
+        var childElement4 = tdr.firstChild; 
+        }
+    }
 }
 
 function kingFinishMovement(td,tdb,color,x1,y1,x,y){
