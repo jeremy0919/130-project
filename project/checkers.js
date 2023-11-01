@@ -5,11 +5,8 @@ var lastclickedC = null;
 var n = 10;
 function createTable(){
   /*
-  need edge case for king if at edge of board
   need double jump logic
-  need remove event lsiteners and edge cases of king logic
-  check turn into king logic
-  need certain edge case handling
+  likely needs certain edge case handling most dealt with
   need removal of event listeners if different piece is clicked
   need removal of second event listener in the case of two jump options
 
@@ -45,13 +42,11 @@ function createTable(){
                 if(j%2 ==0){
          
             td.style.backgroundColor ="red";
-          //  td.appendChild(input);
             td.style.height = "40px";
             td.style.width = "40px";
             }
                 if(j%2 == 1){
                   
-          //    td.appendChild(input);
                 td.style.backgroundColor = "black";
               
                 td.style.height = "40px";
@@ -632,7 +627,7 @@ function createKingCrown() {
   return crown;
 }
 
-function kingMovement(y, x, color){ // very broken logic needs improvement
+function kingMovement(y, x, color){ //needs jump functionality
   let temp = y+1;
   let y1 = temp;
   let temp1 = x+1;
@@ -715,7 +710,7 @@ function kingMovement(y, x, color){ // very broken logic needs improvement
  
     kingFinishMovement(this, td, color,x,y, xr,y2);
     if((xl<n&&xl>=0)&&y1<n-1){
-      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
+      ttl.style.backgroundColor = "black";
       ttl.removeEventListener('click',movement1);
       }
       if(xr<n && xr>=0&&y1<n&&y1>=0){
@@ -734,7 +729,7 @@ function kingMovement(y, x, color){ // very broken logic needs improvement
 
 
   if((xl<n&&xl>=0)&&y1<n-1){
-  ttl.style.backgroundColor = "blue";//runs error check logic likely all run error
+  ttl.style.backgroundColor = "blue";
   ttl.addEventListener('click',movement1);
   }
   if(xr<n && xr>=0&&y1<n&&y1>=0){
@@ -751,7 +746,7 @@ function kingMovement(y, x, color){ // very broken logic needs improvement
   }
 
 
-
+//add movements 4-8 for jump movement, copy and paste of previous jump movement but doubled
 
 }
 
