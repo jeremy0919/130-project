@@ -141,6 +141,7 @@ if(currentPlayer == "black"){
     if(color1 == 'gray'){
       temp1 =temp1+1;
     }
+    /*
     let reset1 = document.getElementById(temp2+','+temp1); // chatgpt the best approach to removing these
     reset1.style.backgroundColor = "black";
    // reset1.removeEventListener('click',movement1());
@@ -149,6 +150,7 @@ if(currentPlayer == "black"){
   //  reset2.removeEventListener('click',movement1());
   //  reset2.removeEventListener('click',movement2());
     reset2.style.backgroundColor = "black";
+    */
     lastClickedx = null;
     lastclickedC = null;
     lastclickedy = null;
@@ -182,7 +184,7 @@ function highlight(x, y, y1, color) {
   function movement1() { // moves left and calls finish movement
  
     finishMovement(this, tdb, color, x1, z1, y1);
-    if(z2>0){
+    if(z2>=0){
       td2.removeEventListener('click', movement2);
       td2.style.backgroundColor = "black";
       }
@@ -204,7 +206,7 @@ function highlight(x, y, y1, color) {
     td2.removeEventListener('click', movement2);
     td2.style.backgroundColor = "black";
     }
-    if(z1>0){
+    if(z1>=0){
     td.removeEventListener('click', movement1);
     td.style.backgroundColor = "black";
     }
@@ -222,7 +224,7 @@ function highlight(x, y, y1, color) {
       td2.removeEventListener('click', movement2);
       td2.style.backgroundColor = "black";
       }
-      if(z1>0){
+      if(z1>=0){
       td.removeEventListener('click', movement1);
       td.style.backgroundColor = "black";
       }
@@ -240,7 +242,7 @@ function highlight(x, y, y1, color) {
   }
   function movement4() { // jump movement
     this.removeEventListener('click',movement4);
-    if(z2>0){
+    if(z2>=0){
       td2.removeEventListener('click', movement2);
       td2.style.backgroundColor = "black";
       }
@@ -358,7 +360,7 @@ function highlight(x, y, y1, color) {
         tj = document.getElementById(zT+','+yt);
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
-          if(yt>n-1||yt<0){}
+          if(yt>n||yt<0){}
           else{
           tj.style.backgroundColor = "blue";
           tj.addEventListener('click',movement4);
@@ -380,7 +382,7 @@ function highlight(x, y, y1, color) {
     td2.style.backgroundColor = "blue";
     td2.addEventListener('click', movement2);
     }
-    if(z1>0){
+    if(z1>=0){
       td.addEventListener('click', movement1);
       td.style.backgroundColor = "blue";
     }
@@ -665,7 +667,7 @@ function kingMovement(x, y, color){
   }
 
 
-  if(xl>0||y1<n-1){
+  if(xl>=0||y1<n-1){
   ttl.style.backgroundColor = "blue";//runs error check logic likely all run error
   ttl.addEventListener('click',movement1);
   }
