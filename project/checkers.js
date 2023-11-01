@@ -2,14 +2,16 @@ let currentPlayer = "white";
 var lastClickedx = null;
 var lastclickedy = null;
 var lastclickedC = null;
+var n = 10;
 function createTable(){
   /*
-  need to fix is king value and update accordingly
+  need edge case for king if at edge of board
   need double jump logic
   need remove event lsiteners and edge cases of king logic
   check turn into king logic
   need certain edge case handling
   need removal of event listeners if different piece is clicked
+  need removal of second event listener in the case of two jump options
 
   */
  //test and test2 are gpt attempts at checkers for ideas
@@ -18,7 +20,7 @@ function createTable(){
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
     table.style.width = "400px";
-    let n = 10;
+   // let n = 10;
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
@@ -238,7 +240,7 @@ function highlight(x, y, y1, color) {
 
   var existingPieceR = document.getElementById(z2 + 's' + y); // checks for piece at td2
 
-  if (existingPieceR != null && existingPieceL != null) {
+  if (existingPieceR != null && existingPieceL != null) { // needs removing of second jump square and event listener
     let childElement = td.firstChild; 
     let childElement2 = td2.firstChild; 
     if (childElement2) { // checks if piece on the left is the same color to see if jump is needed
