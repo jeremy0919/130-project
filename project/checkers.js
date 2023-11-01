@@ -182,10 +182,14 @@ function highlight(x, y, y1, color) {
   function movement1() { // moves left and calls finish movement
  
     finishMovement(this, tdb, color, x1, z1, y1);
-    td.removeEventListener('click', movement1); // removes event listener 
-    td2.removeEventListener('click', movement2);
-    td.style.backgroundColor = "black"; //changes background style
-    td2.style.backgroundColor = "black";
+    if(z2>0){
+      td2.removeEventListener('click', movement2);
+      td2.style.backgroundColor = "black";
+      }
+      if(z1<n){
+      td.removeEventListener('click', movement1);
+      td.style.backgroundColor = "black";
+      }
     if(tj!=null){
       tj.removeEventListener('click',movement3);
       tj.removeEventListener('click',movement4);
@@ -196,20 +200,32 @@ function highlight(x, y, y1, color) {
   function movement2() {// moves right and calls finish movement
     // needs something where if jump is an option and not taken removes event listener
     finishMovement(this, tdb, color, x1, z2, y1);
+    if(z2<n){
     td2.removeEventListener('click', movement2);
+    td2.style.backgroundColor = "black";
+    }
+    if(z1>0){
     td.removeEventListener('click', movement1);
+    td.style.backgroundColor = "black";
+    }
     if(tj!=null){
       tj.removeEventListener('click',movement3);
       tj.removeEventListener('click',movement4);
       tj.style.backgroundColor = "black";
     }
-    td.style.backgroundColor = "black";
-    td2.style.backgroundColor = "black";
+   
+   
   }
   function movement3() { // jump movement
     this.removeEventListener('click',movement3)
-    td2.removeEventListener('click', movement2);
-    td.removeEventListener('click', movement1);
+    if(z2<n){
+      td2.removeEventListener('click', movement2);
+      td2.style.backgroundColor = "black";
+      }
+      if(z1>0){
+      td.removeEventListener('click', movement1);
+      td.style.backgroundColor = "black";
+      }
     if(color=="white"){
       Ldata.removeEventListener('click', Ldata.grayMove); 
     }
@@ -217,15 +233,21 @@ function highlight(x, y, y1, color) {
       Rdata.removeEventListener('click', Rdata.whiteMove); 
     }
     this.style.backgroundColor = 'black';
-    td2.style.backgroundColor = "black";
+  
     let temp = z1-1;
     jumpMovement(this,tdb,Ldata,temp,y,color); // should work
    
   }
   function movement4() { // jump movement
     this.removeEventListener('click',movement4);
-    td2.removeEventListener('click', movement2);
-    td.removeEventListener('click', movement1);
+    if(z2>0){
+      td2.removeEventListener('click', movement2);
+      td2.style.backgroundColor = "black";
+      }
+      if(z1<n){
+      td.removeEventListener('click', movement1);
+      td.style.backgroundColor = "black";
+      }
     if(color=="gray"){
       Rdata.removeEventListener('click', Rdata.whiteMove); 
     }
@@ -233,7 +255,7 @@ function highlight(x, y, y1, color) {
       Ldata.removeEventListener('click', Ldata.grayMove); 
     }
     this.style.backgroundColor = 'black';
-    td.style.backgroundColor = "black";
+
     let temp = z2+1;
     jumpMovement(this,tdb,Rdata,temp,y,color);
     
@@ -351,11 +373,17 @@ function highlight(x, y, y1, color) {
     td.style.backgroundColor = "blue";
     
   } else if (existingPieceR == null && existingPieceL == null) { // if no pieces regular movement 
-
-    td.style.backgroundColor = "blue";
+    
+   //alert("z2: "+ z2);
+  // alert("z1: "+z1);
+    if(z2<n){
     td2.style.backgroundColor = "blue";
-  td.addEventListener('click', movement1);
-  td2.addEventListener('click', movement2);
+    td2.addEventListener('click', movement2);
+    }
+    if(z1>0){
+      td.addEventListener('click', movement1);
+      td.style.backgroundColor = "blue";
+    }
     
 }
 }
