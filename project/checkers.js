@@ -54,9 +54,7 @@ function createTable(){
               
                 td.style.height = "40px";
                 td.style.width = "40px";
-                td.addEventListener('click', function() { 
-                  newClick(n,table);
-                });
+            
             }}
             if(i%2==1){
                 if(j%2 ==0){
@@ -65,9 +63,7 @@ function createTable(){
   
                 td.style.height = "40px";
                 td.style.width = "40px";
-                td.addEventListener('click', function() { 
-                  newClick(n,table);
-                });
+           
                 }
                 if(j%2 == 1){
                
@@ -243,7 +239,51 @@ function highlight(x, y, y1, color) {
   var existingPieceR = document.getElementById(z2 + 's' + y); // checks for piece at td2
 
   if (existingPieceR != null && existingPieceL != null) {
-    return; //needs jump functionality
+    let childElement = td.firstChild; 
+    let childElement2 = td2.firstChild; 
+    if (childElement2) { // checks if piece on the left is the same color to see if jump is needed
+      let circleElement = childElement2.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z2+1;
+        let yt = y;
+        if(color == 'gray'){// if it can jump increments y accordingly
+          yt = yt + 1;
+        }
+        if(color == 'white'){
+          yt = yt - 1;
+        }
+        tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){ // if no piece is being the piece trying to jump
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement4);
+        }
+
+      }
+      
+    }
+    if (childElement) { // checks if piece on the left is the same color to see if jump is needed
+      let circleElement = childElement.firstChild;
+      let circleColor = circleElement.getAttribute('fill');
+      if(circleColor != color){
+        let zT = z1-1;
+        let yt = y;
+        if(color == 'gray'){ // if it can jump increments y accordingly
+          yt = yt + 1;
+        }
+        if(color == 'white'){
+          yt = yt - 1;
+        }
+        tj = document.getElementById(zT+','+yt);
+        let tj1 = document.getElementById(zT+'s'+yt);
+        if(tj1 == null){ // if no piece is being the piece trying to jump
+          tj.style.backgroundColor = "blue";
+          tj.addEventListener('click',movement3); // allow for jump movement
+        }
+      }
+      
+    }
   } else if (existingPieceL != null) {
     let childElement = td.firstChild; 
 
@@ -361,7 +401,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   } else if (color === "gray") {
    
     currentPlayer = "white"; 
-    if(yDest == 0){
+    if(yDest == 9){
       kingBlack(td,x,y);
       currentPlayer = "white"; 
       tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
@@ -436,7 +476,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color == "gray") {
     y = y + 1;
     currentPlayer = "white"; 
-    if(y == 10){
+    if(y == 9){
       kingBlack(td,x,y);
       currentPlayer = "white"; 
       tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
@@ -456,7 +496,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
 }
 }
 
-function pieceWhite(td,x,y){ // add is king set here
+function pieceWhite(td,x,y){ 
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
   svg.setAttribute("height", "40");
@@ -529,9 +569,7 @@ function kingBlack(td,x,y){
   td.attributes.isking = 1;
 }
 
-function newClick(n, table) { // i want to take in the table, if any space without a piece as a child has an event listener remove it(idk if that will work)
 
-}
 
 
 
