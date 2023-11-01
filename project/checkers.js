@@ -166,6 +166,7 @@ function highlight(x, y, y1, color) {
   let tdb = document.getElementById(x + "," + y1); // gets origional piece location
   x = x - 1;
   let z1 = x;
+ 
   let td = document.getElementById(x + "," + y); // gets left board location
 
   var existingPieceL = document.getElementById(z1 + 's' + y); // gets piece id on left
@@ -174,7 +175,7 @@ function highlight(x, y, y1, color) {
   let td2 = document.getElementById(x + "," + y);// gets right board location
   
   let z2 = x;
-
+ 
   var Rdata = document.getElementById(z2 + ',' + y); // same as td and td2 used for jump function
   var Ldata = document.getElementById(z1 + ',' + y);
 
@@ -304,14 +305,19 @@ function highlight(x, y, y1, color) {
       tj = document.getElementById(zT+','+yt);
       let tj1 = document.getElementById(zT+'s'+yt);
       if(tj1 == null){ // if no piece is being the piece trying to jump
+        if(yt>n||yt<0){}
+        else{
         tj.style.backgroundColor = "blue";
         tj.addEventListener('click',movement3); // allow for jump movement
+        }
       }
     }
     
   }
+
     td2.addEventListener('click', movement2); // adds regular movement to the other side
     td2.style.backgroundColor = "blue"; 
+  
     
   } else if (existingPieceR != null) {
     let childElement = td2.firstChild; 
@@ -330,20 +336,27 @@ function highlight(x, y, y1, color) {
         tj = document.getElementById(zT+','+yt);
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
+          if(yt>n-1||yt<0){}
+          else{
           tj.style.backgroundColor = "blue";
           tj.addEventListener('click',movement4);
+          }
         }
 
       }
       
     }
+
     td.addEventListener('click', movement1);// adds regular movement to the other side 
     td.style.backgroundColor = "blue";
+    
   } else if (existingPieceR == null && existingPieceL == null) { // if no pieces regular movement 
+
     td.style.backgroundColor = "blue";
     td2.style.backgroundColor = "blue";
   td.addEventListener('click', movement1);
   td2.addEventListener('click', movement2);
+    
 }
 }
 function jumpMovement(tdest, td, tj, x, y, color) {
@@ -383,14 +396,14 @@ function jumpMovement(tdest, td, tj, x, y, color) {
 
   if (color === "white") {
     currentPlayer = "black"; 
-    if(yDest ==0){
-      kingWHite(td, x, y);
+    if(yDest ==n-1){
+      kingWHite(tdest, xDest, yDest);
       currentPlayer = "black"; 
-      tdb.removeEventListener('click', tdb.whiteMove); 
-      td.whiteMove = function() {
-        kingMovement(y, x,"white");
+      tdest.removeEventListener('click', tdest.whiteMove); 
+      tdest.whiteMove = function() {
+        kingMovement(yDest, xDest,"white");
       }
-      td.addEventListener('click', td.whiteMove);
+      tdest.addEventListener('click', tdest.whiteMove);
     }
    else{
     pieceWhite(tdest, xDest, yDest);
@@ -403,14 +416,14 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   } else if (color === "gray") {
    
     currentPlayer = "white"; 
-    if(yDest == 9){
-      kingBlack(td,x,y);
+    if(yDest == n-1){
+      kingBlack(tdest,xDest,yDest);
       currentPlayer = "white"; 
-      tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
-      td.grayMove = function() {
-        kingMovement(y, x,"gray");
+      tdest.removeEventListener('click', tdest.grayMove); //might be worth swapping for kingmove
+      tdest.grayMove = function() {
+        kingMovement(yDest, xDest,"gray");
       }
-      td.addEventListener('click', td.grayMove);
+      tdest.addEventListener('click', tdest.grayMove);
     }
     else{
     pieceBlack(tdest, xDest, yDest);
@@ -624,15 +637,22 @@ function kingMovement(x, y, color){
   }
 
 
-
-  ttl.style.backgroundColor = "blue";
+  if(xl>0||y1<n-1){
+  ttl.style.backgroundColor = "blue";//runs error check logic likely all run error
   ttl.addEventListener('click',movement1);
+  }
+  if(xr>n-1||y1>n-1){}else{
   ttr.style.backgroundColor = "blue";
   ttr.addEventListener('click',movement2);
+  }
+  if(xl<0||y2<0){}else{
   tdr.style.backgroundColor = "blue";
   tdr.addEventListener('click',movement3);
+  }
+  if(xr>n-1||y2<0){
   tdl.style.backgroundColor = "blue";
   tdl.addEventListener('click',movement4)
+  }
 
 
 
