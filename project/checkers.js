@@ -83,7 +83,7 @@ function createTable(){
               }
               td.addEventListener('click', td.grayMove);
               pieceBlack(td,j,i);
-              td.isking = 0;
+              td.attributes.isking = 0;
           }
           
           if(i>=7 && td.style.backgroundColor=="black"){
@@ -92,8 +92,8 @@ function createTable(){
               }
               td.addEventListener('click', td.whiteMove);
               pieceWhite(td,j,i);
-              td.isKing = 0;
-              alert(td.isking)
+              td.attributes.isking = 0;
+             // alert(td.attributes.isking)
           }
           tr.appendChild(td); 
       }
@@ -106,8 +106,8 @@ function createTable(){
 
 function MovePiece(y, x, color) { 
   let td = document.getElementById(x+','+y)
-  let king = td.isking;
-  alert(king);
+  let king = td.attributes.isking;
+ // alert(king);
   if(king == 0){
   if(lastClickedx==null){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
@@ -470,6 +470,7 @@ function pieceWhite(td,x,y){ // add is king set here
   circle.setAttribute("fill", "white");
   svg.appendChild(circle);
   svg.setAttribute("id",x+'s'+y);
+  td.attributes.isking = 0;
   td.appendChild(svg);
 }
 function pieceBlack(td,x,y){
@@ -486,6 +487,7 @@ function pieceBlack(td,x,y){
   circle.setAttribute("fill", "gray");
   svg.appendChild(circle);
   svg.setAttribute("id",x+'s'+y);
+  td.attributes.isking = 0;
   td.appendChild(svg);
 
 }
@@ -506,7 +508,7 @@ function kingWHite(td,x,y){ // add is king set here
   svg.appendChild(createKingCrown());
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
-  td.isKing = 1;
+  td.attributes.isking = 1;
 }
 function kingBlack(td,x,y){
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -524,7 +526,7 @@ function kingBlack(td,x,y){
   svg.appendChild(createKingCrown());
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
-  td.isking =1;
+  td.attributes.isking = 1;
 }
 
 function newClick(n, table) { // i want to take in the table, if any space without a piece as a child has an event listener remove it(idk if that will work)
@@ -547,7 +549,7 @@ function kingMovement(x, y, color){
   let temp1 = x+1;
   let xl = temp1;
   let td = document.getElementById(x+','+y); // origional location
-  td.isking =0;
+  td.attributes.isking = 1;
   let ttl = document.getElementById(temp1+','+temp) // top left 
   temp1 = x-1;
   let xr = temp1;
