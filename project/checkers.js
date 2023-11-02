@@ -320,6 +320,7 @@ function highlight(x, y, y1, color) {
   if(z2<n&&z2>=0){
     td2.addEventListener('click', movement2); // adds regular movement to the other side
     td2.style.backgroundColor = "blue"; 
+   
   }
     
   } else if (existingPieceR != null) {
@@ -359,13 +360,17 @@ function highlight(x, y, y1, color) {
     if(z2<n&&z2>=0){
     td2.style.backgroundColor = "blue";
     td2.addEventListener('click', movement2);
+    console.log(td2);
     }
     if(z1>=0&&z1<n){
       td.addEventListener('click', movement1);
       td.style.backgroundColor = "blue";
+      console.log(td);
     }
     
 }
+//console.log(td);
+//console.log(td2);
 if(lastClickedx!=null){
   let color1 = lastclickedC;
   let temp1 = lastclickedy;
@@ -374,23 +379,23 @@ if(lastClickedx!=null){
 
   
   let reset1 = document.getElementById(temp2 + ',' + temp1);
-  console.log(reset1)
- console.log(reset1.getEventListeners);
+
+ //console.log(reset1.getEventListeners);
   if(reset1!=null){
+    reset1.removeEventListener('click', reset1.grayMove);
+    reset1.removeEventListener('click', reset1.whiteMove);
     reset1.removeEventListener('click', movement1);
     reset1.removeEventListener('click', movement2);
-    reset1.removeEventListener('click', movement3);
-    reset1.removeEventListener('click', movement4);
     reset1.style.backgroundColor = "black";// doesnt Remove event listener
   }
-  console.log(reset1.getEventListeners);
-  let reset2 = document.getElementById(temp3 + ',' + temp1);
 
+  let reset2 = document.getElementById(temp3 + ',' + temp1);
+ 
   if(reset2!=null){
-    reset2.removeEventListener('click', movement2);
+    reset2.removeEventListener('click', reset2.grayMove);
+    reset2.removeEventListener('click', reset2.whiteMove);
     reset2.removeEventListener('click', movement1);
-    reset2.removeEventListener('click', movement3);
-    reset2.removeEventListener('click', movement4);
+    reset2.removeEventListener('click', movement2);
     reset2.style.backgroundColor = "black";
   }
   lastClickedx = null;
