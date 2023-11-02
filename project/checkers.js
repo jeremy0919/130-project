@@ -1,4 +1,4 @@
-let currentPlayer = "white";
+var currentPlayer = "white";
 var lastClickedx = null;
 var lastclickedy = null;
 var lastclickedC = null;
@@ -102,73 +102,44 @@ function MovePiece(y, x, color) {
   let king = td.attributes.isking;
  // alert(king);
   if(king == 0){
-  if(lastClickedx==null){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
   if(currentPlayer == "white"){ // remove event listeners from last piece clicked
   if (color == "white") { // set last piece as global vars, set to null at the end of movement functions
     y = y - 1;
     highlight(x, y, y1, color); //still need to remove event listeners
-    lastClickedx = x;
-    lastclickedy = y1;
-    lastclickedC = color; // needs to be moved assumes player cant click elsewhere
   }
 }
 if(currentPlayer == "black"){
   if (color == "gray") {
     y = y + 1;
     highlight(x, y, y1, color);
-    lastClickedx = x;
-    lastclickedy = y1;
-    lastclickedC = color;
-    currentPlayer = "white";
   }
 }
-  }
-  else{
-   // let reset = document.getElementById(lastClickedx+','+lastclickedy);
-    let color1 = lastclickedC;
-    let temp1 = lastclickedy;
-    let temp2 = lastClickedx+1;
-    let temp3 = lastClickedx-1;
-    if(color1 == 'white'){
-      temp1 =temp1-1;
-    }
-    if(color1 == 'gray'){
-      temp1 =temp1+1;
-    }
-    /*
-    let reset1 = document.getElementById(temp2+','+temp1); // chatgpt the best approach to removing these
-    reset1.style.backgroundColor = "black";
-   // reset1.removeEventListener('click',movement1());
-   // reset1.removeEventListener('click',movement2());
-    let reset2 = document.getElementById(temp3+','+temp1);
-  //  reset2.removeEventListener('click',movement1());
-  //  reset2.removeEventListener('click',movement2());
-    reset2.style.backgroundColor = "black";
-    */
-    lastClickedx = null;
-    lastclickedC = null;
-    lastclickedy = null;
-    MovePiece(y,x,color)
-  }}
-  else if( king == 1){
+}
+else if( king == 1){
     kingMovement(x,y,color);
-    //worth adding in lastclicked check here or making it its own function
+   
   }
 }
 
 function highlight(x, y, y1, color) {
+  let cx = x;
+  let cy = y; // used to remove event listeners
+  let cz = y1;
+
   let x1 = x;
   var tj = null;
+ // alert("base x1: " +x+" y: "+y  );
   let tdb = document.getElementById(x + "," + y1); // gets origional piece location
   x = x - 1;
   let z1 = x;
- 
+//  alert("td x1: " +x+" y: "+y  );
   let td = document.getElementById(x + "," + y); // gets left board location
 
   var existingPieceL = document.getElementById(z1 + 's' + y); // gets piece id on left
 
   x = x + 2;
+ // alert("td2 x1: " +x+" y: "+y  );
   let td2 = document.getElementById(x + "," + y);// gets right board location
   
   let z2 = x;
@@ -261,6 +232,11 @@ function highlight(x, y, y1, color) {
     jumpMovement(this,tdb,Rdata,temp,y,color);
     
   }
+ 
+
+
+
+  
 
   var existingPieceR = document.getElementById(z2 + 's' + y); // checks for piece at td2
 
@@ -389,7 +365,39 @@ function highlight(x, y, y1, color) {
     }
     
 }
+if(lastClickedx!=null){
+  let color1 = lastclickedC;
+  let temp1 = lastclickedy;
+  let temp2 = lastClickedx+1;
+  let temp3 = lastClickedx-1;
+
+  
+  let reset1 = document.getElementById(temp2 + ',' + temp1);
+
+  if(reset1!=null){
+    reset1.removeEventListener('click', movement1);
+    reset1.style.backgroundColor = "black";// doesnt Remove event listener
+  }
+
+  let reset2 = document.getElementById(temp3 + ',' + temp1);
+
+  if(reset2!=null){
+    reset2.removeEventListener('click', movement2);
+    reset2.style.backgroundColor = "black";
+  }
+  lastClickedx = null;
+  lastclickedC = null;
+  lastclickedy = null;
+  highlight(cx, cy, cz, color);
+
 }
+else{
+  lastClickedx = cx;
+  lastclickedy = cy;
+  lastclickedC = color;
+}
+}
+
 function jumpMovement(tdest, td, tj, x, y, color) {
   // Remove event listeners before removing child elements
   if (color === "white") {
@@ -627,7 +635,7 @@ function createKingCrown() {
   return crown;
 }
 
-function kingMovement(y, x, color){ //needs jump functionality
+function kingMovement(x, y, color){ //needs jump functionality
   let temp = y+1;
   let y1 = temp;
   let temp1 = x+1;
