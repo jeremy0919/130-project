@@ -133,13 +133,14 @@ function highlight(x, y, y1, color) {
   let tdb = document.getElementById(x + "," + y1); // gets origional piece location
   x = x - 1;
   let z1 = x;
-//  alert("td x1: " +x+" y: "+y  );
+// alert("td x1: " +x+" y: "+y  );
   let td = document.getElementById(x + "," + y); // gets left board location
+
 
   var existingPieceL = document.getElementById(z1 + 's' + y); // gets piece id on left
 
   x = x + 2;
- // alert("td2 x1: " +x+" y: "+y  );
+  //alert("td2 x1: " +x+" y: "+y  );
   let td2 = document.getElementById(x + "," + y);// gets right board location
   
   let z2 = x;
@@ -373,23 +374,30 @@ if(lastClickedx!=null){
 
   
   let reset1 = document.getElementById(temp2 + ',' + temp1);
-
+  console.log(reset1)
+ console.log(reset1.getEventListeners);
   if(reset1!=null){
     reset1.removeEventListener('click', movement1);
+    reset1.removeEventListener('click', movement2);
+    reset1.removeEventListener('click', movement3);
+    reset1.removeEventListener('click', movement4);
     reset1.style.backgroundColor = "black";// doesnt Remove event listener
   }
-
+  console.log(reset1.getEventListeners);
   let reset2 = document.getElementById(temp3 + ',' + temp1);
 
   if(reset2!=null){
     reset2.removeEventListener('click', movement2);
+    reset2.removeEventListener('click', movement1);
+    reset2.removeEventListener('click', movement3);
+    reset2.removeEventListener('click', movement4);
     reset2.style.backgroundColor = "black";
   }
   lastClickedx = null;
   lastclickedC = null;
   lastclickedy = null;
-  highlight(cx, cy, cz, color);
-
+//  highlight(cx, cy, cz, color);
+  return;
 }
 else{
   lastClickedx = cx;
