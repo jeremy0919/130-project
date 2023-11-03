@@ -5,7 +5,7 @@ var lastclickedC = null;
 var n = 10;
 function createTable(){
   /*
-  need double jump logic
+  needs king double jump logic
   likely needs certain edge case handling most dealt with
   need removal of event listeners if different piece is clicked
   need removal of second event listener in the case of two jump options
@@ -222,6 +222,11 @@ var delta2;
     this.style.backgroundColor = 'black';
   
     let temp = z1-1;
+    if (color === "white") {
+      y -= 1;
+    } else if (color === "gray") {
+      y += 1;
+    }
     jumpMovement(this,tdb,Ldata,temp,y,color); // should work
    
   }
@@ -252,6 +257,11 @@ var delta2;
     this.style.backgroundColor = 'black';
 
     let temp = z2+1;
+    if (color === "white") {
+      y -= 1;
+    } else if (color === "gray") {
+      y += 1;
+    }
     jumpMovement(this,tdb,Rdata,temp,y,color);
     
   }
@@ -467,11 +477,6 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   // Add the current piece to tdest
   let xDest = x;
   let yDest = y;
-  if (color === "white") {
-    yDest -= 1;
-  } else if (color === "gray") {
-    yDest += 1;
-  }
 
   if (color === "white") {
   
@@ -1120,7 +1125,7 @@ function kingMovement(y, x, color){ //needs jump functionality
         tj.removeEventListener('click',movement8)
       }
   }
-  function movement5(){ // doesn't remove event listener
+  function movement5(){ // mad broken 
     alert("movement5");
     if(this!=null){
       this.removeEventListener('click',movement5)
@@ -1148,7 +1153,7 @@ function kingMovement(y, x, color){ //needs jump functionality
     jumpMovementKing(this,td,ttr,Xval,Yval,color); // check inputs on king
     
   }
-  function movement6(){
+  function movement6(){ // works
     alert("movement6");
     if(this!=null){
       this.removeEventListener('click',movement5)
