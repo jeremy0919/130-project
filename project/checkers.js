@@ -9,8 +9,13 @@ function createTable(){
   likely needs certain edge case handling most dealt with
   need removal of event listeners if different piece is clicked
   need removal of second event listener in the case of two jump options
-  king jump logic needs to be tested but works in theory
+  for jump remove event listeners try using an array for x values and for y values
+  then use a for each loop that sets var = to id and removes all event listeners, wont fix new click but will 
+  fix not jumping
   */
+
+  //for double jump add in a function that reutnrs bool into jump movement
+  //if can jump other function returns... too much thinking
  //test and test2 are gpt attempts at checkers for ideas
     table = document.createElement('table');
 
@@ -526,6 +531,15 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   td.style.backgroundColor = 'black';
   tj.style.backgroundColor = 'black';
 }
+
+function canDoubleJump(){
+
+
+  return bool;
+}
+
+
+
 
 function finishMovement(td, tdb, color, x1, x, y) {
   var removetab = document.getElementById(x1 + 's' + y); // removes piece at origional location
