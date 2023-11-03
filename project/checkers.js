@@ -117,7 +117,7 @@ if(currentPlayer == "black"){
 }
 }
 else if( king == 1){
-    kingMovement(x,y,color);
+    kingMovement(y,x,color);
    
   }
 }
@@ -147,7 +147,8 @@ function highlight(x, y, y1, color) {
  
   var Rdata = document.getElementById(z2 + ',' + y); // same as td and td2 used for jump function
   var Ldata = document.getElementById(z1 + ',' + y);
-
+var delta1;
+var delta2;
   function movement1() { // moves left and calls finish movement
  
     finishMovement(this, tdb, color, x1, z1, y1);
@@ -186,6 +187,14 @@ function highlight(x, y, y1, color) {
    
   }
   function movement3() { // jump movement
+    if(delta1!=null){
+      delta1.removeEventListener('click',movement4);
+      delta1.style.backgroundColor = "black";
+    } 
+    if(delta2!=null){
+      delta2.removeEventListener('click',movement4);
+      delta2.style.backgroundColor = "black";
+    }
     this.removeEventListener('click',movement3)
     if(z2<n&&z2>=0){
       td2.removeEventListener('click', movement2);
@@ -212,6 +221,14 @@ function highlight(x, y, y1, color) {
    
   }
   function movement4() { // jump movement
+    if(delta1!=null){
+      delta1.removeEventListener('click',movement3);
+      delta1.style.backgroundColor = "black";
+    } 
+    if(delta2!=null){
+      delta2.removeEventListener('click',movement3);
+      delta2.style.backgroundColor = "black";
+    }
     this.removeEventListener('click',movement4);
     if(z2>=0&&z2<n){
       td2.removeEventListener('click', movement2);
@@ -256,6 +273,7 @@ function highlight(x, y, y1, color) {
         if(color == 'white'){
           yt = yt - 1;
         }
+        delta1 = tj;
         tj = document.getElementById(zT+','+yt);
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
@@ -280,6 +298,7 @@ function highlight(x, y, y1, color) {
         if(color == 'white'){
           yt = yt - 1;
         }
+        delta2 = tj;
         tj = document.getElementById(zT+','+yt);
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
@@ -453,7 +472,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
 
   if (color === "white") {
     currentPlayer = "black"; 
-    if(yDest ==0){
+    if(yDest ==0&&tdest.attributes.isking!=1){
       kingWHite(tdest, xDest, yDest);
       currentPlayer = "black"; 
       tdest.removeEventListener('click', tdest.whiteMove); 
@@ -473,7 +492,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   } else if (color === "gray") {
    
     currentPlayer = "white"; 
-    if(yDest == n-1){
+    if(yDest == n-1&&tdest.attributes.isking!=1){
       kingBlack(tdest,xDest,yDest);
       currentPlayer = "white"; 
       tdest.removeEventListener('click', tdest.grayMove); //might be worth swapping for kingmove
@@ -524,7 +543,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color == "white") {
     y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
     if(y ==0){
-      if(yDest ==0){
+      if(yDest ==0&&td.attributes.isking!=1){
         kingWHite(td, x, y);
         currentPlayer = "black"; 
         tdb.removeEventListener('click', tdb.whiteMove); 
@@ -548,7 +567,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color == "gray") {
     y = y + 1;
     currentPlayer = "white"; 
-    if(y == 9){
+    if(y == 9&&td.attributes.isking!=1){
       kingBlack(td,x,y);
       currentPlayer = "white"; 
       tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
@@ -792,11 +811,11 @@ function kingMovement(y, x, color){ //needs jump functionality
   }
   function movement5(){ // doesn't remove event listener
     alert("movement5");
-    if(tj!=null){
-      tj.removeEventListener('click',movement5)
-      tj.removeEventListener('click',movement6)
-      tj.removeEventListener('click',movement7)
-      tj.removeEventListener('click',movement8)
+    if(this!=null){
+      this.removeEventListener('click',movement5)
+      this.removeEventListener('click',movement6)
+      this.removeEventListener('click',movement7)
+      this.removeEventListener('click',movement8)
     }
     if((xl<n&&xl>=0)&&y1<n-1){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
@@ -820,11 +839,11 @@ function kingMovement(y, x, color){ //needs jump functionality
   }
   function movement6(){
     alert("movement6");
-    if(tj!=null){
-      tj.removeEventListener('click',movement5)
-      tj.removeEventListener('click',movement6)
-      tj.removeEventListener('click',movement7)
-      tj.removeEventListener('click',movement8)
+    if(this!=null){
+      this.removeEventListener('click',movement5)
+      this.removeEventListener('click',movement6)
+      this.removeEventListener('click',movement7)
+      this.removeEventListener('click',movement8)
     }
     if((xl<n&&xl>=0)&&y1<n-1){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
@@ -847,11 +866,11 @@ function kingMovement(y, x, color){ //needs jump functionality
   }
   function movement7(){
     alert("movement7");
-    if(tj!=null){
-      tj.removeEventListener('click',movement5)
-      tj.removeEventListener('click',movement6)
-      tj.removeEventListener('click',movement7)
-      tj.removeEventListener('click',movement8)
+    if(this!=null){
+      this.removeEventListener('click',movement5)
+      this.removeEventListener('click',movement6)
+      this.removeEventListener('click',movement7)
+      this.removeEventListener('click',movement8)
     }
     if((xl<n&&xl>=0)&&y1<n-1){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
@@ -874,14 +893,14 @@ function kingMovement(y, x, color){ //needs jump functionality
   }
   function movement8(){
     alert("movement8");
-    if(tj!=null){
-      tj.removeEventListener('click',movement5)
-      tj.removeEventListener('click',movement6)
-      tj.removeEventListener('click',movement7)
-      tj.removeEventListener('click',movement8)
+    if(this!=null){
+      this.removeEventListener('click',movement5)
+      this.removeEventListener('click',movement6)
+      this.removeEventListener('click',movement7)
+      this.removeEventListener('click',movement8)
     }
     if((xl<n&&xl>=0)&&y1<n-1){
-      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
+      ttl.style.backgroundColor = "black";
       ttl.removeEventListener('click',movement1);
       }
       if(xr<n && xr>=0&&y1<n&&y1>=0){
@@ -972,7 +991,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
           if(tj!=null){
             Xval = zT;
             Yval = yt;
-            alert("yt: " + yt +"<br>" + "zt: " +zT);
+        //    alert("yt: " + yt +"<br>" + "zt: " +zT);
           tj.style.backgroundColor = "blue";
           tj.addEventListener('click',movement5);
           }
@@ -1009,7 +1028,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
             ttr.addEventListener('click',movement2);
             }
         }
-  if(existingPieceBL!=null&&existingPieceBR!=null){
+if(existingPieceBL!=null&&existingPieceBR!=null){
     if (childElement3) { // checks if piece on the left is the same color to see if jump is needed
       let circleElement = childElement3.firstChild;
       let circleColor = circleElement.getAttribute('fill');
@@ -1049,7 +1068,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
         }
         }
   }
-  else if(existingPieceBL!=null){
+    else if(existingPieceBL!=null){
     if (childElement4) { // checks if piece on the left is the same color to see if jump is needed
       let circleElement = childElement4.firstChild;
       let circleColor = circleElement.getAttribute('fill');
@@ -1069,13 +1088,13 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
         }
       }
       }
-      if(xr<n&&xr>=0&&y2>=0&&y2<n){
+      if(tdr!=null){
         tdr.style.backgroundColor = "blue";
         tdr.addEventListener('click',movement4)
         }
 
 }
-else if(existingPieceBR!=null){
+      else if(existingPieceBR!=null){
     if (childElement3) { // checks if piece on the left is the same color to see if jump is needed
       let circleElement = childElement3.firstChild;
       let circleColor = circleElement.getAttribute('fill');
@@ -1095,28 +1114,52 @@ else if(existingPieceBR!=null){
         }
       }
       }
-        if(xl>=0 && xl<n&&y2>=0&&y2<n){
+        if(tdl!=null){
           tdl.style.backgroundColor = "blue";
           tdl.addEventListener('click',movement3);
           }
     }
-    else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&existingPieceTR){
-      if((xl<n&&xl>=0)&&y1<n-1){
+if(existingPieceBL==null&&existingPieceBR==null){
+  if(tdl!=null){
+    tdl.style.backgroundColor = "blue";
+    tdl.addEventListener('click',movement3);
+    var childElement3 = tdl.firstChild; 
+    }
+    if(tdr!=null){
+    tdr.style.backgroundColor = "blue";
+    tdr.addEventListener('click',movement4)
+    var childElement4 = tdr.firstChild; 
+    }
+}
+if (existingPieceTR== null && existingPieceTL== null) {
+  if(ttl!=null){
+    ttl.style.backgroundColor = "blue";
+    ttl.addEventListener('click',movement1);
+    var childElement1 = ttl.firstChild; 
+    }
+    if(ttr!=null){
+    ttr.style.backgroundColor = "blue";
+    ttr.addEventListener('click',movement2);
+    var childElement2 = ttr.firstChild; 
+    }
+}
+else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&existingPieceTR){
+      if(ttl!=null){
         ttl.style.backgroundColor = "blue";
         ttl.addEventListener('click',movement1);
         var childElement1 = ttl.firstChild; 
         }
-        if(xr<n && xr>=0&&y1<n&&y1>=0){
+        if(ttr!=null){
         ttr.style.backgroundColor = "blue";
         ttr.addEventListener('click',movement2);
         var childElement2 = ttr.firstChild; 
         }
-        if(xl>=0 && xl<n&&y2>=0&&y2<n){
+        if(tdl!=null){
         tdl.style.backgroundColor = "blue";
         tdl.addEventListener('click',movement3);
         var childElement3 = tdl.firstChild; 
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "blue";
         tdr.addEventListener('click',movement4)
         var childElement4 = tdr.firstChild; 
@@ -1211,7 +1254,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
     kingBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     tdest.grayMove = function () {
-      MovePiece(yDest, xDest, "gray");
+      kingMovement(yDest, xDest, "gray");
     };
     tdest.addEventListener('click', tdest.grayMove);
   }
