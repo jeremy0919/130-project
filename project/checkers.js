@@ -3,19 +3,15 @@ var lastClickedx = null;
 var lastclickedy = null;
 var lastclickedC = null;
 var n = 10;
+blackPieces = n*3/2;
+whitePieces = n*3/2;
 function createTable(){
   /*
   needs king double jump logic
   likely needs certain edge case handling most dealt with
   need removal of event listeners if different piece is clicked
-  need removal of second event listener in the case of two jump options
-  for jump remove event listeners try using an array for x values and for y values
-  then use a for each loop that sets var = to id and removes all event listeners, wont fix new click but will 
-  fix not jumping
+ 
   */
-
-  //for double jump add in a function that reutnrs bool into jump movement
-  //if can jump other function returns... too much thinking
  //test and test2 are gpt attempts at checkers for ideas
     table = document.createElement('table');
 
@@ -249,10 +245,14 @@ var delta2;
       td.style.backgroundColor = "black";
       }
     if(color=="gray"){
+      if(Rdata!=null){
       Rdata.removeEventListener('click', Rdata.whiteMove); 
+      }
     }
     else if(color=="white"){
+      if(Ldata!=null){
       Ldata.removeEventListener('click', Ldata.grayMove); 
+      }
     }
     this.style.backgroundColor = 'black';
 
@@ -383,9 +383,10 @@ var delta2;
       }
       
     }
-
+    if(td!=null){
     td.addEventListener('click', movement1);// adds regular movement to the other side 
     td.style.backgroundColor = "blue";
+    }
     
   } else if (existingPieceR == null && existingPieceL == null) { // if no pieces regular movement 
     
@@ -480,8 +481,9 @@ function jumpMovement(tdest, td, tj, x, y, color) {
 
   if (color === "white") {
   
-    if(yDest ==0&&tdest.attributes.isking!=1){
+    if(yDest ==0){
       kingWHite(tdest, xDest, yDest);
+      blackPieces = blackPieces-1;
       currentPlayer = "black"; 
       tdest.removeEventListener('click', tdest.whiteMove); 
       tdest.whiteMove = function() {
@@ -492,7 +494,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   }
    else{
     pieceWhite(tdest, xDest, yDest);
-   
+    blackPieces = blackPieces-1;
     tdest.removeEventListener('click', tdest.whiteMove);
     if(canDoubleJump(tdest,xDest,yDest,color)){
       console.log("canDoubleJumpWhiteMove")
@@ -510,8 +512,9 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   } else if (color === "gray") {
    
    
-    if(yDest == n&&tdest.attributes.isking!=1){
+    if(yDest == n-1){
       kingBlack(tdest,xDest,yDest);
+      whitePieces = whitePieces-1;
       currentPlayer = "white"; 
       tdest.removeEventListener('click', tdest.grayMove); //might be worth swapping for kingmove
   
@@ -522,9 +525,11 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     }
     else{
     pieceBlack(tdest, xDest, yDest);
+    whitePieces = whitePieces-1;
     tdest.removeEventListener('click', tdest.grayMove);
     if(canDoubleJump(tdest,xDest,yDest,color)){
       console.log("canDOubleJumpGrayMove")
+      console.log(canDoubleJump(tdest,xDest,yDest,color));
       dobuleJump(xDest,yDest,color);
       
     }
@@ -554,6 +559,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   // Update the background color of td and tj
   td.style.backgroundColor = 'black';
   tj.style.backgroundColor = 'black';
+  Wincondtion();
 }
 
 function canDoubleJump(tdest,x,y,color){
@@ -620,7 +626,7 @@ function canDoubleJump(tdest,x,y,color){
       let circleColor = circleElement.getAttribute('fill');
       if(circleColor != color){
         x1 = x1+1;
-        y1 = y1-1;
+        y1 = y1+1;
         let tj = document.getElementById(x1+','+y1);
         let tj1 = document.getElementById(x1+'s'+y1);
         if(tj1 == null){ // if no piece is being the piece trying to jump
@@ -633,7 +639,7 @@ function canDoubleJump(tdest,x,y,color){
     }
   }
     x1 = x-1
-    y1 = y-1;
+    y1 = y+1;
     let tl = document.getElementById(x1+","+y1);
     if(tl!=null){
     childElement = tl.firstChild; 
@@ -642,7 +648,7 @@ function canDoubleJump(tdest,x,y,color){
       let circleColor = circleElement.getAttribute('fill');
       if(circleColor != color){
         x1 = x1-1;
-        y1 = y1-1;
+        y1 = y1+1;
         let tj = document.getElementById(x1+','+y1);
         let tj1 = document.getElementById(x1+'s'+y1);
         if(tj1 == null){ // if no piece is being the piece trying to jump
@@ -719,7 +725,7 @@ function dobuleJump(x,y,color){
     console.log("movj");
     console.log(tl);
      
-      this.removeEventListener('click',moveJ);
+      this.removeEventListener('click',moveJ2);
       this.style.backgroundColor = "black";
       if(tj!=null){
       tj.removeEventListener('click',moveJ1);
@@ -772,8 +778,8 @@ function dobuleJump(x,y,color){
           if(tj2!=null){
             td.style.backgroundColor = "blue";
             td.addEventListener('click',moveN);
-            tj.style.backgroundColor = "blue";
-            tj.addEventListener('click',moveJ2);
+            tj2.style.backgroundColor = "blue";
+            tj2.addEventListener('click',moveJ2);
           }
         }
       }
@@ -811,7 +817,7 @@ function dobuleJump(x,y,color){
     x2 = x-1
     y2 = y+1;
      tl = document.getElementById(x2+","+y2);
-     console.log(tr);
+     console.log(tl);
      if(tl!=null){
     childElement = tl.firstChild; 
     if(childElement){
@@ -823,7 +829,7 @@ function dobuleJump(x,y,color){
         tj2 = document.getElementById(x2+','+y2);
         let tj1 = document.getElementById(x2+'s'+y2);
         if(tj1 == null){ // if no piece is being the piece trying to jump
-          if(tj!=null){
+          if(tj2!=null){
             td.style.backgroundColor = "blue";
             td.addEventListener('click',moveN);
             tj2.style.backgroundColor = "blue";
@@ -854,8 +860,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
 
   if (color == "white") {
     y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
-    if(y ==0){
-      if(yDest ==0&&td.attributes.isking!=1){
+      if(y ==0){
         kingWHite(td, x, y);
         currentPlayer = "black"; 
         tdb.removeEventListener('click', tdb.whiteMove); 
@@ -864,7 +869,6 @@ function finishMovement(td, tdb, color, x1, x, y) {
         }
         td.addEventListener('click', td.whiteMove);
       }
-    }
     else{
     pieceWhite(td, x, y);
     currentPlayer = "black"; 
@@ -879,7 +883,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color == "gray") {
     y = y + 1;
     currentPlayer = "white"; 
-    if(y == 9&&td.attributes.isking!=1){
+    if(y == 9){
       kingBlack(td,x,y);
       currentPlayer = "white"; 
       tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
@@ -992,7 +996,7 @@ function kingMovement(y, x, color){ //needs jump functionality
   let xl = temp1;
   let td = document.getElementById(x+','+y); // origional location
   console.log(td);
-  td.attributes.isking = 1;
+  td.attributes.isking = 0;
   let ttl = document.getElementById(temp1+','+temp) // top left 
   console.log(ttl);
   var existingPieceTL = document.getElementById(temp1 + 's' + temp); // gets piece id on left
@@ -1020,19 +1024,19 @@ function kingMovement(y, x, color){ //needs jump functionality
   function movement1() { // moves left and calls finish movement
     // add in remove event listener calls and change color
     kingFinishMovement(this, td, color,x,y, xl,y1);
-    if((xl<n&&xl>=0)&&y1<n-1){
+    if(ttl!=null){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1047,19 +1051,19 @@ function kingMovement(y, x, color){ //needs jump functionality
   function movement2() { // moves left and calls finish movement
  
     kingFinishMovement(this, td, color,x,y, xr,y1);
-    if((xl<n&&xl>=0)&&y1<n-1){
+    if(ttl!=null){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1074,19 +1078,19 @@ function kingMovement(y, x, color){ //needs jump functionality
   function movement3() { // moves left and calls finish movement
  
     kingFinishMovement(this, td, color,x,y, xl,y2);
-    if((xl<n&&xl>=0)&&y1<n-1){
+    if(ttl!=null){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1101,22 +1105,22 @@ function kingMovement(y, x, color){ //needs jump functionality
   function movement4() { // moves left and calls finish movement
  
     kingFinishMovement(this, td, color,x,y, xr,y2);
-    if((xl<n&&xl>=0)&&y1<n-1){
-      ttl.style.backgroundColor = "black";
+    if(ttl!=null){
+      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
-      tdl.style.backgroundColor = "black";
-      tdl.removeEventListener('click',movement3);
-      }
-      if(xr<n&&xr>=0&&y2>=0&&y2<n){
-      tdr.style.backgroundColor = "black";
-      tdr.removeEventListener('click',movement4)
-      }
+      if(tdl!=null){
+        tdl.style.backgroundColor = "black";
+        tdl.removeEventListener('click',movement3);
+        }
+        if(tdr!=null){
+        tdr.style.backgroundColor = "black";
+        tdr.removeEventListener('click',movement4)
+        }
       console.log("mov4:" + tj);
       if(tj!=null){
         tj.removeEventListener('click',movement5)
@@ -1133,19 +1137,19 @@ function kingMovement(y, x, color){ //needs jump functionality
       this.removeEventListener('click',movement7)
       this.removeEventListener('click',movement8)
     }
-    if((xl<n&&xl>=0)&&y1<n-1){
+    if(ttl!=null){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1161,19 +1165,19 @@ function kingMovement(y, x, color){ //needs jump functionality
       this.removeEventListener('click',movement7)
       this.removeEventListener('click',movement8)
     }
-    if((xl<n&&xl>=0)&&y1<n-1){
+    if(ttl!=null){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1188,19 +1192,19 @@ function kingMovement(y, x, color){ //needs jump functionality
       this.removeEventListener('click',movement7)
       this.removeEventListener('click',movement8)
     }
-    if((xl<n&&xl>=0)&&y1<n-1){
+    if(ttl!=null){
       ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1215,19 +1219,19 @@ function kingMovement(y, x, color){ //needs jump functionality
       this.removeEventListener('click',movement7)
       this.removeEventListener('click',movement8)
     }
-    if((xl<n&&xl>=0)&&y1<n-1){
-      ttl.style.backgroundColor = "black";
+    if(ttl!=null){
+      ttl.style.backgroundColor = "black";//runs error check logic likely all run error
       ttl.removeEventListener('click',movement1);
       }
-      if(xr<n && xr>=0&&y1<n&&y1>=0){
+      if(ttr!=null){
       ttr.style.backgroundColor = "black";
       ttr.removeEventListener('click',movement2);
       }
-      if(xl>=0 && xl<n&&y2>=0&&y2<n){
+      if(tdl!=null){
         tdl.style.backgroundColor = "black";
         tdl.removeEventListener('click',movement3);
         }
-        if(xr<n&&xr>=0&&y2>=0&&y2<n){
+        if(tdr!=null){
         tdr.style.backgroundColor = "black";
         tdr.removeEventListener('click',movement4)
         }
@@ -1236,7 +1240,7 @@ function kingMovement(y, x, color){ //needs jump functionality
   }
 
 
-  if((xl<n&&xl>=0)&&y1<n-1){
+  if((xl<n&&xl>=0)&&y1<n-1&&y1>=0){
     var childElement2 = ttl.firstChild; 
   }
   if(xr<n && xr>=0&&y1<n&&y1>=0){
@@ -1600,4 +1604,15 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
   // Update the background color of td and tj
   td.style.backgroundColor = 'black';
   tj.style.backgroundColor = 'black';
+}
+
+
+function Wincondtion(){
+  if(blackPieces <= 0){
+    alert("black wins")
+  }
+  if(whitePieces <= 0){
+    alert("white wins")
+  }
+
 }
