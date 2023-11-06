@@ -2,6 +2,8 @@ var currentPlayer = "white";
 var lastClickedx = null;
 var lastclickedy = null;
 var lastclickedC = null;
+var lastclickID1 = null;
+var lastclickID2 = null;
 var n = 10;
 blackPieces = n*3/2;
 whitePieces = n*3/2;
@@ -99,9 +101,26 @@ function createTable(){
 }
 
 function MovePiece(y, x, color) { 
-  let td = document.getElementById(x+','+y)
+  console.log("movePiece")
+  let td = document.getElementById(x+','+y);
+  if(lastClickedx!=x&&lastclickedy!=y&&lastclickedC==color&&color == currentPlayer){
+      if(lastclickID1!=null){
+      lastclickID1.style.backgroundColor = "black";
+      lastclickID1.removeEventListener('click', lastclickID1.jmove);
+      }
+      if(lastclickID2!=null){
+      lastclickID2.style.backgroundColor = "black";
+      lastclickID2.removeEventListener('click', lastclickID2.jmove);
+      }
+
+      console.log("lastClickedCheck")
+    lastClickedx = x;
+    lastclickedy = y;
+    lastclickedC = color;
+    MovePiece(y,x,color);
+  }
+  else{
   let king = td.attributes.isking;
- // alert(king);
   if(king == 0){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
   if(currentPlayer == "white"){ // remove event listeners from last piece clicked
@@ -110,7 +129,7 @@ function MovePiece(y, x, color) {
     highlight(x, y, y1, color); //still need to remove event listeners
   }
 }
-if(currentPlayer == "black"){
+if(currentPlayer == "gray"){
   if (color == "gray") {
     y = y + 1;
     highlight(x, y, y1, color);
@@ -122,19 +141,17 @@ else if( king == 1){
    
   }
 }
+  lastClickedx = x;
+  lastclickedy = y;
+  lastclickedC = color;
+}
 
 function highlight(x, y, y1, color) {
-  let cx = x;
-  let cy = y; // used to remove event listeners
-  let cz = y1;
-
   let x1 = x;
   var tj = null;
- // alert("base x1: " +x+" y: "+y  );
   let tdb = document.getElementById(x + "," + y1); // gets origional piece location
   x = x - 1;
   let z1 = x;
-// alert("td x1: " +x+" y: "+y  );
   let td = document.getElementById(x + "," + y); // gets left board location
 
 
@@ -143,66 +160,58 @@ function highlight(x, y, y1, color) {
   x = x + 2;
   //alert("td2 x1: " +x+" y: "+y  );
   let td2 = document.getElementById(x + "," + y);// gets right board location
-  
+  lastclickID1 = td;
+  lastclickID2 = td2;
   let z2 = x;
  
-  var Rdata = document.getElementById(z2 + ',' + y); // same as td and td2 used for jump function
+  var Rdata = document.getElementById(z2 + ',' + y); 
   var Ldata = document.getElementById(z1 + ',' + y);
-var delta1;
-var delta2;
   function movement1() { // moves left and calls finish movement
- 
-    finishMovement(this, tdb, color, x1, z1, y1);
+    console.log(td)
     if(z2>=0&&z2<n){
-      td2.removeEventListener('click', movement2);
+      td2.removeEventListener('click', td2.jmove);
       td2.style.backgroundColor = "black";
       }
       if(z1<n&&z1>=0){
-      td.removeEventListener('click', movement1);
+      td.removeEventListener('click', td.jmove);
       td.style.backgroundColor = "black";
       }
     if(tj!=null){
-      tj.removeEventListener('click',movement3);
-      tj.removeEventListener('click',movement4);
+      tj.removeEventListener('click', tj.jmove);
       tj.style.backgroundColor = "black";
     }
+    finishMovement(td, tdb, color, x1, z1, y1);
   }
 
   function movement2() {// moves right and calls finish movement
-    // needs something where if jump is an option and not taken removes event listener
-    finishMovement(this, tdb, color, x1, z2, y1);
+    console.log(td2)
     if(z2<n&&z2>=0){
-    td2.removeEventListener('click', movement2);
+    td2.removeEventListener('click', td2.jmove);
     td2.style.backgroundColor = "black";
     }
     if(z1>=0&&z1<n){
-    td.removeEventListener('click', movement1);
+    td.removeEventListener('click', td.jmove);
     td.style.backgroundColor = "black";
     }
     if(tj!=null){
-      tj.removeEventListener('click',movement3);
-      tj.removeEventListener('click',movement4);
+      tj.removeEventListener('click', tj.jmove);
       tj.style.backgroundColor = "black";
     }
    
-   
+    finishMovement(td2, tdb, color, x1, z2, y1);
   }
   function movement3() { // jump movement
-    if(delta1!=null){
-      delta1.removeEventListener('click',movement4);
-      delta1.style.backgroundColor = "black";
+    if(tj!=null){
+      tj.removeEventListener('click', tj.jmove);
+      tj.style.backgroundColor = "black";
     } 
-    if(delta2!=null){
-      delta2.removeEventListener('click',movement4);
-      delta2.style.backgroundColor = "black";
-    }
-    this.removeEventListener('click',movement3)
+    this.removeEventListener('click',this.jmove)
     if(z2<n&&z2>=0){
-      td2.removeEventListener('click', movement2);
+      td2.removeEventListener('click', td2.jmove);
       td2.style.backgroundColor = "black";
       }
       if(z1>=0&&z1<n){
-      td.removeEventListener('click', movement1);
+      td.removeEventListener('click', td.jmove);
       td.style.backgroundColor = "black";
       }
     if(color=="white"){
@@ -215,7 +224,7 @@ var delta2;
       Rdata.removeEventListener('click', Rdata.whiteMove); 
       }
     }
-    this.style.backgroundColor = 'black';
+    tj.style.backgroundColor = 'black';
   
     let temp = z1-1;
     if (color === "white") {
@@ -223,25 +232,22 @@ var delta2;
     } else if (color === "gray") {
       y += 1;
     }
-    jumpMovement(this,tdb,Ldata,temp,y,color); // should work
+    jumpMovement(tj,tdb,Ldata,temp,y,color); // should work
    
   }
   function movement4() { // jump movement
-    if(delta1!=null){
-      delta1.removeEventListener('click',movement3);
-      delta1.style.backgroundColor = "black";
+    if(tj!=null){
+      tj.removeEventListener('click', tj.jmove);
+      tj.style.backgroundColor = "black";
     } 
-    if(delta2!=null){
-      delta2.removeEventListener('click',movement3);
-      delta2.style.backgroundColor = "black";
-    }
-    this.removeEventListener('click',movement4);
+
+    this.removeEventListener('click',this.jmove);
     if(z2>=0&&z2<n){
-      td2.removeEventListener('click', movement2);
+      td2.removeEventListener('click', td2.jmove);
       td2.style.backgroundColor = "black";
       }
       if(z1<n&&z1>=0){
-      td.removeEventListener('click', movement1);
+      td.removeEventListener('click', td.jmove);
       td.style.backgroundColor = "black";
       }
     if(color=="gray"){
@@ -254,7 +260,7 @@ var delta2;
       Ldata.removeEventListener('click', Ldata.grayMove); 
       }
     }
-    this.style.backgroundColor = 'black';
+    tj.style.backgroundColor = 'black';
 
     let temp = z2+1;
     if (color === "white") {
@@ -262,7 +268,7 @@ var delta2;
     } else if (color === "gray") {
       y += 1;
     }
-    jumpMovement(this,tdb,Rdata,temp,y,color);
+    jumpMovement(tj,tdb,Rdata,temp,y,color);
     
   }
  
@@ -293,8 +299,16 @@ var delta2;
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
           if(tj!=null){
-          tj.style.backgroundColor = "blue";
-          tj.addEventListener('click',movement4);
+            tj.style.backgroundColor = "blue";
+            if (tj.jmove) {
+              tj.removeEventListener('click', tj.jmove);
+          }
+            tj.jmove = function() {
+  
+             movement4()
+          
+            }
+            tj.addEventListener('click', tj.jmove);
           }
         }
 
@@ -318,8 +332,15 @@ var delta2;
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
           if(tj!=null){
-          tj.style.backgroundColor = "blue";
-          tj.addEventListener('click',movement3); // allow for jump movement
+            if (tj.jmove) {
+              tj.removeEventListener('click', tj.jmove);
+          }
+            tj.style.backgroundColor = "blue";
+            tj.jmove = function() {
+     
+              movement3(); // allow for jump movement
+            }
+            tj.addEventListener('click', tj.jmove);
           }
         }
       }
@@ -344,17 +365,26 @@ var delta2;
       let tj1 = document.getElementById(zT+'s'+yt);
       if(tj1 == null){ // if no piece is being the piece trying to jump
         if(tj!=null){
+          if (tj.jmove) {
+            tj.removeEventListener('click', tj.jmove);
+        }
         tj.style.backgroundColor = "blue";
-        tj.addEventListener('click',movement3); // allow for jump movement
+          tj.jmove = function() {
+       
+        movement3(); // allow for jump movement
+          }
+          tj.addEventListener('click', tj.jmove);
         }
       }
     }
     
   }
   if(z2<n&&z2>=0){
-    td2.addEventListener('click', movement2); // adds regular movement to the other side
+    td2.jmove = function() {
+    movement2(); // adds regular movement to the other side
+    }
     td2.style.backgroundColor = "blue"; 
-   
+    td2.addEventListener('click', td2.jmove);
   }
     
   } else if (existingPieceR != null) {
@@ -375,8 +405,15 @@ var delta2;
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
           if(tj!=null){
-          tj.style.backgroundColor = "blue";
-          tj.addEventListener('click',movement4);
+            if (tj.jmove) {
+              tj.removeEventListener('click', tj.jmove);
+          }
+            tj.style.backgroundColor = "blue";
+            tj.jmove = function() {
+        
+             movement4();
+            }
+            tj.addEventListener('click', tj.jmove);
           }
         }
 
@@ -384,8 +421,12 @@ var delta2;
       
     }
     if(td!=null){
-    td.addEventListener('click', movement1);// adds regular movement to the other side 
+      td.jmove = function(){
+     movement1();// adds regular movement to the other side 
+      }
+      td.addEventListener('click', td.jmove);
     td.style.backgroundColor = "blue";
+    
     }
     
   } else if (existingPieceR == null && existingPieceL == null) { // if no pieces regular movement 
@@ -394,67 +435,36 @@ var delta2;
   // alert("z1: "+z1);
     if(z2<n&&z2>=0){
     td2.style.backgroundColor = "blue";
-    td2.addEventListener('click', movement2);
+    td2.jmove = function(){
+    movement2();
+    }
+    td2.addEventListener('click', td2.jmove);
   
     }
     if(z1>=0&&z1<n){
-      td.addEventListener('click', movement1);
+      td.jmove = function(){
+     movement1();
+      }
+      td.addEventListener('click', td.jmove);
       td.style.backgroundColor = "blue";
     
     }
     
 }
-/*
-console.log(td);
-//console.log(td2);
-if(lastClickedx!=null){ // logic needs improvement
-  let color1 = lastclickedC;
-  let temp1 = lastclickedy;
-  let temp2 = lastClickedx+1;
-  let temp3 = lastClickedx-1;
 
-  
-  let reset1 = document.getElementById(temp2 + ',' + temp1);
-
- //console.log(reset1.getEventListeners);
-  if(reset1!=null){
-   // reset1.removeEventListener('click', reset1.grayMove);
-    //reset1.removeEventListener('click', reset1.whiteMove);
-    reset1.removeEventListener('click', movement1);
-    reset1.removeEventListener('click', movement2);
-    reset1.style.backgroundColor = "black";// doesnt Remove event listener
-  }
-
-  let reset2 = document.getElementById(temp3 + ',' + temp1);
- 
-  if(reset2!=null){
-  //  reset2.removeEventListener('click', reset2.grayMove);
-    //reset2.removeEventListener('click', reset2.whiteMove);
-    reset2.removeEventListener('click', movement1);
-    reset2.removeEventListener('click', movement2);
-    reset2.style.backgroundColor = "black";
-  }
-  lastClickedx = null;
-  lastclickedC = null;
-  lastclickedy = null;
-//  highlight(cx, cy, cz, color);
-  return;
-}
-else{
-  lastClickedx = cx;
-  lastclickedy = cy;
-  lastclickedC = color;
-}
-*/
 }
 
 function jumpMovement(tdest, td, tj, x, y, color) {
   // Remove event listeners before removing child elements
   console.log("jump Movement");
+  console.log(color);
+  console.log(currentPlayer);
   if (color === "white") {
     tj.removeEventListener('click', tj.grayMove);
+    tj.removeEventListener('click', tj.jmove);
   } else if (color === "gray") {
     tj.removeEventListener('click', tj.whiteMove);
+    tj.removeEventListener('click', tj.jmove);
   }
 
   // Remove the jumped piece from td
@@ -484,8 +494,9 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     if(yDest ==0){
       kingWHite(tdest, xDest, yDest);
       blackPieces = blackPieces-1;
-      currentPlayer = "black"; 
+      currentPlayer = "gray"; 
       tdest.removeEventListener('click', tdest.whiteMove); 
+      tdest.removeEventListener('click', tdest.jmove); 
       tdest.whiteMove = function() {
         kingMovement(yDest, xDest,"white");
       }
@@ -496,6 +507,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     pieceWhite(tdest, xDest, yDest);
     blackPieces = blackPieces-1;
     tdest.removeEventListener('click', tdest.whiteMove);
+    tdest.removeEventListener('click', tdest.jmove); 
     if(canDoubleJump(tdest,xDest,yDest,color)){
       console.log("canDoubleJumpWhiteMove")
       dobuleJump(xDest,yDest,color);
@@ -506,7 +518,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
       MovePiece(yDest, xDest, "white");
     };
     tdest.addEventListener('click', tdest.whiteMove);
-    currentPlayer = "black"; 
+    currentPlayer = "gray"; 
   }
   }
   } else if (color === "gray") {
@@ -516,8 +528,8 @@ function jumpMovement(tdest, td, tj, x, y, color) {
       kingBlack(tdest,xDest,yDest);
       whitePieces = whitePieces-1;
       currentPlayer = "white"; 
-      tdest.removeEventListener('click', tdest.grayMove); //might be worth swapping for kingmove
-  
+      tdest.removeEventListener('click', tdest.grayMove); 
+      tdest.removeEventListener('click', tdest.jmove); 
       tdest.grayMove = function() {
         kingMovement(yDest, xDest,"gray");
       }
@@ -527,6 +539,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     pieceBlack(tdest, xDest, yDest);
     whitePieces = whitePieces-1;
     tdest.removeEventListener('click', tdest.grayMove);
+    tdest.removeEventListener('click', tdest.jmove); 
     if(canDoubleJump(tdest,xDest,yDest,color)){
       console.log("canDOubleJumpGrayMove")
       console.log(canDoubleJump(tdest,xDest,yDest,color));
@@ -535,10 +548,6 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     }
     else{
       currentPlayer = "white"; 
-      console.log("else grayMove")
-      console.log(tdest);
-      console.log(yDest);
-      console.log(xDest);
     tdest.grayMove = function () {
       MovePiece(yDest, xDest, "gray");
     };
@@ -552,7 +561,8 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   td.removeEventListener('click', td.whiteMove);
   tj.removeEventListener('click', tj.grayMove);
   tj.removeEventListener('click', tj.whiteMove);
-
+  tj.removeEventListener('click', tdest.jmove); 
+  td.removeEventListener('click', tdest.jmove); 
   // Remove the jump destination's background color
   if(canDoubleJump(tdest,xDest,yDest,color)==false){
   tdest.style.backgroundColor = 'black';
@@ -700,7 +710,7 @@ function dobuleJump(x,y,color){
       td.addEventListener('click', td.blackMove);
     }
     if(color == "white"){
-      currentPlayer = "black";
+      currentPlayer = "gray";
    //   tdb.removeEventListener('click', tdb.whiteMove); 
       td.whiteMove = function() {
         MovePiece(y, x,"white");
@@ -845,8 +855,13 @@ function dobuleJump(x,y,color){
 
 
 function finishMovement(td, tdb, color, x1, x, y) {
-  var removetab = document.getElementById(x1 + 's' + y); // removes piece at origional location
+  console.log(x+","+y);
+  console.log(td);
+  console.log(color);
+  console.log(currentPlayer);
 
+  var removetab = document.getElementById(x1 + 's' + y); // removes piece at origional location
+  console.log("finishMovement");
   if (removetab != null) {
     var parentEl1 = removetab.parentElement;
     parentEl1.removeChild(removetab);
@@ -863,8 +878,9 @@ function finishMovement(td, tdb, color, x1, x, y) {
     y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
       if(y ==0){
         kingWHite(td, x, y);
-        currentPlayer = "black"; 
+        currentPlayer = "gray"; 
         tdb.removeEventListener('click', tdb.whiteMove); 
+        td.removeEventListener("click",td.jmove);
         td.whiteMove = function() {
           kingMovement(y, x,"white");
         }
@@ -872,8 +888,9 @@ function finishMovement(td, tdb, color, x1, x, y) {
       }
     else{
     pieceWhite(td, x, y);
-    currentPlayer = "black"; 
+    currentPlayer = "gray"; 
     tdb.removeEventListener('click', tdb.whiteMove); 
+    td.removeEventListener("click",td.jmove);
     td.whiteMove = function() {
       MovePiece(y, x,"white");
     }
@@ -888,6 +905,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
       kingBlack(td,x,y);
       currentPlayer = "white"; 
       tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
+      td.removeEventListener("click",td.jmove);
       td.grayMove = function() {
         kingMovement(y, x,"gray");
       }
@@ -896,12 +914,14 @@ function finishMovement(td, tdb, color, x1, x, y) {
     else{
       pieceBlack(td,x,y);
     tdb.removeEventListener('click', tdb.grayMove); 
+    td.removeEventListener("click",td.jmove);
     td.grayMove = function() {
       MovePiece(y, x,"gray");
     }
     td.addEventListener('click', td.grayMove);
   }
 }
+
 }
 
 function pieceWhite(td,x,y){ 
@@ -1872,7 +1892,7 @@ function kingdobuleJump(x,y,color){
       td.addEventListener('click', td.blackMove);
     }
     if(color == "white"){
-      currentPlayer = "black";
+      currentPlayer = "gray";
       td.whiteMove = function() {
         kingMovement(y, x,"white");
       }
@@ -2150,7 +2170,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
       kingdobuleJump(xDest,yDest,color);
     }
     else{
-    currentPlayer = "black"; 
+    currentPlayer = "gray"; 
       
       tdest.whiteMove = function() {
         kingMovement(yDest, xDest,"white");
