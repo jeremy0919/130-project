@@ -303,6 +303,7 @@ function highlight(x, y, y1, color) {
   
           tj.addEventListener('click',movement4);
             }
+            tj.addEventListener('click', tj.jmove);
           }
         }
 
@@ -331,6 +332,7 @@ function highlight(x, y, y1, color) {
      
           tj.addEventListener('click',movement3); // allow for jump movement
             }
+            tj.addEventListener('click', tj.jmove);
           }
         }
       }
@@ -359,15 +361,18 @@ function highlight(x, y, y1, color) {
         tj.style.backgroundColor = "blue";
         tj.addEventListener('click',movement3); // allow for jump movement
           }
+          tj.addEventListener('click', tj.jmove);
         }
       }
     }
     
   }
   if(z2<n&&z2>=0){
+    td2.jmove = function() {
     td2.addEventListener('click', movement2); // adds regular movement to the other side
+    }
     td2.style.backgroundColor = "blue"; 
-   
+    td2.addEventListener('click', td2.jmove);
   }
     
   } else if (existingPieceR != null) {
@@ -393,6 +398,7 @@ function highlight(x, y, y1, color) {
         
           tj.addEventListener('click',movement4);
             }
+            tj.addEventListener('click', tj.jmove);
           }
         }
 
@@ -403,6 +409,7 @@ function highlight(x, y, y1, color) {
       td.jmove = function(){
     td.addEventListener('click', movement1);// adds regular movement to the other side 
       }
+      td.addEventListener('click', td.jmove);
     td.style.backgroundColor = "blue";
     
     }
@@ -416,12 +423,14 @@ function highlight(x, y, y1, color) {
     td2.jmove = function(){
     td2.addEventListener('click', movement2);
     }
+    td2.addEventListener('click', td2.jmove);
   
     }
     if(z1>=0&&z1<n){
       td.jmove = function(){
       td.addEventListener('click', movement1);
       }
+      td.addEventListener('click', td.jmove);
       td.style.backgroundColor = "blue";
     
     }
