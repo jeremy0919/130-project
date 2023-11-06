@@ -103,35 +103,16 @@ function createTable(){
 function MovePiece(y, x, color) { 
   let td = document.getElementById(x+','+y);
   if(lastClickedx!=x&&lastclickedy!=y&&lastclickedC==color&&color == currentPlayer){
-    if (color == "white") { 
-  
-      let temp1 = lastClickedx-1;
-      let temp2= lastClickedx+1;
-      let temp3 = lastclickedy;
-      tj = document.getElementById(temp1+","+temp3);
-      console.log(tj);
-      tj.style.backgroundColor = "black";
-      tj.removeEventListener('click', tj.jmove);
-      tj1 = document.getElementById(temp2+","+temp3);
-      console.log(tj1);
-      tj1.style.backgroundColor = "black";
-      tj1.removeEventListener('click', tj.jmove);
-    }
+      if(lastclickID1!=null){
+      lastclickID1.style.backgroundColor = "black";
+      lastclickID1.removeEventListener('click', lastclickID1.jmove);
+      }
+      if(lastclickID2!=null){
+      lastclickID2.style.backgroundColor = "black";
+      lastclickID2.removeEventListener('click', lastclickID2.jmove);
+      }
 
-    if (color == "gray") {
- 
-      let temp1 = lastClickedx-1;
-      let temp2= lastClickedx+1;
-      let temp3 = lastclickedy;
-      tj = document.getElementById(temp1+","+temp3);
-      console.log(tj);
-      tj.style.backgroundColor = "black";
-      tj.removeEventListener('click', tj.jmove);
-      tj1 = document.getElementById(temp2+","+temp3);
-      console.log(tj1);
-      tj1.style.backgroundColor = "black";
-      tj1.removeEventListener('click', tj.jmove);
-    }
+
     lastClickedx = x;
     lastclickedy = y;
     lastclickedC = color;
@@ -178,13 +159,14 @@ function highlight(x, y, y1, color) {
   x = x + 2;
   //alert("td2 x1: " +x+" y: "+y  );
   let td2 = document.getElementById(x + "," + y);// gets right board location
-  
+  lastclickID1 = td;
+  lastclickID2 = td2;
   let z2 = x;
  
-  var Rdata = document.getElementById(z2 + ',' + y); // same as td and td2 used for jump function
+  var Rdata = document.getElementById(z2 + ',' + y); 
   var Ldata = document.getElementById(z1 + ',' + y);
   function movement1() { // moves left and calls finish movement
- 
+    
     finishMovement(this, tdb, color, x1, z1, y1);
     if(z2>=0&&z2<n){
       td2.removeEventListener('click', td2.jmove);
@@ -445,48 +427,7 @@ function highlight(x, y, y1, color) {
     }
     
 }
-/*
-console.log(td);
-//console.log(td2);
-if(lastClickedx!=null){ // logic needs improvement
-  let color1 = lastclickedC;
-  let temp1 = lastclickedy;
-  let temp2 = lastClickedx+1;
-  let temp3 = lastClickedx-1;
 
-  
-  let reset1 = document.getElementById(temp2 + ',' + temp1);
-
- //console.log(reset1.getEventListeners);
-  if(reset1!=null){
-   // reset1.removeEventListener('click', reset1.grayMove);
-    //reset1.removeEventListener('click', reset1.whiteMove);
-    reset1.removeEventListener('click', movement1);
-    reset1.removeEventListener('click', movement2);
-    reset1.style.backgroundColor = "black";// doesnt Remove event listener
-  }
-
-  let reset2 = document.getElementById(temp3 + ',' + temp1);
- 
-  if(reset2!=null){
-  //  reset2.removeEventListener('click', reset2.grayMove);
-    //reset2.removeEventListener('click', reset2.whiteMove);
-    reset2.removeEventListener('click', movement1);
-    reset2.removeEventListener('click', movement2);
-    reset2.style.backgroundColor = "black";
-  }
-  lastClickedx = null;
-  lastclickedC = null;
-  lastclickedy = null;
-//  highlight(cx, cy, cz, color);
-  return;
-}
-else{
-  lastClickedx = cx;
-  lastclickedy = cy;
-  lastclickedC = color;
-}
-*/
 }
 
 function jumpMovement(tdest, td, tj, x, y, color) {
