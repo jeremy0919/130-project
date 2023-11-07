@@ -5,7 +5,15 @@
     </head>
     <body>
         <form>
-            <input type = "button" onclick="createTable()" value = "click me">
+            <input type = "button" onclick="createTable()" value = "createBoard">
+
+        </form>
+        <form id="colors">
+            <label>Change color Player1</label>
+            <input type = "text" id = "color1" value = pink>
+            <label>Change color Player2</label>
+            <input type ="text" id ="color2" value = purple>
+            <input type = "button" value = "Change Colors" onclick ="colorChange()">
         </form>
         <div class = "table"></div>
     </body>
