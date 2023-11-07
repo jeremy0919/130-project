@@ -11,10 +11,7 @@ blackPieces = n*3/2;
 whitePieces = n*3/2;
 function createTable(){
   /*
-  needs king double jump logic
-  likely needs certain edge case handling most dealt with
-  need removal of event listeners if different piece is clicked
- 
+  just needs removal of king event listeners when another click is called
   */
  //test and test2 are gpt attempts at checkers for ideas
     table = document.createElement('table');
@@ -1021,15 +1018,11 @@ function createKingCrown() {
 }
 
 function kingMovement(y, x, color){ //needs jump functionality
-  if(color == "gray"){
-    color = "black"
-  }
+
   if(color!=currentPlayer){
     return;
   }
-  if(color == "black"){
-    color = "gray";
-  }
+  
   
   let temp = y-1;
   let y1 = temp;
