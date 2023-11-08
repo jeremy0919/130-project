@@ -11,9 +11,45 @@
             <input type = "text" id = "color1" value = pink>
             <label>Change color Player2</label>
             <input type ="text" id ="color2" value = purple>
-            <input type = "button" value = "Change Colors" onclick ="colorChange()">
+            <input type = "button" value = "Change Colors" onclick ="colorChange1()">
         </form>
-
+        <br>
+        <form id="size">
+            <label>Change the size of the board</label><br>
+            <input type = "text" id = "size" value = 10><br>
+            <input type = "button" value = "Change size">
+        </form>
+        <br>
+        <form id="style">
+            <label>Change the style of the board</label><br>
+         
+            <input type = "button" value = "Previous">
+            <input type = "button" value = "Select">
+            <input type = "button" value = "Next">
+        </form>
+        <script>//most buttons might need to be submit values>
+            function colorChange1() {
+                var color1 = document.getElementById("color1").value;
+                var color2 = document.getElementById("color2").value;
+    
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+    
+                // Configure the request to send the colors to the PHP script
+                xhr.open("POST", "data.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+                // Define the callback function to handle the response (optional)
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // Handle the response, if needed
+                    }
+                };
+    
+                // Send the request with the colors
+                xhr.send("color1=" + color1 + "color2=" + color2);
+            }
+        </script>
         <form>
             <input type = "button" onclick="createTable()" value = "createBoard">
     

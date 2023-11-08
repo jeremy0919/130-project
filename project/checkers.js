@@ -10,12 +10,24 @@ whitePieces = n*3/2;
 var c1 = "white";
 var c2 = "gray";
 
-function colorChange(){
-  c1 = document.getElementById("color1").value;
+function colorChange() {
+  var xhr = new XMLHttpRequest();
 
-  
-  c2 = document.getElementById("color2").value;
+  xhr.open("GET", "get_colors.php", true); // opens php file
 
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText); // parses whats in the file
+          var color1 = response.color1;
+          var color2 = response.color2; // accesses variables
+
+          // Update the color variables or perform any other actions
+         c1= color1;
+          c2= color2;
+      }
+  };
+
+  xhr.send();
 
   currentPlayer = c1;
 }
