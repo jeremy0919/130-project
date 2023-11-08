@@ -6,7 +6,7 @@ var lastclickID1 = null;
 var lastclickID2 = null;
 var lastclickID3 = null;
 var lastclickID4 = null; // should work for all last clicked on both king and regular
-var n = 10; // king needs testing
+var n = 10; // king movement needs overhaul
 blackPieces = n*3/2;
 whitePieces = n*3/2;
 
@@ -48,15 +48,14 @@ function createTable(){
 
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
-    table.style.width = "400px";
+ //   table.style.width = "400px";
    // let n = 10;
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
     for(let i =0; i<n;++i){ // table row
       
-        let tr = document.createElement("trow");
-  
+        let tr = document.createElement("tr");
         for(let j =0; j<n; ++j){ // table data
             let td = document.createElement("td");
      
@@ -112,7 +111,7 @@ function createTable(){
           }
           tr.appendChild(td); 
       }
-  
+     
       tablebody.appendChild(tr);
   }
   
@@ -123,6 +122,11 @@ function MovePiece(y, x, color) {
 
   let td = document.getElementById(x+','+y);
   if(lastClickedx!=x&&lastclickedy!=y&&lastclickedC==color&&color == currentPlayer){
+    console.log(lastclickID1);
+    console.log(lastclickID2);
+    console.log(lastclickID3);
+    console.log(lastclickID4);
+
       if(lastclickID1!=null){
       lastclickID1.style.backgroundColor = "black";
       lastclickID1.removeEventListener('click', lastclickID1.jmove);
@@ -983,7 +987,7 @@ function pieceBlack(td,x,y){
 
 }
 
-function kingWHite(td,x,y){ // add is king set here
+function kingWHite(td,x,y){ 
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.setAttribute("width", "40");
   svg.setAttribute("height", "40");
@@ -1038,6 +1042,13 @@ function kingMovement(y, x, color){ //needs jump functionality
     return;
   }
   if(lastClickedx!=x&&lastclickedy!=y&&lastclickedC==color&&color == currentPlayer){
+
+    console.log(lastclickID1);
+    console.log(lastclickID2);
+    console.log(lastclickID3);
+    console.log(lastclickID4);
+
+
     if(lastclickID1!=null){
     lastclickID1.style.backgroundColor = "black";
     lastclickID1.removeEventListener('click', lastclickID1.jmove);
@@ -1366,7 +1377,7 @@ lastclickID4 = tdl;
         tj10.removeEventListener("click",tj10.jmove);
         tj10.style.backgroundColor = "black";
       }
-    jumpMovementKing(this,td,ttr,Xval,Yval,color); // check inputs on king
+    jumpMovementKing(tj,td,ttr,Xval,Yval,color); // check inputs on king
     
   }
   function movement6(){ // works
@@ -1420,7 +1431,7 @@ lastclickID4 = tdl;
       tj10.removeEventListener("click",tj10.jmove);
       tj10.style.backgroundColor = "black";
     }
-        jumpMovementKing(this,td,ttl,Xval,Yval,color);
+        jumpMovementKing(tj4,td,ttl,Xval,Yval,color);
     
   }
   function movement7(){
@@ -1615,20 +1626,20 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
       if(circleColor != color){
         let zT = xr+1;
         let yt = y1-1;
-        tj5 = document.getElementById(zT+','+yt);
+        tj = document.getElementById(zT+','+yt);
       lastclickID1 = tj5;
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
           if(tj5!=null){
             Xval = zT;
             Yval = yt;
-            tj5.jmove = function() {
+            tj.jmove = function() {
        
               movement5(); // allow for jump movement
                 }
-                tj5.addEventListener('click', tj5.jmove);
+                tj.addEventListener('click', tj.jmove);
               
-          tj5.style.backgroundColor = "blue";
+                tj.style.backgroundColor = "blue";
        
           }
         }
@@ -1654,20 +1665,20 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
           if(circleColor != color){
             let zT = xl-1;
             let yt = y1-1;
-            tj6 = document.getElementById(zT+','+yt);
-            lastclickID2=tj6;
+            tj4 = document.getElementById(zT+','+yt);
+            lastclickID2=tj4;
             let tj1 = document.getElementById(zT+'s'+yt);
             if(tj1 == null){ // if no piece is being the piece trying to jump
               if(tj6!=null){
                 Xval = zT;
                 Yval = yt;
-                tj6.jmove = function() {
+                tj4.jmove = function() {
        
                   movement6(); // allow for jump movement
                     }
-                    tj6.addEventListener('click', tj6.jmove);
+                    tj4.addEventListener('click', tj4.jmove);
                   
-              tj6.style.backgroundColor = "blue";
+                    tj4.style.backgroundColor = "blue";
            
               }
             }
