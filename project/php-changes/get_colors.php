@@ -2,8 +2,8 @@
 session_start();
 
 $response = array(
-    'color1' => $_SESSION['color1'] ?? '',
-    'color2' => $_SESSION['color2'] ?? ''
+    'bg1' => $_SESSION['bg1'] ?? '',
+    'bg2' => $_SESSION['bg2'] ?? ''
 );
 
 header('Content-Type: application/json');
