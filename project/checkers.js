@@ -58,21 +58,101 @@ if(c2 == null){
   currentPlayer = c1;
 }
 var currentPlayer = c1;
-
-function createTable(){
-
- var existingPiece = document.getElementById("colors"); // extra check so no two pieces can be in one spot 
- if (existingPiece != null) {
-   var parentEl2 = existingPiece.parentElement;
-   parentEl2.removeChild(existingPiece);
+function newGame(){
+   lastclickID1 = null;
+   lastclickID2 = null;
+   lastclickID3 = null;
+   lastclickID4 = null; // should work for all last clicked on both king and regular
+   n = 8; // king movement needs overhaul
+  blackPieces = n*3/2;
+  whitePieces = n*3/2;
+  Score();
+  colorChange();
+  BoardStyleChange();
+  var existingPiece = document.getElementById("table");
+  if (existingPiece != null) {
+    var parentEl2 = existingPiece.parentElement;
+    parentEl2.removeChild(existingPiece);
+  }
+     table = document.createElement('table');
+     table.setAttribute("id","table");
+     table.setAttribute("td","Board");
+     table.style.borderCollapse = "collapse";
+     let tablebody = document.createElement("tbody");
+     table.appendChild(tablebody);
+ 
+     for(let i =0; i<n;++i){ // table row
+       
+         let tr = document.createElement("tr");
+         for(let j =0; j<n; ++j){ // table data
+             let td = document.createElement("td");
+      
+             if(i%2==0){ // alertnating row color
+                 if(j%2 ==0){
+          
+             td.style.backgroundColor ="red";
+             td.style.height = "40px";
+             td.style.width = "40px";
+             }
+                 if(j%2 == 1){
+                   
+                 td.style.backgroundColor = "black";
+               
+                 td.style.height = "40px";
+                 td.style.width = "40px";
+             
+             }}
+             if(i%2==1){
+                 if(j%2 ==0){
+           
+                 td.style.backgroundColor ="black";
+   
+                 td.style.height = "40px";
+                 td.style.width = "40px";
+            
+                 }
+                 if(j%2 == 1){
+                
+                     td.style.backgroundColor = "red";
+                     td.style.height = "40px";
+                     td.style.width = "40px";
+                 }
+             }
+             td.setAttribute("id",j + "," + i) // sets id for later use in movement
+             if(i<=2 && td.style.backgroundColor=="black"){
+               td.grayMove = function() {
+                   MovePiece(i, j,c2);
+               }
+               td.addEventListener('click', td.grayMove);
+               pieceBlack(td,j,i);
+               td.attributes.isking = 0;
+           }
+           
+           if(i>=n-3 && td.style.backgroundColor=="black"){
+               td.whiteMove = function() {
+                   MovePiece(i, j,c1);
+               }
+               td.addEventListener('click', td.whiteMove);
+               pieceWhite(td,j,i);
+               td.attributes.isking = 0;
+             
+           }
+           tr.appendChild(td); 
+       }
+      
+       tablebody.appendChild(tr);
+   }
+   
+   document.getElementsByClassName("table")[0].appendChild(table);
+ 
  }
-//existingPiece = document.getElementById("color2"); // extra check so no two pieces can be in one spot 
-    table = document.createElement('table');
-
+function createTable(){
+  Score();
+  table = document.createElement('table');
+  table.setAttribute("id","table");
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
- //   table.style.width = "400px";
-   // let n = 10;
+
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
@@ -139,8 +219,58 @@ function createTable(){
   }
   
   document.getElementsByClassName("table")[0].appendChild(table);
+ 
+}
+function Score(){
+ 
+  table = document.createElement('table');
+  table.setAttribute("id","table1");
+    table.setAttribute("td","Board");
+    table.style.borderCollapse = "collapse";
+
+    let tablebody = document.createElement("tbody");
+    table.appendChild(tablebody);
+
+    
+      
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+        td.innerText ="Player1";
+        tr.appendChild(td); 
+
+            td = document.createElement("td");
+            td.setAttribute("id","score1")
+            tr.appendChild(td); 
+            tablebody.appendChild(tr);
+            let tr1 = document.createElement("tr");
+            let td1 = document.createElement("td");
+           tr1 = document.createElement("tr");
+            td1.innerText= "Player2";
+            tr1.appendChild(td1); 
+  
+                td1 = document.createElement("td");
+                td1.setAttribute("id","score2");
+                tr1.appendChild(td1); 
+                tablebody.appendChild(tr1);
+            
+
+         
+     
+    
+  
+  document.getElementsByClassName("table1")[0].appendChild(table);
 }
 
+function updateScore(){
+  let td1 = document.getElementById("score1");
+  let td2 = document.getElementById("score2");
+  if(td1!=null){
+  td1.innerText =blackPieces;
+  }
+  if(td2!=null){
+  td2.innerText =whitePieces;
+  }
+}
 function MovePiece(y, x, color) { 
 
   let td = document.getElementById(x+','+y);
@@ -540,7 +670,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
 
   if (color == c1) {
   
-    if(yDest ==0){
+    if(yDest ==0|| yDest == n-1){
       kingWHite(tdest, xDest, yDest);
       blackPieces = blackPieces-1;
       currentPlayer = c2; 
@@ -572,7 +702,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   } else if (color ==c2) {
    
    
-    if(yDest == n-1){
+    if(yDest == n-1|| yDest == 0){
       kingBlack(tdest,xDest,yDest);
       whitePieces = whitePieces-1;
       currentPlayer =c1; 
@@ -940,7 +1070,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color ==c2) {
     y = y + 1;
     currentPlayer =c1; 
-    if(y == 9){
+    if(y == n-1){
       kingBlack(td,x,y);
       currentPlayer = c1; 
       tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
@@ -979,6 +1109,7 @@ function pieceWhite(td,x,y){
   svg.setAttribute("id",x+'s'+y);
   td.attributes.isking = 0;
   td.appendChild(svg);
+  updateScore();
 }
 function pieceBlack(td,x,y){
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -996,7 +1127,7 @@ function pieceBlack(td,x,y){
   svg.setAttribute("id",x+'s'+y);
   td.attributes.isking = 0;
   td.appendChild(svg);
-
+  updateScore();
 }
 
 function kingWHite(td,x,y){ 
@@ -1016,6 +1147,7 @@ function kingWHite(td,x,y){
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
   td.attributes.isking = 1;
+  updateScore();
 }
 function kingBlack(td,x,y){
   var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -1034,6 +1166,7 @@ function kingBlack(td,x,y){
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
   td.attributes.isking = 1;
+  updateScore();
 }
 
 
@@ -1628,7 +1761,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
     
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
-          if(tj5!=null){
+          if(tj!=null){
             Xval = zT;
             Yval = yt;
             lastclickID1 = tj;
@@ -1667,7 +1800,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
            
             let tj1 = document.getElementById(zT+'s'+yt);
             if(tj1 == null){ // if no piece is being the piece trying to jump
-              if(tj6!=null){
+              if(tj4!=null){
                 Xval = zT;
                 Yval = yt;
                 lastclickID2=tj4;
@@ -2331,6 +2464,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
 
 
   if (color ==c1) {
+    whitePieces = whitePieces-1;
     kingWHite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove); 
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
@@ -2347,6 +2481,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
     }
   
   } else if (color ==c2) {
+    blackPieces = blackPieces-1;
     kingBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
