@@ -74,6 +74,11 @@ function newGame(){
     var parentEl2 = existingPiece.parentElement;
     parentEl2.removeChild(existingPiece);
   }
+   existingPiece = document.getElementById("table1");
+  if (existingPiece != null) {
+    var parentEl2 = existingPiece.parentElement;
+    parentEl2.removeChild(existingPiece);
+  }
      table = document.createElement('table');
      table.setAttribute("id","table");
      table.setAttribute("td","Board");
