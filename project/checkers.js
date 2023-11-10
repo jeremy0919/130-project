@@ -1220,12 +1220,8 @@ function kingMovement(y, x, color){ //needs jump functionality
   var existingPieceTL = document.getElementById(temp1 + 's' + temp); // gets piece id on left
   var tj = null;
   var tj4 = null;
-  var tj5 =null;
-  var tj6= null;
   var tj7 = null;
   var tj8 = null;
-  var tj9 = null;
-  var tj10 = null;
   temp1 = x+1;
   let xr = temp1;
   let ttr = document.getElementById(temp1+','+temp); //top right
@@ -1277,14 +1273,6 @@ lastclickID4 = tdl;
           tj4.removeEventListener("click",tj4.jmove);
           tj4.style.backgroundColor = "black";
         }
-        if(tj5!=null){
-          tj5.removeEventListener("click",tj5.jmove);
-          tj5.style.backgroundColor = "black";
-        }
-        if(tj6!=null){
-          tj6.removeEventListener("click",tj6.jmove);
-          tj6.style.backgroundColor = "black";
-        }
         if(tj7!=null){
           tj7.removeEventListener("click",tj7.jmove);
           tj7.style.backgroundColor = "black";
@@ -1292,14 +1280,6 @@ lastclickID4 = tdl;
         if(tj8!=null){
           tj8.removeEventListener("click",tj8.jmove);
           tj8.style.backgroundColor = "black";
-        }
-        if(tj9 !=null){
-          tj9.removeEventListener("click",tj9.jmove);
-          tj9.style.backgroundColor = "black";
-        }
-        if(tj10!=null){
-          tj10.removeEventListener("click",tj10.jmove);
-          tj10.style.backgroundColor = "black";
         }
   }
   function movement2() { // moves left and calls finish movement
@@ -1330,14 +1310,6 @@ lastclickID4 = tdl;
           tj4.removeEventListener("click",tj4.jmove);
           tj4.style.backgroundColor = "black";
         }
-        if(tj5!=null){
-          tj5.removeEventListener("click",tj5.jmove);
-          tj5.style.backgroundColor = "black";
-        }
-        if(tj6!=null){
-          tj6.removeEventListener("click",tj6.jmove);
-          tj6.style.backgroundColor = "black";
-        }
         if(tj7!=null){
           tj7.removeEventListener("click",tj7.jmove);
           tj7.style.backgroundColor = "black";
@@ -1345,14 +1317,6 @@ lastclickID4 = tdl;
         if(tj8!=null){
           tj8.removeEventListener("click",tj8.jmove);
           tj8.style.backgroundColor = "black";
-        }
-        if(tj9 !=null){
-          tj9.removeEventListener("click",tj9.jmove);
-          tj9.style.backgroundColor = "black";
-        }
-        if(tj10!=null){
-          tj10.removeEventListener("click",tj10.jmove);
-          tj10.style.backgroundColor = "black";
         }
   }
   function movement3() { // moves left and calls finish movement
@@ -1383,14 +1347,6 @@ lastclickID4 = tdl;
           tj4.removeEventListener("click",tj4.jmove);
           tj4.style.backgroundColor = "black";
         }
-        if(tj5!=null){
-          tj5.removeEventListener("click",tj5.jmove);
-          tj5.style.backgroundColor = "black";
-        }
-        if(tj6!=null){
-          tj6.removeEventListener("click",tj6.jmove);
-          tj6.style.backgroundColor = "black";
-        }
         if(tj7!=null){
           tj7.removeEventListener("click",tj7.jmove);
           tj7.style.backgroundColor = "black";
@@ -1398,14 +1354,6 @@ lastclickID4 = tdl;
         if(tj8!=null){
           tj8.removeEventListener("click",tj8.jmove);
           tj8.style.backgroundColor = "black";
-        }
-        if(tj9 !=null){
-          tj9.removeEventListener("click",tj9.jmove);
-          tj9.style.backgroundColor = "black";
-        }
-        if(tj10!=null){
-          tj10.removeEventListener("click",tj10.jmove);
-          tj10.style.backgroundColor = "black";
         }
   }
   function movement4() { // moves left and calls finish movement
@@ -1436,14 +1384,6 @@ lastclickID4 = tdl;
           tj4.removeEventListener("click",tj4.jmove);
           tj4.style.backgroundColor = "black";
         }
-        if(tj5!=null){
-          tj5.removeEventListener("click",tj5.jmove);
-          tj5.style.backgroundColor = "black";
-        }
-        if(tj6!=null){
-          tj6.removeEventListener("click",tj6.jmove);
-          tj6.style.backgroundColor = "black";
-        }
         if(tj7!=null){
           tj7.removeEventListener("click",tj7.jmove);
           tj7.style.backgroundColor = "black";
@@ -1451,14 +1391,6 @@ lastclickID4 = tdl;
         if(tj8!=null){
           tj8.removeEventListener("click",tj8.jmove);
           tj8.style.backgroundColor = "black";
-        }
-        if(tj9 !=null){
-          tj9.removeEventListener("click",tj9.jmove);
-          tj9.style.backgroundColor = "black";
-        }
-        if(tj10!=null){
-          tj10.removeEventListener("click",tj10.jmove);
-          tj10.style.backgroundColor = "black";
         }
   }
   function movement5(){ // mad broken 
@@ -1488,14 +1420,6 @@ lastclickID4 = tdl;
         tj4.removeEventListener("click",tj4.jmove);
         tj4.style.backgroundColor = "black";
       }
-      if(tj5!=null){
-        tj5.removeEventListener("click",tj5.jmove);
-        tj5.style.backgroundColor = "black";
-      }
-      if(tj6!=null){
-        tj6.removeEventListener("click",tj6.jmove);
-        tj6.style.backgroundColor = "black";
-      }
       if(tj7!=null){
         tj7.removeEventListener("click",tj7.jmove);
         tj7.style.backgroundColor = "black";
@@ -1503,14 +1427,6 @@ lastclickID4 = tdl;
       if(tj8!=null){
         tj8.removeEventListener("click",tj8.jmove);
         tj8.style.backgroundColor = "black";
-      }
-      if(tj9 !=null){
-        tj9.removeEventListener("click",tj9.jmove);
-        tj9.style.backgroundColor = "black";
-      }
-      if(tj10!=null){
-        tj10.removeEventListener("click",tj10.jmove);
-        tj10.style.backgroundColor = "black";
       }
     jumpMovementKing(tj,td,ttr,Xval,Yval,color); // check inputs on king
     
@@ -1541,14 +1457,6 @@ lastclickID4 = tdl;
       tj4.removeEventListener("click",tj4.jmove);
       tj4.style.backgroundColor = "black";
     }
-    if(tj5!=null){
-      tj5.removeEventListener("click",tj5.jmove);
-      tj5.style.backgroundColor = "black";
-    }
-    if(tj6!=null){
-      tj6.removeEventListener("click",tj6.jmove);
-      tj6.style.backgroundColor = "black";
-    }
     if(tj7!=null){
       tj7.removeEventListener("click",tj7.jmove);
       tj7.style.backgroundColor = "black";
@@ -1556,14 +1464,6 @@ lastclickID4 = tdl;
     if(tj8!=null){
       tj8.removeEventListener("click",tj8.jmove);
       tj8.style.backgroundColor = "black";
-    }
-    if(tj9 !=null){
-      tj9.removeEventListener("click",tj9.jmove);
-      tj9.style.backgroundColor = "black";
-    }
-    if(tj10!=null){
-      tj10.removeEventListener("click",tj10.jmove);
-      tj10.style.backgroundColor = "black";
     }
         jumpMovementKing(tj4,td,ttl,Xval,Yval,color);
     
@@ -1594,14 +1494,6 @@ if(ttl!=null){
       tj4.removeEventListener("click",tj4.jmove);
       tj4.style.backgroundColor = "black";
     }
-    if(tj5!=null){
-      tj5.removeEventListener("click",tj5.jmove);
-      tj5.style.backgroundColor = "black";
-    }
-    if(tj6!=null){
-      tj6.removeEventListener("click",tj6.jmove);
-      tj6.style.backgroundColor = "black";
-    }
     if(tj7!=null){
       tj7.removeEventListener("click",tj7.jmove);
       tj7.style.backgroundColor = "black";
@@ -1610,14 +1502,7 @@ if(ttl!=null){
       tj8.removeEventListener("click",tj8.jmove);
       tj8.style.backgroundColor = "black";
     }
-    if(tj9 !=null){
-      tj9.removeEventListener("click",tj9.jmove);
-      tj9.style.backgroundColor = "black";
-    }
-    if(tj10!=null){
-      tj10.removeEventListener("click",tj10.jmove);
-      tj10.style.backgroundColor = "black";
-    }
+    
         jumpMovementKing(tj7,td,tdl,Xval,Yval,color);
     
   }
@@ -1647,14 +1532,6 @@ if(ttl!=null){
       tj4.removeEventListener("click",tj4.jmove);
       tj4.style.backgroundColor = "black";
     }
-    if(tj5!=null){
-      tj5.removeEventListener("click",tj5.jmove);
-      tj5.style.backgroundColor = "black";
-    }
-    if(tj6!=null){
-      tj6.removeEventListener("click",tj6.jmove);
-      tj6.style.backgroundColor = "black";
-    }
     if(tj7!=null){
       tj7.removeEventListener("click",tj7.jmove);
       tj7.style.backgroundColor = "black";
@@ -1662,14 +1539,6 @@ if(ttl!=null){
     if(tj8!=null){
       tj8.removeEventListener("click",tj8.jmove);
       tj8.style.backgroundColor = "black";
-    }
-    if(tj9 !=null){
-      tj9.removeEventListener("click",tj9.jmove);
-      tj9.style.backgroundColor = "black";
-    }
-    if(tj10!=null){
-      tj10.removeEventListener("click",tj10.jmove);
-      tj10.style.backgroundColor = "black";
     }
         jumpMovementKing(tj8,td,tdr,Xval,Yval,color);
     
