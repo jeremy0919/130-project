@@ -149,10 +149,11 @@ function newGame(){
    }
    
    document.getElementsByClassName("table")[0].appendChild(table);
- 
+ timer();
  }
 function createTable(){
   Score();
+  timer();
   table = document.createElement('table');
   table.setAttribute("id","table");
     table.setAttribute("td","Board");
@@ -224,7 +225,6 @@ function createTable(){
   }
   
   document.getElementsByClassName("table")[0].appendChild(table);
- 
 }
 function Score(){
  
@@ -430,7 +430,7 @@ function highlight(x, y, y1, color) {
       tj2.removeEventListener('click', tj2.jmove);
       tj2.style.backgroundColor = "black";
     } 
-    this.removeEventListener('click',this.jmove);
+
     if(z2>=0&&z2<n){
       td2.removeEventListener('click', td2.jmove);
       td2.style.backgroundColor = "black";
@@ -439,16 +439,7 @@ function highlight(x, y, y1, color) {
       td.removeEventListener('click', td.jmove);
       td.style.backgroundColor = "black";
       }
-    if(color==c2){
-      if(Rdata!=null){
-      Rdata.removeEventListener('click', Rdata.whiteMove); 
-      }
-    }
-    else if(color==c1){
-      if(Ldata!=null){
-      Ldata.removeEventListener('click', Ldata.grayMove); 
-      }
-    }
+
     tj2.style.backgroundColor = 'black';
 
     let temp = z2+1;
@@ -2090,15 +2081,15 @@ function kingdobuleJump(x,y,color){
     tj2.style.backgroundColor = "black";
     }
     if(tj4!=null){
-      tj4.removeEventListener('click',moveJ2);
+      tj4.removeEventListener('click',moveJ4);
       tj4.style.backgroundColor = "black";
       }
       if(tj!=null){
-        tj.removeEventListener('click',moveJ2);
+        tj.removeEventListener('click',moveJ1);
         tj.style.backgroundColor = "black";
         }
         if(tj3!=null){
-          tj3.removeEventListener('click',moveJ2);
+          tj3.removeEventListener('click',moveJ3);
           tj3.style.backgroundColor = "black";
           }
     td.removeEventListener('click',moveN);
@@ -2285,7 +2276,6 @@ function kingFinishMovement(td,tdb,color,x1,y1,x,y){
   }
 
   if (color == c1) {
-   // y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
     kingWHite(td, x, y);
     currentPlayer = c2; 
     tdb.removeEventListener('click', tdb.whiteMove); 
@@ -2399,3 +2389,24 @@ function Wincondtion(){
   }
 
 }
+
+let seconds = 0;
+
+//document.addEventListener('DOMContentLoaded', function () {
+
+function timer(){
+  let seconds = 0;
+  const timerElement = document.getElementsByClassName("timer")[0];
+function updateTimer() {
+  seconds++;
+  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+}
+
+// Set up the timer to update every second (1000 milliseconds)
+const timerInterval = setInterval(updateTimer, 1000);
+
+};
+
+
+
+
