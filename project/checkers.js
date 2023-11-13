@@ -2395,16 +2395,27 @@ let seconds = 0;
 //document.addEventListener('DOMContentLoaded', function () {
 
 function timer(){
-  let seconds = 0;
+  let seconds = 1800;
   const timerElement = document.getElementsByClassName("timer")[0];
 function updateTimer() {
-  seconds++;
+  seconds--;
   timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
 }
 
 // Set up the timer to update every second (1000 milliseconds)
 const timerInterval = setInterval(updateTimer, 1000);
-
+if(seconds <= 0 ){
+  alert("time up");
+  if(whitePieces> blackPieces){
+    alert("white wins");
+  }
+  else   if(whitePieces< blackPieces){
+    alert("black wins");
+  }
+  else{
+    alert("tie");
+  }
+}
 };
 
 
