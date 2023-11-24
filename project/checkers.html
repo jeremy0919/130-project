@@ -11,88 +11,36 @@
         Main page with a menu (index.html)
         going to need to submit colors and n(board size) to js through php likely
     </div>
-        <form id="colors">
-            <label>Change color Player1</label>
-            <input type = "text" id = "color1" value = pink>
-            <label>Change color Player2</label>
-            <input type ="text" id ="color2" value = purple>
-            <input type = "button" value = "Change Colors" onclick ="colorChange1()">
+    <form id="colors" method="POST" action="colors.php">
+        <label>Change color Player1</label><br>
+        <input type="text" id="color1" name="color1" value="pink"><br>
+    
+        <label>Change color Player2</label><br>
+        <input type="text" id="color2" name="color2" value="purple"><br>
+    
+        <label>Change the size of the board</label><br>
+        <input type="text" id="size" name="size" value="10"><br>
+    
+        <label>Change the color of the board</label><br>
+        <label>Change color from black squares</label><br>
+        <input type="text" id="bg1" name="bg1" value="red"><br>
+    
+        <label>Change color from red squares</label><br>
+        <input type="text" id="bg2" name="bg2" value="green"><br>
+    
+        <label>Change how long the game timer runs for</label><br>
+        <input type="text" id="setTime" name="setTime" value="need to do something here">
+        <input type="submit" value="updateBoard">
+    </form>
+    
         </form>
-        <br>
-        <form id="size">
-            <label>Change the size of the board</label><br>
-            <input type = "text" id = "size" value = 10><br>
-            <input type = "button" value = "Change size">
-        </form>
-        <br>
-        <form id="style">
-            <label>Change the style of the board</label><br>
+     <form>
+        <label>Change the style of the board</label><br>
          
-            <input type = "button" value = "Previous">
-            <input type = "button" value = "Select">
-            <input type = "button" value = "Next">
-        </form>
-        <form id="Board Style">
-            <label>Change the color of the board</label><br>
-            <label>Change color from black squares</label>
-            <input type = "text" id = "bg1" value = red>
-            <label>Change color from red squares</label>
-            <input type ="text" id ="bg2" value = green>
-            <input type = "submit" value = "Change Color">
-        </form>
-        <form id="Timerset">
-            <label>Change how long the game timer runs for</label><br>
-            <input type ="text" id ="setTime" value = "need to do something here">
-            <input type = "submit" value = "AdjustTime">
-        </form>
-        <script>//most buttons might need to be submit values>
-            function colorChange1() { 
-                var color1 = document.getElementById("color1").value;
-                var color2 = document.getElementById("color2").value;
-    
-                // Create a new XMLHttpRequest object
-                var xhr = new XMLHttpRequest();
-    
-                // Configure the request to send the colors to the PHP script
-                xhr.open("POST", "data.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    
-                // Define the callback function to handle the response (optional)
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        // Handle the response, if needed
-                    }
-                };
-    
-                // Send the request with the colors
-                xhr.send("color1=" + color1 + "color2=" + color2);
-            }
-            function colorChange2() {
-                var color1 = document.getElementById("bg1").value;
-                var color2 = document.getElementById("bg2").value;
-    
-                // Create a new XMLHttpRequest object
-                var xhr = new XMLHttpRequest();
-    
-                // Configure the request to send the colors to the PHP script
-                xhr.open("POST", "data.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    
-                // Define the callback function to handle the response (optional)
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        // Handle the response, if needed
-                    }
-                };
-    
-                // Send the request with the colors
-                xhr.send("bg1=" + bg1 + "bg2=" + bg2);
-            }
-        </script>
-        <form>
-            <input type = "button" onclick="createTable()" value = "createBoard">
-    
-        </form>
+        <input type = "button" value = "Previous">
+        <input type = "button" value = "Select">
+        <input type = "button" value = "Next">
+     </form>
 
         <div class = links>
             <li><a href="contact.html">About us</a></li>
