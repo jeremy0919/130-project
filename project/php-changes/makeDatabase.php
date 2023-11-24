@@ -36,7 +36,7 @@ $connection ->close();
 <body>
     <form action="makeDatabase.php" method="post" >
 
-        <input type="submit" name="makeDatabase" value="make database and table">
+        <input type="submit" name="makeDatabase" value="make database">
     </form>
 </body>
 </html>

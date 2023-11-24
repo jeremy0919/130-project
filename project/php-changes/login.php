@@ -1,33 +1,41 @@
 <?php // start at log in page, log in page goes to selection of one or two player // start at log in page, log in page goes to selection of one or two player
         // Read the existing JSON file
-        
-        if (isset($_POST['submitL'])) {
-            $json_file = 'database.json';
-            $json_data = file_get_contents($json_file);
-            $data = json_decode($json_data, true);
-            $check =0;
-            $name = trim($_POST['username']);
-            $password = trim($_POST['password']);
-           
-            if (isset($data['User']) && is_array($data['User'])) { // can store in session variables to be displayed in game
-                foreach ($data['User'] as $key => $user) {
-                    if ($user['name'] == $name &&$user['password'] == $password) {
-                        echo "{$key} = {$user['name']} <br>";
-                        echo "{$key} = {$user['gamesPlayed']} <br>";
-                        echo "{$key} = {$user['wins']} <br>";
-                        echo "{$key} = {$user['losses']} <br>";
-                        echo "{$key} = {$user['winRate']} <br>";
-                        $check = 1;
-                    }
-                }
-            }
-            if($check == 0){
-                echo("user not found");
-            }
-            if($check==1){
-                header('Location: game.html');
-            }
-        }
-        
+        include("databaseT.php");  
+if (isset($_POST['submitL'])) {
+        $name = trim($_POST['username']);
+        $password = trim($_POST['password']);
 
-        ?>
+
+
+    $stmt = $connection->prepare("SELECT * FROM leaderboards WHERE name = ?");
+
+    // Bind parameters
+    $stmt->bind_param("s",  $name);
+
+    // Execute query
+    $stmt->execute();
+
+    // Get the result
+    $result = $stmt->get_result();
+    $data = array();
+
+    // Close statement
+    $stmt->close();
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+    }
+    if($data["password"] == $password){
+        echo json_encode($data);
+        header('Location: game.html');
+    }
+    else{
+        echo json_encode(array("msg"=> "Wrong password")); // idk if this is right
+    }
+
+    $connection->close();
+}         
+            
+?>
