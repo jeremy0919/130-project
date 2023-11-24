@@ -1,8 +1,10 @@
 <?php
-if(isset($_POST["submitN"]) && $_POST["submitN"] == ""){
+$check = 1;
+$json_file = 'database.json';
+if(isset($_POST["submitN"]) && isset($_POST['username'] )&& isset($_POST['password'])){
    $name = trim($_POST['username']);
    $password = trim($_POST['password']);
-echo $name;
+   $check = 0;
 if($check=0){
 $new_username = [
     

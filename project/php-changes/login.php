@@ -5,7 +5,7 @@
             $json_file = 'database.json';
             $json_data = file_get_contents($json_file);
             $data = json_decode($json_data, true);
-        
+            $check =0;
             $name = trim($_POST['username']);
             $password = trim($_POST['password']);
            
@@ -17,12 +17,16 @@
                         echo "{$key} = {$user['wins']} <br>";
                         echo "{$key} = {$user['losses']} <br>";
                         echo "{$key} = {$user['winRate']} <br>";
-                       
+                        $check = 1;
                     }
                 }
             }
-        
-        header('Location: game.html');
+            if($check == 0){
+                echo("user not found");
+            }
+            if($check==1){
+                header('Location: game.html');
+            }
         }
         
 
