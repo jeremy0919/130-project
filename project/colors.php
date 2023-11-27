@@ -33,5 +33,11 @@ if(isset ($_POST["bg2"])){
 else{
     $_SESSION["bg2"] = "black";
 }
+if(isset ($_POST["setTime"])){
+    $_SESSION["setTime"]  = $_POST["setTime"];
+}
+else{
+    $_SESSION["setTime"] = "18000";
+}
 header('Location: game.html');
 ?>

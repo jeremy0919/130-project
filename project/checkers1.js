@@ -1,4 +1,4 @@
-let c1, c2, n, color1, color2;
+let c1, c2, n, color1, color2, time;
 var lastclickID1 = null;
 var lastclickID2 = null;
 var lastclickID3 = null;
@@ -21,6 +21,7 @@ function updateValues1() {
           n = parseInt(data.size, 10);  // Ensure data.size is parsed as an integer
           color1 = data.bg1;
           color2 = data.bg2;
+          time =data.setTime;
            lastclickID1 = null;
            lastclickID2 = null;
            lastclickID3 = null;
@@ -2378,7 +2379,7 @@ let seconds = 0;
 //document.addEventListener('DOMContentLoaded', function () {
 
 function timer(){
-  let seconds = 1800;
+  let seconds = time;
   const timerElement = document.getElementsByClassName("timer")[0];
 function updateTimer() {
   seconds--;

@@ -18,7 +18,7 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
     } else {
         // Name not found in the database, do something else
         $sql = "INSERT INTO `leaderboards` (`id`, `name`, `password`, `gamesPlayed`, `wins`, `losses`, `winRate`) 
-                VALUES (NULL, ?, ?, '0', '0', '0', '0')";
+                VALUES (NULL, $name, $hashed_password, '0', '0', '0', '0')";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("ss", $name, $hashed_password);
         $stmt->execute();

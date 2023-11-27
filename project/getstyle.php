@@ -26,6 +26,11 @@ if(isset($_SESSION["bg2"])){
 }else{
     $bg2 = "black";
 }
+if(isset($_SESSION["setTime"])){
+    $setTime = $_SESSION["setTime"];
+}else{
+    $setTime = "setTime";
+}
 
 
 $data = array(
@@ -34,6 +39,7 @@ $data = array(
     "size"   => $size,
     "bg1"    => $bg1,
     "bg2"    => $bg2,
+    "setTime" =>$setTime
 );
 
 echo json_encode($data);
