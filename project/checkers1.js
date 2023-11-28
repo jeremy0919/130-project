@@ -2416,14 +2416,40 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
 function Wincondtion(){
   if( playerStats.returnPieces('c2') <= 0){
     alert(c1+" wins")
+    sendData(c1);
   }
   if( playerStats.returnPieces('c1') <= 0){
     alert(c2+" wins")
+    sendData(c2);
   }
 
 }
 
+function sendData(winner){
+  data = new FormData // idk if form data is best way 
+  data.append('moves', playerStats.returnMoves('c1'));
+  data.append('pieces', playerStats.returnPieces('c1'));
+  temp = time-seconds;
+  data.append('time', temp); // figure out how to get time
 
+  if(winner == c1){ // since everything is from p1 ones perspective and stats
+    
+    data.append('win', 1)
+  }
+  if(winner == c2){
+    data.append('win', 0)
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+      }
+  };
+  
+  xhr.open('POST', 'insert.php', true);
+  xhr.send(data);
+}
 //document.addEventListener('DOMContentLoaded', function () {
 /*
 function timer(){
@@ -2445,11 +2471,11 @@ function resetTimer() {
 
 };*/
 let timerElement; // Declare timerElement as a global variable
-
+let seconds = time; // might need to be put back in timer function 
 function timer() {
   alert("idk how to reset timer")
   timerElement = document.getElementsByClassName("timer")[0];
-  let seconds = time;
+ 
   let timerInterval; 
 
   function updateTimer() {
@@ -2469,9 +2495,11 @@ function timer() {
     alert("time up");
     if(playerStats.returnPieces('c1') >  playerStats.returnPieces('c2')){
       alert(c1+"wins");
+      sendData(c1);
     }
     else   if(playerStats.returnPieces('c1') < playerStats.returnPieces('c2')){
       alert(c2+" wins");
+      sendData(c2);
     }
     else{
       alert("tie");

@@ -30,8 +30,6 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
 
         $sql = "CREATE TABLE $name ( 
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(20) NOT NULL,
-            password VARCHAR(20) NOT NULL,
             moves INT NOT NULL,
             pieces INT NOT NULL,
             timeTaken INT NOT NULL,
