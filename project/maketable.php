@@ -9,7 +9,8 @@ $sql = "CREATE TABLE leaderboards (
   gamesPlayed INT NOT NULL,
   wins INT NOT NULL,
   losses INT NOT NULL,
-  winRate INT NOT NULL
+  winRate INT NOT NULL,
+  timePlayed INT NOT NULL
 )";
 
 if ($connection->query($sql) === TRUE) {

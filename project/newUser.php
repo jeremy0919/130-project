@@ -22,6 +22,27 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("ss", $name, $hashed_password);
         $stmt->execute();
+
+        $stmt->close();
+       
+        $userId = $name;
+        setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
+
+        $sql = "CREATE TABLE $name ( 
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(20) NOT NULL,
+            password VARCHAR(20) NOT NULL,
+            moves INT NOT NULL,
+            pieces INT NOT NULL,
+            timeTaken INT NOT NULL,
+            Win INT NOT NULL
+          )";
+        if ($connection->query($sql) === TRUE) {
+            echo "Account Created succesfully";
+          } else {
+            echo "Error creating account please try again: " . $connection->error;
+          }
+          $connection->close();
     }
 
     $stmt->close();

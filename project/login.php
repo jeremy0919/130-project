@@ -22,6 +22,9 @@ if (isset($_POST['submitL'])) {
 
         // Verify the entered password against the hashed password in the database
         if (password_verify($password, $data[0]['password'])) {
+            $userId = $name;
+            setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
+    
             echo json_encode($data);
             $connection->close();
             header('Location: game.html');
