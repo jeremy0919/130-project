@@ -5,6 +5,54 @@ var lastclickID3 = null;
 var lastclickID4 = null; // should work for all last clicked on both king and regular
 var currentPlayer;
 
+class PlayerStats {
+  constructor() {
+    this.c1 = {
+      numMoves: 0,
+      piecesLeft: 0,
+    };
+    this.c2 = {
+      numMoves: 0,
+      piecesLeft: 0,
+    };
+
+    // other characters and their properties can be added here
+  }
+
+  incrementNumMoves(character) {
+    this[character].numMoves += 1;
+  }
+  setPieces(character, n) {
+    this[character].piecesLeft =n*3/2;
+  }
+
+  resetMoves(character) {
+    this[character].numMoves = 0;
+  }
+  decrementPieces(character) {
+    this[character].piecesLeft -=1;
+  }
+  returnMoves(character) {
+    return this[character].numMoves;
+  }
+  returnPieces(character) {
+    return this[character].piecesLeft;
+  }
+  Initialize(){
+    this.c1 = {
+      numMoves: 0,
+      piecesLeft: 0,
+    };
+    this.c2 = {
+      numMoves: 0,
+      piecesLeft: 0,
+    };
+  }
+  // You can add more methods as needed to manipulate player stats
+}
+
+
+window.playerStats = new PlayerStats();
 
 var currentPlayer = c1;
 function updateValues1() {
@@ -26,11 +74,15 @@ function updateValues1() {
            lastclickID2 = null;
            lastclickID3 = null;
            lastclickID4 = null; // should work for all last clicked on both king and regular
-          blackPieces = n*3/2;
-          whitePieces = n*3/2;
-          
-          
-        
+       
+         //  window.playerStats = new PlayerStats();
+       //    window.playerStats.Initialize();
+     
+           window.playerStats.setPieces('c1', n);
+           window.playerStats.setPieces('c2', n);
+           window.playerStats.resetMoves('c1');
+           window.playerStats.resetMoves('c2');
+     
         currentPlayer = c1;
           createTable();
       })
@@ -39,102 +91,32 @@ function updateValues1() {
       });
 }
 
-
-function newGame(){
-   lastclickID1 = null;
-   lastclickID2 = null;
-   lastclickID3 = null;
-   lastclickID4 = null; // should work for all last clicked on both king and regular
-   n = 8; // king movement needs overhaul
-  blackPieces = n*3/2;
-  whitePieces = n*3/2;
-  Score();
-  BoardStyleChange();
-  var existingPiece = document.getElementById("table");
-  if (existingPiece != null) {
-    var parentEl2 = existingPiece.parentElement;
-    parentEl2.removeChild(existingPiece);
-  }
-   existingPiece = document.getElementById("table1");
-  if (existingPiece != null) {
-    var parentEl2 = existingPiece.parentElement;
-    parentEl2.removeChild(existingPiece);
-  }
-    let table = document.createElement('table');
-     table.setAttribute("id","table");
-     table.setAttribute("td","Board");
-     table.style.borderCollapse = "collapse";
-     let tablebody = document.createElement("tbody");
-     table.appendChild(tablebody);
- 
-     for(let i =0; i<n;++i){ // table row
-       
-         let tr = document.createElement("tr");
-         for(let j =0; j<n; ++j){ // table data
-             let td = document.createElement("td");
-      
-             if(i%2==0){ // alertnating row color
-                 if(j%2 ==0){
-          
-             td.style.backgroundColor =color1;
-             td.style.height = "40px";
-             td.style.width = "40px";
-             }
-                 if(j%2 == 1){
-                   
-                 td.style.backgroundColor = color2;
-               
-                 td.style.height = "40px";
-                 td.style.width = "40px";
-             
-             }}
-             if(i%2==1){
-                 if(j%2 ==0){
-           
-                 td.style.backgroundColor =color2;
-   
-                 td.style.height = "40px";
-                 td.style.width = "40px";
-            
-                 }
-                 if(j%2 == 1){
-                
-                     td.style.backgroundColor = color1;
-                     td.style.height = "40px";
-                     td.style.width = "40px";
-                 }
-             }
-             td.setAttribute("id",j + "," + i) // sets id for later use in movement
-             if(i<=2 && td.style.backgroundColor==color2){
-               td.grayMove = function() {
-                   MovePiece(i, j,c2);
-               }
-               td.addEventListener('click', td.grayMove);
-               pieceBlack(td,j,i);
-               td.attributes.isking = 0;
-           }
-           
-           if(i>=n-3 && td.style.backgroundColor==color2){
-               td.whiteMove = function() {
-                   MovePiece(i, j,c1);
-               }
-               td.addEventListener('click', td.whiteMove);
-               pieceWhite(td,j,i);
-               td.attributes.isking = 0;
-             
-           }
-           tr.appendChild(td); 
-       }
-      
-       tablebody.appendChild(tr);
-   }
-   
-   document.getElementsByClassName("table")[0].appendChild(table);
- timer();
- }
 function createTable(){
+  lastclickID1 = null;
+  lastclickID2 = null;
+  lastclickID3 = null;
+  lastclickID4 = null; // should work for all last clicked on both king and regular
+
+
+  window.playerStats.setPieces('c1', n);
+  window.playerStats.setPieces('c2', n);
+  window.playerStats.resetMoves('c1');
+  window.playerStats.resetMoves('c2');
+
+ timer();
+ var existingPiece = document.getElementById("table");
+  if (existingPiece != null) {
+    var parentEl2 = existingPiece.parentElement;
+    parentEl2.removeChild(existingPiece);
+  }
+
+  existingPiece = document.getElementById("table1");
+  if (existingPiece != null) {
+    var parentEl2 = existingPiece.parentElement;
+    parentEl2.removeChild(existingPiece);
+  }
   Score();
-  timer();
+  
   let table = document.createElement('table');
   table.setAttribute("id","table");
     table.setAttribute("td","Board");
@@ -206,7 +188,10 @@ function createTable(){
   }
   
   document.getElementsByClassName("table")[0].appendChild(table);
+  updateScore();
+  updateMoves();
 }
+
 function Score(){
  
   table = document.createElement('table');
@@ -239,6 +224,26 @@ function Score(){
                 tr1.appendChild(td1); 
                 tablebody.appendChild(tr1);
             
+         tr = document.createElement("tr");
+         td = document.createElement("td");
+        td.innerText ="Moves P1";
+        tr.appendChild(td); 
+
+            td = document.createElement("td");
+            td.setAttribute("id","moves1")
+            tr.appendChild(td); 
+            tablebody.appendChild(tr);
+             tr1 = document.createElement("tr");
+             td1 = document.createElement("td");
+           tr1 = document.createElement("tr");
+            td1.innerText= "Moves P2";
+            tr1.appendChild(td1); 
+  
+                td1 = document.createElement("td");
+                td1.setAttribute("id","moves2");
+                tr1.appendChild(td1); 
+                tablebody.appendChild(tr1);
+            
 
          
      
@@ -251,10 +256,40 @@ function updateScore(){
   let td1 = document.getElementById("score1");
   let td2 = document.getElementById("score2");
   if(td1!=null){
-  td1.innerText =blackPieces;
+    if(playerStats.returnPieces('c1')!=null){
+  td1.innerText =window.playerStats.returnPieces('c1');
+    }
+    else {
+      td1.innerText = 0;
+    }
   }
   if(td2!=null){
-  td2.innerText =whitePieces;
+    if(playerStats.returnPieces('c2')!=null){
+    td2.innerText =window.playerStats.returnPieces('c2');
+    }
+    else {
+      td2.innerText = 0;
+    }
+  }
+}
+function updateMoves(){
+  let td1 = document.getElementById("moves1");
+  let td2 = document.getElementById("moves2");
+  if(td1!=null){
+    if(playerStats.returnMoves('c1')!=null){
+  td1.innerText =window.playerStats.returnMoves('c1');
+    }
+    else {
+      td1.innerText = 0;
+    }
+  }
+  if(td2!=null){
+    if(playerStats.returnMoves('c2')!=null){
+    td2.innerText =window.playerStats.returnMoves('c2');
+    }
+    else {
+      td2.innerText = 0;
+    }
   }
 }
 function MovePiece(y, x, color) { 
@@ -278,10 +313,7 @@ function MovePiece(y, x, color) {
           lastclickID4.removeEventListener('click', lastclickID4.jmove);
         }
    
- console.log(currentPlayer);
- console.log(c1);
- console.log(c2);
- console.log(color);
+
   let king = td.attributes.isking;
   if(king == 0){
   let y1 = y; // call piece clicked here, store data to last piece clicked, if different piece is clicked
@@ -306,7 +338,7 @@ else if( king == 1){
  
 
 function highlight(x, y, y1, color) {
- 
+  updateScore();
   let x1 = x;
   var tj = null;
   var tj2 = null;
@@ -652,7 +684,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   
     if(yDest ==0|| yDest == n-1){
       kingWHite(tdest, xDest, yDest);
-      blackPieces = blackPieces-1;
+      playerStats.decrementPieces('c2');
       currentPlayer = c2; 
       tdest.removeEventListener('click', tdest.whiteMove); 
       tdest.removeEventListener('click', tdest.jmove); 
@@ -664,7 +696,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   }
    else{
     pieceWhite(tdest, xDest, yDest);
-    blackPieces = blackPieces-1;
+    playerStats.decrementPieces('c2');
     tdest.removeEventListener('click', tdest.whiteMove);
     tdest.removeEventListener('click', tdest.jmove); 
     if(canDoubleJump(tdest,xDest,yDest,color)){
@@ -684,7 +716,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
    
     if(yDest == n-1|| yDest == 0){
       kingBlack(tdest,xDest,yDest);
-      whitePieces = whitePieces-1;
+      playerStats.decrementPieces('c1');
       currentPlayer =c1; 
       tdest.removeEventListener('click', tdest.grayMove); 
       tdest.removeEventListener('click', tdest.jmove); 
@@ -695,7 +727,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     }
     else{
     pieceBlack(tdest, xDest, yDest);
-    whitePieces = whitePieces-1;
+    playerStats.decrementPieces('c1');
     tdest.removeEventListener('click', tdest.grayMove);
     tdest.removeEventListener('click', tdest.jmove); 
     if(canDoubleJump(tdest,xDest,yDest,color)){
@@ -1022,9 +1054,14 @@ function finishMovement(td, tdb, color, x1, x, y) {
     var parentEl2 = existingPiece.parentElement;
     parentEl2.removeChild(existingPiece);
   }
-
+  
+ 
+  
   if (color == c1) {
     y = y - 1; //places pieces at new lcoation and removes and adds event listeners accordingly
+    playerStats.incrementNumMoves('c1');
+    updateMoves();
+    updateScore();
       if(y ==0){
         kingWHite(td, x, y);
         currentPlayer = c2; 
@@ -1050,6 +1087,9 @@ function finishMovement(td, tdb, color, x1, x, y) {
   if (color ==c2) {
     y = y + 1;
     currentPlayer =c1; 
+    playerStats.incrementNumMoves('c2');
+    updateMoves();
+    updateScore();
     if(y == n-1){
       kingBlack(td,x,y);
       currentPlayer = c1; 
@@ -1069,8 +1109,9 @@ function finishMovement(td, tdb, color, x1, x, y) {
     }
     td.addEventListener('click', td.grayMove);
   }
+  
 }
-
+updateScore();
 }
 
 function pieceWhite(td,x,y){ 
@@ -2259,8 +2300,12 @@ function kingFinishMovement(td,tdb,color,x1,y1,x,y){
     parentEl2.removeChild(existingPiece);
   }
 
+ 
   if (color == c1) {
     kingWHite(td, x, y);
+    playerStats.incrementNumMoves('c1');
+    updateMoves();
+    updateScore();
     currentPlayer = c2; 
     tdb.removeEventListener('click', tdb.whiteMove); 
     td.whiteMove = function() {
@@ -2272,6 +2317,9 @@ function kingFinishMovement(td,tdb,color,x1,y1,x,y){
   if (color == c2) {
   //  y = y + 1;
     kingBlack(td,x,y);
+    playerStats.incrementNumMoves('c2');
+    updateMoves();
+    updateScore();
     currentPlayer = c1; 
     tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
     td.grayMove = function() {
@@ -2312,7 +2360,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
 
 
   if (color ==c1) {
-    whitePieces = whitePieces-1;
+    playerStats.decrementPieces('c1');
     kingWHite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove); 
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
@@ -2329,7 +2377,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
     }
   
   } else if (color ==c2) {
-    blackPieces = blackPieces-1;
+    playerStats.decrementPieces('c2');
     kingBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
@@ -2361,23 +2409,23 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
   // Update the background color of td and tj
   td.style.backgroundColor = color2;
   tj.style.backgroundColor = color2;
+  updateScore();
 }
 
 
 function Wincondtion(){
-  if(blackPieces <= 0){
+  if( playerStats.returnPieces('c2') <= 0){
     alert(c1+" wins")
   }
-  if(whitePieces <= 0){
+  if( playerStats.returnPieces('c1') <= 0){
     alert(c2+" wins")
   }
 
 }
 
-let seconds = 0;
 
 //document.addEventListener('DOMContentLoaded', function () {
-
+/*
 function timer(){
   let seconds = time;
   const timerElement = document.getElementsByClassName("timer")[0];
@@ -2388,19 +2436,62 @@ function updateTimer() {
 
 // Set up the timer to update every second (1000 milliseconds)
 const timerInterval = setInterval(updateTimer, 1000);
-if(seconds <= 0 ){
-  alert("time up");
-  if(whitePieces> blackPieces){
-    alert("white wins");
-  }
-  else   if(whitePieces< blackPieces){
-    alert("black wins");
-  }
-  else{
-    alert("tie");
-  }
+function resetTimer() {
+  clearInterval(timerInterval); // Clear the existing interval
+  seconds = time; // Reset the timer to the initial time
+  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+  startTimer(); // Start the timer again
 }
-};
+
+};*/
+let timerElement; // Declare timerElement as a global variable
+
+function timer() {
+  alert("idk how to reset timer")
+  timerElement = document.getElementsByClassName("timer")[0];
+  let seconds = time;
+  let timerInterval; 
+
+  function updateTimer() {
+    seconds--;
+    timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+    if (seconds === 0) {
+      clearInterval(timerInterval); // Clear the interval when the timer reaches 0
+    }
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+
+  if(seconds <= 0 ){
+    alert("time up");
+    if(playerStats.returnPieces('c1') >  playerStats.returnPieces('c2')){
+      alert(c1+"wins");
+    }
+    else   if(playerStats.returnPieces('c1') < playerStats.returnPieces('c2')){
+      alert(c2+" wins");
+    }
+    else{
+      alert("tie");
+    }
+  }
+  // Start the timer initially
+  startTimer();
+
+  // You can now call resetTimer() whenever you want to reset the timer
+}
+
+
+
+function resetTimer() {
+  timerElement = document.getElementsByClassName("timer")[0];
+  clearInterval(timerInterval); // Clear the existing interval
+  seconds = time; // Reset the timer to the initial time
+  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+  startTimer(); // Start the timer again
+}
 
 
 
