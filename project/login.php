@@ -1,10 +1,11 @@
 <?php
 include("databaseT.php");
-
+echo("here");
 if (isset($_POST['submitL'])) {
     $name = trim($_POST['username']);
     $password = trim($_POST['password']);
-
+    echo($name.''.$password.'');
+   
     $stmt = $connection->prepare("SELECT * FROM leaderboards WHERE name = ?");
     $stmt->bind_param("s", $name);
     $stmt->execute();
@@ -19,7 +20,7 @@ if (isset($_POST['submitL'])) {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
+        echo( $data[0]['password']);
         // Verify the entered password against the hashed password in the database
         if (password_verify($password, $data[0]['password'])) {
             $userId = $name;
@@ -32,13 +33,13 @@ if (isset($_POST['submitL'])) {
         } else {
             echo json_encode(array("msg" => "Wrong password"));
             $connection->close();
-            header('Location: login.html');
+     //       header('Location: login.html');
             exit;
         }
     } else {
         echo json_encode(array("msg" => "Account not found"));
         $connection->close();
-        header('Location: login.html');
+    //    header('Location: login.html');
         exit;
     }
 

@@ -1,10 +1,10 @@
 <?php
-
 include("databaseT.php");
 
 if (isset($_POST['Sname']) && isset($_POST['password'])) {
     $name = trim($_POST['Sname']);
     $password = trim($_POST['password']);
+
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $stmt = $connection->prepare("SELECT * FROM leaderboards WHERE name = ?");
@@ -18,16 +18,15 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
     } else {
         // Name not found in the database, do something else
         $sql = "INSERT INTO `leaderboards` (`id`, `name`, `password`, `gamesPlayed`, `wins`, `losses`, `winRate`) 
-                VALUES (NULL, $name, $hashed_password, '0', '0', '0', '0')";
+        VALUES (NULL, ?, ?, '0', '0', '0', '0')";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("ss", $name, $hashed_password);
         $stmt->execute();
-
         $stmt->close();
-       
+
         $userId = $name;
         setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
-
+        echo($name);
         $sql = "CREATE TABLE $name ( 
             id INT AUTO_INCREMENT PRIMARY KEY,
             moves INT NOT NULL,
@@ -40,10 +39,9 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
           } else {
             echo "Error creating account please try again: " . $connection->error;
           }
-          $connection->close();
+
     }
 
-    $stmt->close();
     $connection->close();
 }
 
