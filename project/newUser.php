@@ -5,7 +5,7 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
     $name = trim($_POST['Sname']);
     $password = trim($_POST['password']);
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+   
 
     $stmt = $connection->prepare("SELECT * FROM leaderboards WHERE name = ?");
     $stmt->bind_param("s", $name);
@@ -20,7 +20,7 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
         $sql = "INSERT INTO `leaderboards` (`id`, `name`, `password`, `gamesPlayed`, `wins`, `losses`, `winRate`) 
         VALUES (NULL, ?, ?, '0', '0', '0', '0')";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param("ss", $name, $hashed_password);
+        $stmt->bind_param("ss", $name, $password);
         $stmt->execute();
         $stmt->close();
 

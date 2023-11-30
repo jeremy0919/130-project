@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <script src="leaderboards.js"></script>
+    <script src="leaderboards1.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -27,5 +27,13 @@ who is logged into the system. (leaderboard.html)
     <input type="button" onclick="display2()" name="History" value= "History">
     <label>Display top players</label>
     <input type="button" onclick="display1()" name="leaderboard" value = "leaderboards">
+    <label>Sort players by wins</label>
+    <input type="button" onclick="display3('wins', 'most')" name="leaderboard" value="wins">
+    <input type="button" onclick="display3('losses', 'most')" name="leaderboard" value="losses">
+    <input type="button" onclick="display3('mostGames', 'most')" name="leaderboard" value="mostGames">
+    <input type="button" onclick="display3('leastGames', 'least')" name="leaderboard" value="leastGames">
+    <input type="button" onclick="display3('mostTime', 'most')" name="leaderboard" value="mostTime">
+    <input type="button" onclick="display3('leastTime', 'least')" name="leaderboard" value="leastTime">
+    
 </body>
 </html>

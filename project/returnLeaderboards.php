@@ -2,7 +2,7 @@
 include("databaseT.php");
 
 
-$sql = "SELECT * FROM leaderboards";
+$sql = "SELECT * FROM leaderboards1";
 $result = $connection->query($sql);
 
 $data = array();

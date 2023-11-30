@@ -20,9 +20,9 @@ if (isset($_POST['submitL'])) {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-        echo( $data[0]['password']);
+      //  echo( $data[0]['password']);
         // Verify the entered password against the hashed password in the database
-        if (password_verify($password, $data[0]['password'])) {
+        if ($password == $data[0]['password'])   {
             $userId = $name;
             setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
     
