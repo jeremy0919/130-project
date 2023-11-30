@@ -3,17 +3,14 @@ header('Content-Type: application/json');
 include("databaseT.php");
 // Check connection
 
-// Function to get and return the leaderboard as JSON
 
-
-// Function to get and return the leaderboard as JSON
 function getLeaderboard($orderBy, $orderType) {
     global $connection;
 
     $order = ($orderType == 'most') ? 'DESC' : 'ASC';
 
     if ($orderBy === 'mostGames' || $orderBy === 'leastGames' || $orderBy === 'mostTime' || $orderBy === 'leastTime') {
-        $orderBy = substr($orderBy, 0, -4); // Removing 'most' or 'least' prefix
+      
         $sql = "SELECT * FROM leaderboards1 ORDER BY $orderBy $order";
     } else {
         $sql = "SELECT * FROM leaderboards1 ORDER BY $orderBy $order";
