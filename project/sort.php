@@ -11,9 +11,9 @@ function getLeaderboard($orderBy, $orderType) {
 
     if ($orderBy === 'mostGames' || $orderBy === 'leastGames' || $orderBy === 'mostTime' || $orderBy === 'leastTime') {
       
-        $sql = "SELECT * FROM leaderboards1 ORDER BY $orderBy $order";
+        $sql = "SELECT * FROM leaderboards ORDER BY $orderBy $order";
     } else {
-        $sql = "SELECT * FROM leaderboards1 ORDER BY $orderBy $order";
+        $sql = "SELECT * FROM leaderboards ORDER BY $orderBy $order";
     }
 
     $result = $connection->query($sql);

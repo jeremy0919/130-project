@@ -84,11 +84,40 @@ function updateValues1() {
            window.playerStats.resetMoves('c2');
      
         currentPlayer = c1;
+        updateBackground();
           createTable();
       })
       .catch(error => {
           console.error('Error fetching data:', error);
       });
+}
+
+function updateBackground() {
+  fetch('getimage.php')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();  // Assuming your PHP returns JSON
+    })
+    .then(data => {
+      let image = data.image;
+      // Assuming image is the filename received from the server
+      let imagePath = 'uploads/' + image;
+
+      // Find the img element with class "bgstyle" and update its src attribute
+      let bgStyleImg = document.querySelector('.bgstyle');
+      let temp = document.getElementById("bgstyle");
+      temp.hidden = false;
+      if (bgStyleImg) {
+        bgStyleImg.src = imagePath;
+      } else {
+        console.error('Element with class "bgstyle" not found.');
+      }
+    })
+    .catch(error => {
+      console.error('Error updating background:', error);
+    });
 }
 
 function createTable(){
@@ -119,10 +148,12 @@ function createTable(){
   
   let table = document.createElement('table');
   table.setAttribute("id","table");
+  table.setAttribute("class", "transparent-table");
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
 
     let tablebody = document.createElement("tbody");
+    
     table.appendChild(tablebody);
 
     for(let i =0; i<n;++i){ // table row
@@ -196,50 +227,64 @@ function Score(){
  
   table = document.createElement('table');
   table.setAttribute("id","table1");
+  
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
-
+    table.style.border = "2px solid #000";
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
     
       
         let tr = document.createElement("tr");
+        tr.style.border = "2px solid #000";
         let td = document.createElement("td");
+        td.style.border = "2px solid #000";
         td.innerText ="Player1";
         tr.appendChild(td); 
 
             td = document.createElement("td");
+            td.style.border = "2px solid #000";
             td.setAttribute("id","score1")
             tr.appendChild(td); 
             tablebody.appendChild(tr);
             let tr1 = document.createElement("tr");
+            tr1.style.border = "2px solid #000";
             let td1 = document.createElement("td");
+            td1.style.border = "2px solid #000";
            tr1 = document.createElement("tr");
             td1.innerText= "Player2";
             tr1.appendChild(td1); 
   
                 td1 = document.createElement("td");
+                td1.style.border = "2px solid #000";
                 td1.setAttribute("id","score2");
                 tr1.appendChild(td1); 
                 tablebody.appendChild(tr1);
             
          tr = document.createElement("tr");
+         tr.style.border = "2px solid #000";
          td = document.createElement("td");
+         td.style.border = "2px solid #000";
         td.innerText ="Moves P1";
         tr.appendChild(td); 
 
             td = document.createElement("td");
+            td.style.border = "2px solid #000";
             td.setAttribute("id","moves1")
             tr.appendChild(td); 
             tablebody.appendChild(tr);
              tr1 = document.createElement("tr");
+             tr1.style.border = "2px solid #000";
              td1 = document.createElement("td");
+             td1.style.border = "2px solid #000";
            tr1 = document.createElement("tr");
+           tr1.style.border = "2px solid #000";
             td1.innerText= "Moves P2";
             tr1.appendChild(td1); 
   
                 td1 = document.createElement("td");
+                td1.style.border = "2px solid #000";
                 td1.setAttribute("id","moves2");
                 tr1.appendChild(td1); 
                 tablebody.appendChild(tr1);
@@ -2471,9 +2516,11 @@ function resetTimer() {
 
 };*/
 let timerElement; // Declare timerElement as a global variable
-let seconds = time; // might need to be put back in timer function 
+// might need to be put back in timer function 
+
 function timer() {
-  alert("idk how to reset timer")
+  let seconds = time; 
+
   timerElement = document.getElementsByClassName("timer")[0];
  
   let timerInterval; 
@@ -2507,19 +2554,19 @@ function timer() {
   }
   // Start the timer initially
   startTimer();
-
+  function resetTimer() {
+    timerElement = document.getElementsByClassName("timer")[0];
+    clearInterval(timerInterval); // Clear the existing interval
+    seconds = time; // Reset the timer to the initial time
+    timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+    startTimer(); // Start the timer again
+  }
+  
   // You can now call resetTimer() whenever you want to reset the timer
 }
 
 
 
-function resetTimer() {
-  timerElement = document.getElementsByClassName("timer")[0];
-  clearInterval(timerInterval); // Clear the existing interval
-  seconds = time; // Reset the timer to the initial time
-  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
-  startTimer(); // Start the timer again
-}
 
 
 

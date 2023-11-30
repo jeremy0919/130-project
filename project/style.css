@@ -1,15 +1,43 @@
 .header {
-	color: white;
-	background-color: #b1102b;
+    color: white;
+    background-color: #b1102b;
 }
+
 body {
-	position: relative;
-	background-color: #13284c;
-	color: white;
+    position: relative;
+    background-color: #13284c;
+    color: white;
+    margin: 0; /* Remove default margin */
 }
+
 * {
-	font-family: sans-serif;
-	
+    font-family: sans-serif;
+}
+
+.img-container {
+   position: absolute;
+	margin-left: 30%;
+   width: 65%;
+   margin-right: 10%;
+   height: 17vh; 
+    z-index: -1; /* Move the container behind other elements */
+}
+
+.bgstyle {
+    width: 70%;
+
+    object-fit: cover; /* Ensure the image covers the container */
+    opacity: 0.5; /* Adjust the opacity as needed */
+}
+
+form {
+    color: white;
+}
+
+.transparent-table {
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
 }
 img.Bull {
 	width: 100px;
@@ -17,6 +45,15 @@ img.Bull {
 	float: right;
 	aspect-ratio: 0;
 }
-form{
-	color:white;
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh; /* Adjust as needed based on your layout */
+}
+
+/* Add this style to ensure that the tables are centered even if they are larger than the viewport */
+.table {
+    margin: auto;
 }

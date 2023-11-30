@@ -3,7 +3,7 @@
         <script src="checkers1.js">
             
     </script>
-      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="style1.css">
     </head>
     <body>
         <img src="bulldog.png" class="Bull" />
@@ -34,11 +34,11 @@
      <form>
         <label>Change the style of the board</label><br>
          
-        <input type = "button" value = "Previous">
-        <input type = "button" value = "Select">
-        <input type = "button" value = "Next">
+        <input type = "button" value = "Previous" onclick = "previous()">
+        <input type = "button" value = "Select" onclick="select()">
+        <input type = "button" value = "Next" onclick = "next()">
      </form>
-     <img src="bulldog.png" class = bstyle id="bstyle">
+     <img src="uploads/img1.png" class="bgstyle" id ="bgstyle" />
         <div class = links>
             <li><a href="contact.html">About us</a></li>
             <li><a href="game.html">Start Game page?</a></li> 
@@ -49,4 +49,42 @@
         </div>
         <div class = "table"></div>
     </body>
+    <script>
+       const imageArray = ["img1.png", "img2.png", "img3.png","img4.png"];
+        let currentIndex = 0;
+
+        function updateImage() {
+            const imgElement = document.getElementById('bgstyle');
+            imgElement.src = 'uploads/' + imageArray[currentIndex];
+        }
+
+        function previous() {
+            currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length;
+            updateImage();
+        }
+        function select(){
+            updateSession(imageArray[currentIndex]);
+        }
+        function updateSession(selectedImage) {
+            // Use AJAX to send the selected image to a PHP script
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update_session.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('Session variable updated successfully');
+                }
+            };
+            xhr.send('selectedImage=' + selectedImage);
+        }
+
+        function next() {
+            currentIndex = (currentIndex + 1) % imageArray.length;
+            updateImage();
+        }
+
+        // Initialize the image on page load
+        updateImage();
+
+    </script>
 </html5>

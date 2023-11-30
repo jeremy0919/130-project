@@ -8,7 +8,7 @@ function display1(){
   })
   .then(data => {
       const table = createTable(data);
-      document.body.appendChild(table);
+      replaceTableContent(table);
   })
 }
 function display2() {
@@ -27,7 +27,7 @@ function display2() {
           document.body.appendChild(messageElement);
         } else {
           const table = createTable(data);
-          document.body.appendChild(table);
+          replaceTableContent(table);
         }
       })
       .catch(error => {
@@ -46,18 +46,23 @@ function createTable(data) {
             const th = document.createElement('th');
             
             if(th != "password"){
+                if(th!='id'){
                 th.innerHTML = columnName;
                 headerRow.appendChild(th);
+                }
             }
-       
+      
+
         });
 
         data.forEach(rowData => {
             const row = table.insertRow();
 
             columns.forEach(columnName => {
+                
                 const cell = row.insertCell();
                 cell.innerHTML = rowData[columnName];
+                
             });
         });
     }
@@ -80,7 +85,9 @@ function display3(orderBy, orderType) {
                 document.body.appendChild(messageElement);
             } else {
                 const table = createTable(data);
-                document.body.appendChild(table);
+                replaceTableContent(table);
+                   
+               
             }
         })
         .catch(error => {
@@ -88,3 +95,8 @@ function display3(orderBy, orderType) {
             // Handle errors, e.g., display an error message to the user
         });
 }
+function replaceTableContent(newTable) {
+    const container = document.getElementById('table-container');
+    container.innerHTML = '';
+    container.appendChild(newTable);
+  }

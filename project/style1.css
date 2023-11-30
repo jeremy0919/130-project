@@ -1,0 +1,22 @@
+.header {
+	color: white;
+	background-color: #b1102b;
+}
+body {
+	position: relative;
+	background-color: #13284c;
+	color: white;
+}
+* {
+	font-family: sans-serif;
+	
+}
+img.Bull {
+	width: 100px;
+	height: auto;
+	float: right;
+	aspect-ratio: 0;
+}
+form{
+	color:white;
+}
