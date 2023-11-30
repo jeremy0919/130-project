@@ -1,6 +1,6 @@
 <?php // start at log in page, log in page goes to selection of one or two player // start at log in page, log in page goes to selection of one or two player
         // Read the existing JSON file
-        include("databaseT.php");  
+include("databaseT.php");  
 if (isset($_POST['submitL'])) {
         $name = trim($_POST['username']);
         $password = trim($_POST['password']);
