@@ -4,7 +4,7 @@ var lastclickID2 = null;
 var lastclickID3 = null;
 var lastclickID4 = null; // should work for all last clicked on both king and regular
 var currentPlayer;
-
+var computer;
 class PlayerStats {
   constructor() {
     this.c1 = {
@@ -74,7 +74,7 @@ function updateValues1() {
            lastclickID2 = null;
            lastclickID3 = null;
            lastclickID4 = null; // should work for all last clicked on both king and regular
-       
+           computer = c2;
          //  window.playerStats = new PlayerStats();
        //    window.playerStats.Initialize();
      
