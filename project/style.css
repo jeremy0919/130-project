@@ -59,7 +59,12 @@ img.Bull {
 	aspect-ratio: 0;
 }
 
-
+a:visited{
+	color:red;
+}
+a{
+	color:green;
+}
 /* Add this style to ensure that the tables are centered even if they are larger than the viewport */
 .table {
     margin: auto;

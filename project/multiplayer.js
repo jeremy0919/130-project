@@ -4,7 +4,7 @@ var lastclickID2 = null;
 var lastclickID3 = null;
 var lastclickID4 = null; // should work for all last clicked on both king and regular
 var currentPlayer;
-var computer;
+
 class PlayerStats {
   constructor() {
     this.c1 = {
@@ -65,7 +65,6 @@ function updateValues1() {
       })
       .then(data => {
           c2 = data.color2;
-          computer = c2;
           c1 = data.color1;
           n = parseInt(data.size, 10);  // Ensure data.size is parsed as an integer
           color1 = data.bg1;
@@ -85,11 +84,45 @@ function updateValues1() {
            window.playerStats.resetMoves('c2');
      
         currentPlayer = c1;
+        updateBackground();
           createTable();
       })
       .catch(error => {
           console.error('Error fetching data:', error);
       });
+}
+
+function updateBackground() {
+  fetch('getimage.php')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();  // Assuming your PHP returns JSON
+    })
+    .then(data => {
+      let image = data.image;
+      // Assuming image is the filename received from the server
+      let imagePath = 'uploads/' + image;
+      console.log(image);
+      console.log(imagePath);
+      // Find the img element with class "bgstyle" and update its src attribute
+   //   let bgStyleImg = document.querySelector('.bgstyle');
+     // let temp = document.getElementById("bgstyle");
+      let temp1 = document.getElementById("table-container");
+      temp1.style.background = 'url(' + imagePath + ') center center no-repeat';
+      temp1.style.backgroundSize = 'cover'; 
+ /*     temp.hidden = false;
+      if (bgStyleImg) {
+        bgStyleImg.src = imagePath;
+      } else {
+        console.error('Element with class "bgstyle" not found.');
+      }
+      */
+    })
+    .catch(error => {
+      console.error('Error updating background:', error);
+    });
 }
 
 function createTable(){
@@ -120,10 +153,12 @@ function createTable(){
   
   let table = document.createElement('table');
   table.setAttribute("id","table");
+  table.setAttribute("class", "transparent-table");
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
 
     let tablebody = document.createElement("tbody");
+    
     table.appendChild(tablebody);
 
     for(let i =0; i<n;++i){ // table row
@@ -197,50 +232,64 @@ function Score(){
  
   table = document.createElement('table');
   table.setAttribute("id","table1");
+  
     table.setAttribute("td","Board");
     table.style.borderCollapse = "collapse";
-
+    table.style.border = "2px solid #000";
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
     
       
         let tr = document.createElement("tr");
+        tr.style.border = "2px solid #000";
         let td = document.createElement("td");
+        td.style.border = "2px solid #000";
         td.innerText ="Player1";
         tr.appendChild(td); 
 
             td = document.createElement("td");
+            td.style.border = "2px solid #000";
             td.setAttribute("id","score1")
             tr.appendChild(td); 
             tablebody.appendChild(tr);
             let tr1 = document.createElement("tr");
+            tr1.style.border = "2px solid #000";
             let td1 = document.createElement("td");
+            td1.style.border = "2px solid #000";
            tr1 = document.createElement("tr");
             td1.innerText= "Player2";
             tr1.appendChild(td1); 
   
                 td1 = document.createElement("td");
+                td1.style.border = "2px solid #000";
                 td1.setAttribute("id","score2");
                 tr1.appendChild(td1); 
                 tablebody.appendChild(tr1);
             
          tr = document.createElement("tr");
+         tr.style.border = "2px solid #000";
          td = document.createElement("td");
+         td.style.border = "2px solid #000";
         td.innerText ="Moves P1";
         tr.appendChild(td); 
 
             td = document.createElement("td");
+            td.style.border = "2px solid #000";
             td.setAttribute("id","moves1")
             tr.appendChild(td); 
             tablebody.appendChild(tr);
              tr1 = document.createElement("tr");
+             tr1.style.border = "2px solid #000";
              td1 = document.createElement("td");
+             td1.style.border = "2px solid #000";
            tr1 = document.createElement("tr");
+           tr1.style.border = "2px solid #000";
             td1.innerText= "Moves P2";
             tr1.appendChild(td1); 
   
                 td1 = document.createElement("td");
+                td1.style.border = "2px solid #000";
                 td1.setAttribute("id","moves2");
                 tr1.appendChild(td1); 
                 tablebody.appendChild(tr1);
@@ -294,7 +343,7 @@ function updateMoves(){
   }
 }
 function MovePiece(y, x, color) { 
-
+console.log(color);
   let td = document.getElementById(x+','+y);
       if(lastclickID1!=null){
       lastclickID1.style.backgroundColor = color2;
@@ -340,6 +389,7 @@ else if( king == 1){
 
 function highlight(x, y, y1, color) {
   updateScore();
+  let Aioptions = 0;
   let x1 = x;
   var tj = null;
   var tj2 = null;
@@ -468,8 +518,24 @@ function highlight(x, y, y1, color) {
     jumpMovement(tj2,tdb,Rdata,temp,y,color);
     
   }
- 
-
+function Ai(){
+if(currentPlayer == c2){
+  console.log(Aioptions);
+  console.log(tdb);
+  if(Aioptions==1){
+    movement1()
+  }
+  if(Aioptions==2){
+    movement2()
+  }
+  if(Aioptions==3){
+    movement3()
+  }
+  if(Aioptions==4){
+    movement4()
+  }
+}
+}
 
 
   
@@ -497,9 +563,9 @@ function highlight(x, y, y1, color) {
         if(tj1 == null){ // if no piece is being the piece trying to jump
           if(tj2!=null){
             tj2.style.backgroundColor = "blue";
-         
+            Aioptions = 4;
             tj2.jmove = function() {
-  
+            
              movement4()
           
             }
@@ -531,9 +597,10 @@ function highlight(x, y, y1, color) {
             if (tj.jmove) {
               tj.removeEventListener('click', tj.jmove);
           }
+          Aioptions = 3;
             tj.style.backgroundColor = "blue";
             tj.jmove = function() {
-     
+           
               movement3(); // allow for jump movement
             }
             tj.addEventListener('click', tj.jmove);
@@ -565,9 +632,10 @@ function highlight(x, y, y1, color) {
           if (tj.jmove) {
             tj.removeEventListener('click', tj.jmove);
         }
+        Aioptions = 3;
         tj.style.backgroundColor = "blue";
           tj.jmove = function() {
-       
+         
         movement3(); // allow for jump movement
           }
           tj.addEventListener('click', tj.jmove);
@@ -603,10 +671,10 @@ function highlight(x, y, y1, color) {
         let tj1 = document.getElementById(zT+'s'+yt);
         if(tj1 == null){ // if no piece is being the piece trying to jump
           if(tj2!=null){
-        
+            Aioptions = 4;
             tj2.style.backgroundColor = "blue";
             tj2.jmove = function() {
-        
+              
              movement4();
             }
             tj2.addEventListener('click', tj2.jmove);
@@ -629,14 +697,22 @@ function highlight(x, y, y1, color) {
     
     if(td2!=null){
     td2.style.backgroundColor = "blue";
+    if(Aioptions!= 4 || Aioptions!= 3){
+      Aioptions =2;
+    }
     td2.jmove = function(){
+      
     movement2();
     }
     td2.addEventListener('click', td2.jmove);
   
     }
     if(td!=null){
+      if(Aioptions!= 4 || Aioptions!= 3){
+      Aioptions =1;
+      }
       td.jmove = function(){
+       
      movement1();
       }
       td.addEventListener('click', td.jmove);
@@ -645,7 +721,7 @@ function highlight(x, y, y1, color) {
     }
     
 }
-
+Ai();
 }
 
 function jumpMovement(tdest, td, tj, x, y, color) {
@@ -1046,6 +1122,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   var removetab = document.getElementById(x1 + 's' + y); // removes piece at origional location
  
   if (removetab != null) {
+    removetab.attributes.hasPiece = 0;
     var parentEl1 = removetab.parentElement;
     parentEl1.removeChild(removetab);
   }
@@ -1053,6 +1130,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   // Remove existing piece on td
   var existingPiece = document.getElementById(x + 's' + y); // extra check so no two pieces can be in one spot 
   if (existingPiece != null) {
+    removetab.attributes.hasPiece = 0;
     var parentEl2 = existingPiece.parentElement;
     parentEl2.removeChild(existingPiece);
   }
@@ -1132,6 +1210,7 @@ function pieceWhite(td,x,y){
   svg.appendChild(circle);
   svg.setAttribute("id",x+'s'+y);
   td.attributes.isking = 0;
+  td.attributes.hasPiece = 1;
   td.appendChild(svg);
   updateScore();
 }
@@ -1150,6 +1229,7 @@ function pieceBlack(td,x,y){
   svg.appendChild(circle);
   svg.setAttribute("id",x+'s'+y);
   td.attributes.isking = 0;
+  td.attributes.hasPiece = 1;
   td.appendChild(svg);
   updateScore();
 }
@@ -1171,6 +1251,7 @@ function kingWHite(td,x,y){
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
   td.attributes.isking = 1;
+  td.attributes.hasPiece = 1;
   updateScore();
 }
 function kingBlack(td,x,y){
@@ -1190,6 +1271,7 @@ function kingBlack(td,x,y){
   svg.setAttribute("id",x+'s'+y);
   td.appendChild(svg);
   td.attributes.isking = 1;
+  td.attributes.hasPiece = 1;
   updateScore();
 }
 
@@ -1206,7 +1288,7 @@ function createKingCrown() {
 }
 
 function kingMovement(y, x, color){ //needs jump functionality
-
+let Aioptions = 0;
   if(color!=currentPlayer){
     return;
   }
@@ -1584,7 +1666,36 @@ if(ttl!=null){
     var childElement3 = tdr.firstChild; 
   }
 
-
+  function Ai(){
+    if(currentPlayer == c2){
+      console.log(Aioptions);
+      console.log(tdb);
+      if(Aioptions==1){
+        movement1()
+      }
+      if(Aioptions==2){
+        movement2()
+      }
+      if(Aioptions==3){
+        movement3()
+      }
+      if(Aioptions==4){
+        movement4()
+      }
+      if(Aioptions==5){
+        movement5()
+      }
+      if(Aioptions==6){
+        movement6()
+      }
+      if(Aioptions==7){
+        movement7()
+      }
+      if(Aioptions==8){
+        movement8()
+      }
+    }
+    }
 
 
 
@@ -1604,6 +1715,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
           Xval = zT;
           Yval = yt;
           lastclickID1 = tj;
+          Aioptions = 5;
           tj.jmove = function() {
        
             movement5(); // allow for jump movement
@@ -1630,6 +1742,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
           Xval = zT;
           Yval = yt;
           lastclickID2 = tj4;
+          Aioptions = 6;
           tj4.jmove = function() {
        
             movement6(); // allow for jump movement
@@ -1658,6 +1771,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
             Xval = zT;
             Yval = yt;
             lastclickID1 = tj;
+            Aioptions = 5;
             tj.jmove = function() {
        
               movement5(); // allow for jump movement
@@ -1671,6 +1785,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
       }
       }
       if((xl<n&&xl>=0)&&y1<n-1){
+        Aioptions = 1;
         ttl.jmove = function() {
        
           movement1(); // allow for jump movement
@@ -1697,6 +1812,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
                 Xval = zT;
                 Yval = yt;
                 lastclickID2=tj4;
+                Aioptions = 6;
                 tj4.jmove = function() {
        
                   movement6(); // allow for jump movement
@@ -1710,6 +1826,7 @@ if (existingPieceTR != null && existingPieceTL != null) { // needs removing of s
           }
           }
           if(xr<n && xr>=0&&y1<n&&y1>=0){
+            Aioptions = 2;
             ttr.jmove = function() {
        
               movement2(); // allow for jump movement
@@ -1735,6 +1852,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
             Xval = zT;
             Yval = yt;
             lastclickID3 = tj7;
+            Aioptions = 7;
             tj7.jmove = function() {
        
               movement7(); // allow for jump movement
@@ -1761,6 +1879,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
               Xval = zT;
               lastclickID4 = tj8;
               Yval = yt;
+              Aioptions = 8;
               tj8.jmove = function() {
        
                 movement8(); // allow for jump movement
@@ -1789,6 +1908,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
             Xval = zT;
             lastclickID3 = tj7;
             Yval = yt;
+            Aioptions = 7;
             tj7.jmove = function() {
        
               movement7(); // allow for jump movement
@@ -1802,6 +1922,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
       }
       }
       if(tdr!=null){
+        Aioptions = 4;
         tdr.jmove = function() {
        
           movement4(); // allow for jump movement
@@ -1828,6 +1949,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
             Xval = zT;
             lastclickID4=tj8;
             Yval = yt;
+            Aioptions = 8;
             tj8.jmove = function() {
        
               movement8(); // allow for jump movement
@@ -1841,6 +1963,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
       }
       }
         if(tdl!=null){
+          Aioptions = 3;
           tdl.jmove = function() {
        
             movement3(); // allow for jump movement
@@ -1854,6 +1977,7 @@ if(existingPieceBL!=null&&existingPieceBR!=null){
 if(existingPieceBL==null&&existingPieceBR==null){
 
   if(tdl!=null){
+    Aioptions = 3;
     tdl.jmove = function() {
        
       movement3(); // allow for jump movement
@@ -1865,6 +1989,7 @@ if(existingPieceBL==null&&existingPieceBR==null){
     }
     if(tdr!=null){
     tdr.style.backgroundColor = "blue";
+    Aioptions = 4;
     tdr.jmove = function() {
        
       movement4(); // allow for jump movement
@@ -1879,6 +2004,7 @@ if (existingPieceTR== null && existingPieceTL== null) {
 
   if(ttl!=null){
     ttl.style.backgroundColor = "blue";
+    Aioptions = 1;
     ttl.jmove = function() {
        
       movement1(); // allow for jump movement
@@ -1889,6 +2015,7 @@ if (existingPieceTR== null && existingPieceTL== null) {
     }
     if(ttr!=null){
     ttr.style.backgroundColor = "blue";
+    Aioptions = 2;
     ttr.jmove = function() {
        
       movement2(); // allow for jump movement
@@ -1902,6 +2029,7 @@ else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&exi
   
       if(ttl!=null){
         ttl.style.backgroundColor = "blue";
+        Aioptions = 1;
         ttl.jmove = function() {
        
           movement1(); // allow for jump movement
@@ -1911,6 +2039,7 @@ else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&exi
         }
         if(ttr!=null){
         ttr.style.backgroundColor = "blue";
+        Aioptions = 2;
         ttr.jmove = function() {
        
           movement2(); // allow for jump movement
@@ -1920,6 +2049,7 @@ else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&exi
         var childElement2 = ttr.firstChild; 
         }
         if(tdl!=null){
+          Aioptions = 3;
           tdl.jmove = function() {
        
             movement3(); // allow for jump movement
@@ -1931,6 +2061,7 @@ else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&exi
         var childElement3 = tdl.firstChild; 
         }
         if(tdr!=null){
+          Aioptions = 4;
           tdr.jmove = function() {
        
             movement4(); // allow for jump movement
@@ -1941,6 +2072,7 @@ else if(existingPieceBL==null&&existingPieceBR==null&&existingPieceTL==null&&exi
         var childElement4 = tdr.firstChild; 
         }
     }
+    Ai();
   }
 
 
@@ -2292,6 +2424,7 @@ function kingFinishMovement(td,tdb,color,x1,y1,x,y){
   var removetab = document.getElementById(x1 + 's' + y1); // removes piece at origional location
 
   if (removetab != null) {
+    removetab.attributes.hasPiece = 0;
     var parentEl1 = removetab.parentElement;
     parentEl1.removeChild(removetab);
   }
@@ -2299,6 +2432,7 @@ function kingFinishMovement(td,tdb,color,x1,y1,x,y){
   // Remove existing piece on td
   var existingPiece = document.getElementById(x + 's' + y); // extra check so no two pieces can be in one spot 
   if (existingPiece != null) {
+    existingPiece.attributes.hasPiece = 0;
     var parentEl2 = existingPiece.parentElement;
     parentEl2.removeChild(existingPiece);
   }
@@ -2474,11 +2608,43 @@ function resetTimer() {
   startTimer(); // Start the timer again
 }
 
-};*/
+*/
+
+
+function cpuMovement(){
+  let x =1;
+  let y =2;
+  let counter = 0;
+  let temp;
+
+  while( computer == currentPlayer){
+
+      y = Math.floor(Math.random() * n);
+      x = Math.floor(Math.random() * n);
+    
+    temp = document.getElementById(x+"s"+y);
+   
+    if(temp!=null ){
+      var color = temp.querySelector('circle').getAttribute('fill');
+     
+      if(color == c2){
+    MovePiece(y,x,c2);
+      }
+  }
+
+    counter+=1;
+    if(counter>10000){
+      break;
+    }
+  }
+ 
+}
 let timerElement; // Declare timerElement as a global variable
-let seconds = time; // might need to be put back in timer function 
+// might need to be put back in timer function 
+
 function timer() {
- // alert("idk how to reset timer")
+  let seconds = time; 
+
   timerElement = document.getElementsByClassName("timer")[0];
  
   let timerInterval; 
@@ -2512,55 +2678,16 @@ function timer() {
   }
   // Start the timer initially
   startTimer();
-
+  function resetTimer() {
+    timerElement = document.getElementsByClassName("timer")[0];
+    clearInterval(timerInterval); // Clear the existing interval
+    seconds = time; // Reset the timer to the initial time
+    timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+    startTimer(); // Start the timer again
+  }
+  
   // You can now call resetTimer() whenever you want to reset the timer
 }
-
-
-
-function resetTimer() {
-  timerElement = document.getElementsByClassName("timer")[0];
-  clearInterval(timerInterval); // Clear the existing interval
-  seconds = time; // Reset the timer to the initial time
-  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
-  startTimer(); // Start the timer again
-}
-
-
-
-function cpuMovement(){
-  currentPlayer = c2;
-  while( computer == currentPlayer){
-    simulateRandomClick();
-    console.log("x")
-  }
- 
-}
-function simulateRandomClick() {
-
-    // Get all clickable elements (adjust the selector based on your HTML structure)
-    const clickableElements = document.querySelectorAll('.clickable');
-
-    // Filter elements that have a 'grayMove' event listener
-    const elementsWithGrayMove = Array.from(clickableElements).filter(element => {
-        const grayMoveListener = element.grayMove;
-        return typeof grayMoveListener === 'function' && grayMoveListener === MovePiece;
-    });
-
-    if (elementsWithGrayMove.length > 0) {
-        // Generate a random index to select a random element with a 'grayMove' event listener
-        const randomIndex = Math.floor(Math.random() * elementsWithGrayMove.length);
-
-        // Get the randomly selected element
-        const randomElement = elementsWithGrayMove[randomIndex];
-
-        // Simulate a click on the randomly selected element
-        randomElement.click();
-    } else {
-        console.log("No clickable elements with 'grayMove' event listener found.");
-    }
-}
-
 // Call the function to simulate a random click on an element with a 'grayMove' event listener
 
 
