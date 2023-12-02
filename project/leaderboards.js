@@ -45,7 +45,7 @@ function createTable(data) {
         columns.forEach(columnName => {
             const th = document.createElement('th');
             
-            if(th != "password"){
+            if(columnName != "password"){
                 if(th!='id'){
                 th.innerHTML = columnName;
                 headerRow.appendChild(th);
@@ -59,9 +59,10 @@ function createTable(data) {
             const row = table.insertRow();
 
             columns.forEach(columnName => {
-                
+                if(columnName != "password"){
                 const cell = row.insertCell();
                 cell.innerHTML = rowData[columnName];
+                }
                 
             });
         });

@@ -29,7 +29,7 @@ if(isset($_SESSION["bg2"])){
 if(isset($_SESSION["setTime"])){
     $setTime = $_SESSION["setTime"];
 }else{
-    $setTime = "setTime";
+    $setTime = "1800";
 }
 
 

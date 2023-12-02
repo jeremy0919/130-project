@@ -13,25 +13,21 @@ body {
 * {
     font-family: sans-serif;
 }
-
+/*
 .img-container {
    position: absolute;
 	margin-left: 30%;
    width: 65%;
    margin-right: 10%;
    height: 17vh; 
-    z-index: -1; /* Move the container behind other elements */
+    z-index: -1;
 }
 
 .bgstyle {
     width: 70%;
 
-    object-fit: cover; /* Ensure the image covers the container */
-    opacity: 0.5; /* Adjust the opacity as needed */
-}
-
-form {
-    color: white;
+    object-fit: cover; 
+    opacity: 0.5;
 }
 
 .transparent-table {
@@ -39,6 +35,23 @@ form {
     position: relative;
     z-index: 1;
 }
+*/
+.table-container {
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    padding: left 10%;
+    margin-left: 10%;
+}
+
+form {
+    color: white;
+}
+
+
 img.Bull {
 	width: 100px;
 	height: auto;
@@ -46,12 +59,6 @@ img.Bull {
 	aspect-ratio: 0;
 }
 
-.table-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20vh; /* Adjust as needed based on your layout */
-}
 
 /* Add this style to ensure that the tables are centered even if they are larger than the viewport */
 .table {

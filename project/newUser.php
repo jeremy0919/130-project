@@ -17,7 +17,7 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
         echo "Account already exists";
     } else {
         // Name not found in the database, do something else
-        $sql = "INSERT INTO `leaderboards` (`id`, `name`, `password`, `gamesPlayed`, `wins`, `losses`, `winRate`) 
+        $sql = "INSERT INTO `leaderboards` (`id`, `name` `gamesPlayed`, `wins`, `losses`, `winRate`) 
         VALUES (NULL, ?, ?, '0', '0', '0', '0')";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("ss", $name, $password);

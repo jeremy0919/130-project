@@ -20,3 +20,10 @@ img.Bull {
 form{
 	color:white;
 }
+
+a:visited{
+	color:red;
+}
+a{
+	color:green;
+}

@@ -24,6 +24,7 @@ if ($connection ->query($sql) === TRUE) {
 }
 
 $connection ->close();
+header("maketable.php");
 }
 ?>
 <!DOCTYPE html>

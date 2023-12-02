@@ -5,6 +5,7 @@
 $sql = "CREATE TABLE leaderboards ( 
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(20) NOT NULL,
+  password varchar(50) NOT NULL,
   gamesPlayed INT NOT NULL,
   wins INT NOT NULL,
   losses INT NOT NULL,
@@ -18,4 +19,5 @@ if ($connection->query($sql) === TRUE) {
     echo "Error creating table: " . $connection->error;
   }
   $connection->close();
+  header("fillLeaderboards.php");
 ?>

@@ -104,16 +104,21 @@ function updateBackground() {
       let image = data.image;
       // Assuming image is the filename received from the server
       let imagePath = 'uploads/' + image;
-
+      console.log(image);
+      console.log(imagePath);
       // Find the img element with class "bgstyle" and update its src attribute
-      let bgStyleImg = document.querySelector('.bgstyle');
-      let temp = document.getElementById("bgstyle");
-      temp.hidden = false;
+   //   let bgStyleImg = document.querySelector('.bgstyle');
+     // let temp = document.getElementById("bgstyle");
+      let temp1 = document.getElementById("table-container");
+      temp1.style.background = 'url(' + imagePath + ') center center no-repeat';
+      temp1.style.backgroundSize = 'cover'; 
+ /*     temp.hidden = false;
       if (bgStyleImg) {
         bgStyleImg.src = imagePath;
       } else {
         console.error('Element with class "bgstyle" not found.');
       }
+      */
     })
     .catch(error => {
       console.error('Error updating background:', error);
