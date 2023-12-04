@@ -2627,55 +2627,60 @@ function cpuMovement(){
   }
  
 }
-let timerElement; // Declare timerElement as a global variable
-// might need to be put back in timer function 
+
+let timerObject = null;
 
 function timer() {
-  let seconds = time; 
+  // Check if a timer is already running
+  if (timerObject !== null) {
+    clearInterval(timerObject.interval);
+  }
 
-  timerElement = document.getElementsByClassName("timer")[0];
- 
-  let timerInterval; 
+  let seconds = time;
+  let timerElement = document.getElementsByClassName("timer")[0];
 
   function updateTimer() {
     seconds--;
     timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
     if (seconds === 0) {
-      clearInterval(timerInterval); // Clear the interval when the timer reaches 0
+      clearInterval(timerObject.interval);
+      handleTimeout();
     }
   }
 
   function startTimer() {
-
-    timerInterval = setInterval(updateTimer, 1000);
+    timerObject.interval = setInterval(updateTimer, 1000);
   }
 
+  function resetTimer() {
+    clearInterval(timerObject.interval);
+    seconds = time;
+    timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
+    startTimer();
+  }
 
-  if(seconds <= 0 ){
+  function handleTimeout() {
     alert("time up");
-    if(playerStats.returnPieces('c1') >  playerStats.returnPieces('c2')){
-      alert(c1+"wins");
+    if (playerStats.returnPieces('c1') > playerStats.returnPieces('c2')) {
+      alert(c1 + " wins");
       sendData(c1);
-    }
-    else   if(playerStats.returnPieces('c1') < playerStats.returnPieces('c2')){
-      alert(c2+" wins");
+    } else if (playerStats.returnPieces('c1') < playerStats.returnPieces('c2')) {
+      alert(c2 + " wins");
       sendData(c2);
-    }
-    else{
+    } else {
       alert("tie");
     }
+    // Reset the timer after handling the timeout
+    resetTimer();
   }
+
+  // Store the timer interval ID in the timerObject
+  timerObject = {
+    interval: null
+  };
+
   // Start the timer initially
   resetTimer();
-  function resetTimer() {
-    timerElement = document.getElementsByClassName("timer")[0];
-    clearInterval(timerInterval); // Clear the existing interval
-    seconds = time; // Reset the timer to the initial time
-    timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
-    startTimer(); // Start the timer again
-  }
-  
-  // You can now call resetTimer() whenever you want to reset the timer
 }
 // Call the function to simulate a random click on an element with a 'grayMove' event listener
 
