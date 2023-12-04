@@ -15,8 +15,6 @@ class PlayerStats {
       numMoves: 0,
       piecesLeft: 0,
     };
-
-    // other characters and their properties can be added here
   }
 
   incrementNumMoves(character) {
@@ -48,7 +46,6 @@ class PlayerStats {
       piecesLeft: 0,
     };
   }
-  // You can add more methods as needed to manipulate player stats
 }
 
 
@@ -61,7 +58,7 @@ function updateValues1() {
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          return response.json();  // Assuming your PHP returns JSON
+          return response.json(); 
       })
       .then(data => {
           c2 = data.color2;
@@ -73,11 +70,9 @@ function updateValues1() {
            lastclickID1 = null;
            lastclickID2 = null;
            lastclickID3 = null;
-           lastclickID4 = null; // should work for all last clicked on both king and regular
+           lastclickID4 = null; 
        
-         //  window.playerStats = new PlayerStats();
-       //    window.playerStats.Initialize();
-     
+   
            window.playerStats.setPieces('c1', n);
            window.playerStats.setPieces('c2', n);
            window.playerStats.resetMoves('c1');
@@ -102,23 +97,13 @@ function updateBackground() {
     })
     .then(data => {
       let image = data.image;
-      // Assuming image is the filename received from the server
+   
       let imagePath = 'uploads/' + image;
-      console.log(image);
-      console.log(imagePath);
-      // Find the img element with class "bgstyle" and update its src attribute
-   //   let bgStyleImg = document.querySelector('.bgstyle');
-     // let temp = document.getElementById("bgstyle");
+    
+
       let temp1 = document.getElementById("table-container");
       temp1.style.background = 'url(' + imagePath + ') center center no-repeat';
       temp1.style.backgroundSize = 'cover'; 
- /*     temp.hidden = false;
-      if (bgStyleImg) {
-        bgStyleImg.src = imagePath;
-      } else {
-        console.error('Element with class "bgstyle" not found.');
-      }
-      */
     })
     .catch(error => {
       console.error('Error updating background:', error);
@@ -2529,7 +2514,7 @@ function timer() {
   timerElement = document.getElementsByClassName("timer")[0];
  
   let timerInterval; 
-
+ 
   function updateTimer() {
     seconds--;
     timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
@@ -2539,6 +2524,7 @@ function timer() {
   }
 
   function startTimer() {
+    clearInterval(timerInterval); 
     timerInterval = setInterval(updateTimer, 1000);
   }
 
@@ -2558,7 +2544,7 @@ function timer() {
     }
   }
   // Start the timer initially
-  startTimer();
+  resetTimer();
   function resetTimer() {
     timerElement = document.getElementsByClassName("timer")[0];
     clearInterval(timerInterval); // Clear the existing interval
