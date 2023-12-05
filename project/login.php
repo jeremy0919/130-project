@@ -13,7 +13,7 @@ if (isset($_POST['submitL'])) {
     $result = $stmt->get_result();
     $data = array();
 
-    // Close statement
+
     $stmt->close();
 
     if ($result->num_rows > 0) {

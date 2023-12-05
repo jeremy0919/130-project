@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+// sets session variables for game 
 
 
 if(isset ($_POST["color1"])){

@@ -2465,8 +2465,8 @@ function sendData(winner){
   data.append('moves', playerStats.returnMoves('c1'));
   data.append('pieces', playerStats.returnPieces('c1'));
   time = document.getElementsByClassName("timer")[0].textContent;
-  
-  data.append('time', time); // figure out how to get time
+  var firstWord = time.split(' ')[0];
+  data.append('time', firstWord); 
 
   if(winner == c1){ // since everything is from p1 ones perspective and stats
     
@@ -2488,10 +2488,13 @@ function sendData(winner){
 }
 function giveUp(){
   data = new FormData 
+  alert(playerStats.returnMoves('c1'));
+  alert(playerStats.returnPieces('c1'));
   data.append('moves', playerStats.returnMoves('c1'));
   data.append('pieces', playerStats.returnPieces('c1'));
   time = document.getElementsByClassName("timer")[0].textContent;
-  
+  var firstWord = time.split(' ')[0];
+  alert(firstWord);
   data.append('time', time); 
 
  

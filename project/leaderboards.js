@@ -26,7 +26,7 @@ function display2() {
           messageElement.textContent = 'no account history.';
           document.body.appendChild(messageElement);
         } else {
-          const table = createTable(data);
+          const table = createTable1(data);
           replaceTableContent(table);
         }
       })
@@ -35,9 +35,10 @@ function display2() {
         // Handle errors, e.g., display an error message to the user
       });
   }
-function createTable(data) {
-    const table = document.createElement('table');
 
+function createTable1(data) {
+    const table = document.createElement('table');
+    let count =1;
     if (data.length > 0) {
         const headerRow = table.insertRow();
         const columns = Object.keys(data[0]); // Extract column names from the first row of data
@@ -46,10 +47,11 @@ function createTable(data) {
             const th = document.createElement('th');
             
             if(columnName != "password"){
-                if(th!='id'){
+               if( columnName=="id"){
+                columnName = "Game";
+               }
                 th.innerHTML = columnName;
                 headerRow.appendChild(th);
-                }
             }
       
 
@@ -60,8 +62,60 @@ function createTable(data) {
 
             columns.forEach(columnName => {
                 if(columnName != "password"){
-                const cell = row.insertCell();
-                cell.innerHTML = rowData[columnName];
+                    if( columnName=="Game" ||columnName=="id" ){
+                        const cell = row.insertCell();
+                        cell.innerHTML = count;
+                         count +=1;
+                       }
+                    else{
+                        const cell = row.insertCell();
+                        cell.innerHTML = rowData[columnName];
+                    }
+                }
+                
+            });
+        });
+    }
+
+    return table;
+}
+
+
+function createTable(data) {
+    const table = document.createElement('table');
+    let count =1;
+    if (data.length > 0) {
+        const headerRow = table.insertRow();
+        const columns = Object.keys(data[0]); // Extract column names from the first row of data
+
+        columns.forEach(columnName => {
+            const th = document.createElement('th');
+            
+            if(columnName != "password"){
+               if( columnName=="id"){
+                columnName = "rank";
+               }
+                th.innerHTML = columnName;
+                headerRow.appendChild(th);
+            }
+      
+
+        });
+
+        data.forEach(rowData => {
+            const row = table.insertRow();
+
+            columns.forEach(columnName => {
+                if(columnName != "password"){
+                    if( columnName=="rank" ||columnName=="id" ){
+                        const cell = row.insertCell();
+                        cell.innerHTML = count;
+                         count +=1;
+                       }
+                    else{
+                        const cell = row.insertCell();
+                        cell.innerHTML = rowData[columnName];
+                    }
                 }
                 
             });

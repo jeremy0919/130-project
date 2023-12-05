@@ -2577,32 +2577,15 @@ function sendData(winner){
   xhr.open('POST', 'insert.php', true);
   xhr.send(data);
 }
-//document.addEventListener('DOMContentLoaded', function () {
-/*
-function timer(){
-  let seconds = time;
-  const timerElement = document.getElementsByClassName("timer")[0];
-function updateTimer() {
-  seconds--;
-  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
-}
-
-// Set up the timer to update every second (1000 milliseconds)
-const timerInterval = setInterval(updateTimer, 1000);
-function resetTimer() {
-  clearInterval(timerInterval); // Clear the existing interval
-  seconds = time; // Reset the timer to the initial time
-  timerElement.textContent = `${seconds} second${seconds !== 1 ? 's' : ''}`;
-  startTimer(); // Start the timer again
-}
-
-*/
 function giveUp(){
   data = new FormData 
+  alert(playerStats.returnMoves('c1'));
+  alert(playerStats.returnPieces('c1'));
   data.append('moves', playerStats.returnMoves('c1'));
   data.append('pieces', playerStats.returnPieces('c1'));
   time = document.getElementsByClassName("timer")[0].textContent;
-  
+  var firstWord = time.split(' ')[0];
+  alert(firstWord);
   data.append('time', time); 
 
  

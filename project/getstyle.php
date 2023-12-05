@@ -1,5 +1,5 @@
 <?php
-
+// accesses session variables and encodes them for game, uses preset values if colors arent set
 session_start();
 if(isset($_SESSION["color1"])){
     $color1 = $_SESSION["color1"];

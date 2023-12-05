@@ -10,24 +10,22 @@
 <body>
     <div class = links>
         <li><a href="contact.html">About us</a></li>
-        <li><a href="game.html">Start Game page?</a></li> 
+        <li><a href="game.html">Jump into game</a></li> 
         <li><a href="help.html">help/rules</a></li>
         <li><a href="leaderboards.html">leaderboards</a> </li>
         <li><a href="login.html">login</a></li>
-        <li><a href="checkers.html">currentMain page</a></li>
+        <li><a href="checkers.html">Main page</a></li>
     </div>
     <img src="bulldog.png" class="Bull" />
     <div class="header">
-    Leaderboard page: To display the best players, to sort players by ascending/descending order of
-won games, time played, number of games played. To display all the games played by the player
-who is logged into the system. (leaderboard.html)
+    Leaderboard:
 </div>
 
     <label>if Logged in display game History</label>
     <input type="button" onclick="display2()" name="History" value= "History">
     <label>Display top players</label>
     <input type="button" onclick="display1()" name="leaderboard" value = "leaderboards">
-    <label>Sort players by wins</label>
+    <label>Sort players by: </label>
     <input type="button" onclick="display3('wins', 'most')" name="leaderboard" value="wins">
     <input type="button" onclick="display3('losses', 'most')" name="leaderboard" value="losses">
     <input type="button" onclick="display3('gamesPlayed', 'most')" name="leaderboard" value="mostGames">
