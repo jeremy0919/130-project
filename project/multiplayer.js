@@ -2597,7 +2597,28 @@ function resetTimer() {
 }
 
 */
+function giveUp(){
+  data = new FormData 
+  data.append('moves', playerStats.returnMoves('c1'));
+  data.append('pieces', playerStats.returnPieces('c1'));
+  time = document.getElementsByClassName("timer")[0].textContent;
+  
+  data.append('time', time); 
 
+ 
+    data.append('win', 0)
+
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+      }
+  };
+  
+  xhr.open('POST', 'insert.php', true);
+  xhr.send(data);
+}
 
 function cpuMovement(){
   let x =1;

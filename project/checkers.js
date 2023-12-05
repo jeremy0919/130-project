@@ -2464,8 +2464,9 @@ function sendData(winner){
   data = new FormData // idk if form data is best way 
   data.append('moves', playerStats.returnMoves('c1'));
   data.append('pieces', playerStats.returnPieces('c1'));
-  temp = time-seconds;
-  data.append('time', temp); // figure out how to get time
+  time = document.getElementsByClassName("timer")[0].textContent;
+  
+  data.append('time', time); // figure out how to get time
 
   if(winner == c1){ // since everything is from p1 ones perspective and stats
     
@@ -2485,7 +2486,28 @@ function sendData(winner){
   xhr.open('POST', 'insert.php', true);
   xhr.send(data);
 }
+function giveUp(){
+  data = new FormData 
+  data.append('moves', playerStats.returnMoves('c1'));
+  data.append('pieces', playerStats.returnPieces('c1'));
+  time = document.getElementsByClassName("timer")[0].textContent;
+  
+  data.append('time', time); 
 
+ 
+    data.append('win', 0)
+
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+      }
+  };
+  
+  xhr.open('POST', 'insert.php', true);
+  xhr.send(data);
+}
 
 let timerObject = null;
 

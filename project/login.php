@@ -20,8 +20,8 @@ if (isset($_POST['submitL'])) {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-      //  echo( $data[0]['password']);
-        // Verify the entered password against the hashed password in the database
+
+   
         if ($password == $data[0]['password'])   {
             $userId = $name;
             setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
@@ -33,13 +33,13 @@ if (isset($_POST['submitL'])) {
         } else {
             echo json_encode(array("msg" => "Wrong password"));
             $connection->close();
-     //       header('Location: login.html');
+            header('Location: login.html');
             exit;
         }
     } else {
         echo json_encode(array("msg" => "Account not found"));
         $connection->close();
-    //    header('Location: login.html');
+        header('Location: login.html');
         exit;
     }
 
