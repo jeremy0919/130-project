@@ -1,0 +1,94 @@
+<html5> 
+    <head>
+        
+      <link rel="stylesheet" href="style1.css">
+    </head>
+    <body>
+        <img src="bulldog.png" class="Bull" />
+        <div class="header">
+    </div>
+    <form id="colors" method="POST" action="colors.php">
+        <label>Change color Player1</label><br>
+        <input type="text" id="color1" name="color1" value="pink"><br>
+    
+        <label>Change color Player2</label><br>
+        <input type="text" id="color2" name="color2" value="purple"><br>
+    
+        <label>Change the size of the board</label><br>
+        <input type="text" id="size" name="size" value="10"><br>
+    
+        <label>Change the color of the board</label><br>
+        
+        <label>Change color of the black squares</label><br>
+        <input type="text" id="bg1" name="bg1" value="red"><br>
+    
+        <label>Change color of the red squares</label><br>
+        <input type="text" id="bg2" name="bg2" value="green"><br>
+    
+        <label>Change how long the game runs for</label><br>
+        <input type="text" id="setTime" name="setTime" value="1800"> <br>
+        <label>singlePlayer</label>
+        <input type = "checkbox" name="singlePlayer"><br>
+        <label>multiplayer</label>
+        <input type = "checkbox" name="multiplayer"><br>
+        <input type="submit" value="updateBoard">
+    </form>
+     <form>
+        <label>Change the style of the board</label><br>
+         
+        <input type = "button" value = "Previous" onclick = "previous()">
+        <input type = "button" value = "Select" onclick="selectIMG()">
+        <input type = "button" value = "Next" onclick = "next()">
+     </form>
+     <img src="uploads/img1.png" class="bgstyle" id ="bgstyle" />
+        <div class = links>
+            <li><a href="contact.html">About us</a></li>
+            <li><a href="game.html">Jump into game</a></li> 
+            <li><a href="help.html">help/rules</a></li>
+            <li><a href="leaderboards.html">leaderboards</a> </li>
+            <li><a href="login.html">login</a></li>
+            <li><a href="index.html">Main page</a></li>
+        </div>
+        <div class = "table"></div>
+    </body>
+    <script>
+       const imageArray = ["img1.png", "img2.png", "img3.png","img4.png"];
+        let currentIndex = 0;
+
+        function updateImage() {
+            const imgElement = document.getElementById('bgstyle');
+            imgElement.src = 'uploads/' + imageArray[currentIndex];
+        }
+
+        function previous() {
+            currentIndex = (currentIndex - 1 + imageArray.length) % imageArray.length;
+            updateImage();
+        }
+        function selectIMG(){
+            console.log("select");
+            console.log(imageArray[currentIndex]);
+            updateSession(imageArray[currentIndex]);
+        }
+        function updateSession(selectedImage) {
+            // Use AJAX to send the selected image to a PHP script
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update_session.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log('Session variable updated successfully');
+                }
+            };
+            xhr.send('selectedImage=' + selectedImage);
+        }
+
+        function next() {
+            currentIndex = (currentIndex + 1) % imageArray.length;
+            updateImage();
+        }
+
+        // Initialize the image on page load
+        updateImage();
+
+    </script>
+</html5>

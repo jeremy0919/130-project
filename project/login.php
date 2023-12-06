@@ -28,7 +28,7 @@ if (isset($_POST['submitL'])) {
     
             echo json_encode($data);
             $connection->close();
-            header('Location: game.html');
+            header('Location: index.html');
             exit;
         } else {
             echo json_encode(array("msg" => "Wrong password"));

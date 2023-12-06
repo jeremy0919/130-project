@@ -41,10 +41,7 @@ VALUES (NULL, 'anthony','password',  '12', '11', '1', '92', '600')";
 mysqli_query($connection, $sql);
 
 $connection->close();
-header("checkers.html");
+header('location: index.html');
 
 
-
-  $connection->close();
-  header("fillLeaderboards.php");
 ?>

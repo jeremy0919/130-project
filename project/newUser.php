@@ -45,6 +45,6 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
     $connection->close();
 }
 
-header('Location: checkers.html');
+header('Location: index.html');
 exit;
 ?>

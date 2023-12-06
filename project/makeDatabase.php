@@ -65,7 +65,7 @@ mysqli_query($connection, $sql);
 
 
   $connection->close();
-  header("checkers.html");
+  header("index.html");
 }
 ?>
 
