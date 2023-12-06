@@ -39,16 +39,16 @@ if(isset ($_POST["setTime"])){
 else{
     $_SESSION["setTime"] = "18000";
 }
-if(isset ($_POST["multiplayer"])){
-    header('Location: game1.html');
-}
-if(isset ($_POST["singleplayer"])){
-    header('Location: game.html');
-}
 if(isset ($_POST["multiplayer"]) && isset( $_POST["singeplayer"])){
     header('Location: game.html');
 }
 if(!isset($_POST["multiplayer"]) && !isset( $_POST["singeplayer"])){
+    header('Location: game.html');
+}
+if(isset ($_POST["multiplayer"])){
+    header('Location: game1.html');
+}
+if(isset ($_POST["singleplayer"])){
     header('Location: game.html');
 }
 ?>
