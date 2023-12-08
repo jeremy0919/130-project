@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style1.css">
+    <script src="leaderboards.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class = links>
+        <li><a href="contact.html">About us</a></li>
+        <li><a href="game.html">Jump into game</a></li> 
+        <li><a href="help.html">help/rules</a></li>
+        <li><a href="leaderboards.html">leaderboards</a> </li>
+        <li><a href="login.html">login</a></li>
+        <li><a href="index.html">Main page</a></li>
+    </div>
+    <img src="bulldog.png" class="Bull" />
+    <div class="header">
+    Leaderboard:
+</div>
+
+    <label>if Logged in display game History</label>
+    <input type="button" onclick="display2()" name="History" value= "History">
+    <label>Display top players</label>
+    <input type="button" onclick="display1()" name="leaderboard" value = "leaderboards">
+    <label>Sort players by: </label>
+    <input type="button" onclick="display3('wins', 'most')" name="leaderboard" value="wins">
+    <input type="button" onclick="display3('losses', 'most')" name="leaderboard" value="losses">
+    <input type="button" onclick="display3('gamesPlayed', 'most')" name="leaderboard" value="mostGames">
+    <input type="button" onclick="display3('gamesPlayed', 'least')" name="leaderboard" value="leastGames">
+    <input type="button" onclick="display3('timePlayed', 'most')" name="leaderboard" value="mostTime">
+    <input type="button" onclick="display3('timePlayed', 'least')" name="leaderboard" value="leastTime">
+    
+    <div id="table-container"></div>
+</body>
+</html>

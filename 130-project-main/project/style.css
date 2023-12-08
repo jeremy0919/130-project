@@ -1,0 +1,71 @@
+.header {
+    color: white;
+    background-color: #b1102b;
+}
+
+body {
+    position: relative;
+    background-color: #13284c;
+    color: white;
+    margin: 0; /* Remove default margin */
+}
+
+* {
+    font-family: sans-serif;
+}
+/*
+.img-container {
+   position: absolute;
+	margin-left: 30%;
+   width: 65%;
+   margin-right: 10%;
+   height: 17vh; 
+    z-index: -1;
+}
+
+.bgstyle {
+    width: 70%;
+
+    object-fit: cover; 
+    opacity: 0.5;
+}
+
+.transparent-table {
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+}
+*/
+.table-container {
+    display: flex;
+    
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    padding: left 10%;
+    margin-left: 10%;
+}
+
+form {
+    color: white;
+}
+
+
+img.Bull {
+	width: 100px;
+	height: auto;
+	float: right;
+	aspect-ratio: 0;
+}
+
+a:visited{
+	color:white;
+}
+a{
+	color:green;
+}
+/* Add this style to ensure that the tables are centered even if they are larger than the viewport */
+.table {
+    margin: auto;
+}

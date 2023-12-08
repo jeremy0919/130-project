@@ -1,0 +1,2 @@
+Jad - html pages, css, database creation and handling, leaderboards, login, helped with checkers
+Jeremy - single and multiplayer checkers, helped with login and leaderboards
