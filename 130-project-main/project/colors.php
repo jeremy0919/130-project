@@ -17,6 +17,12 @@ else{
 }
 if(isset ($_POST["size"])){
     $_SESSION["size"]  = $_POST["size"];
+    if($_POST["size"] <=7){
+        $_SESSION["size"]  =8;
+    }
+    if($_POST["size"] >20){
+        $_SESSION["size"]  =20;
+    }
 }
 else{
     $_SESSION["size"]  = "8";
@@ -35,6 +41,9 @@ else{
 }
 if(isset ($_POST["setTime"])){
     $_SESSION["setTime"]  = $_POST["setTime"];
+    if(intval($_POST["setTime"])<60){
+        $_SESSION["setTime"] = "60";
+    }
 }
 else{
     $_SESSION["setTime"] = "18000";

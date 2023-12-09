@@ -25,7 +25,7 @@ if (isset($_POST['Sname']) && isset($_POST['password'])) {
         $stmt->close();
 
         $userId = $name;
-        setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
+        setcookie('user_id', $userId, time() + (86400), "/"); // cookie valid for one day
         echo($name);
         $sql = "CREATE TABLE $name ( 
             id INT AUTO_INCREMENT PRIMARY KEY,

@@ -21,7 +21,7 @@ class PlayerStats {
     this[character].numMoves += 1;
   }
   setPieces(character, n) {
-    this[character].piecesLeft =n*3/2;
+    this[character].piecesLeft =Math.floor(n*3/2);
   }
 
   resetMoves(character) {
@@ -66,7 +66,7 @@ function updateValues1() {
           n = parseInt(data.size, 10);  // Ensure data.size is parsed as an integer
           color1 = data.bg1;
           color2 = data.bg2;
-          time =data.setTime;
+          time =parseInt(data.setTime);
            lastclickID1 = null;
            lastclickID2 = null;
            lastclickID3 = null;
@@ -1128,7 +1128,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
     if(y == n-1){
       kingBlack(td,x,y);
       currentPlayer = c1; 
-      tdb.removeEventListener('click', tdb.grayMove); //might be worth swapping for kingmove
+      tdb.removeEventListener('click', tdb.grayMove); 
       td.removeEventListener("click",td.jmove);
       td.grayMove = function() {
         kingMovement(y, x,c2);
@@ -1147,6 +1147,7 @@ function finishMovement(td, tdb, color, x1, x, y) {
   
 }
 updateScore();
+Wincondtion();
 }
 
 function pieceWhite(td,x,y){ 
@@ -2395,34 +2396,34 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
 
 
   if (color ==c1) {
-    playerStats.decrementPieces('c1');
+    playerStats.decrementPieces('c2');
     kingWHite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove); 
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
-   
+     // alert("in double jump")
       kingdobuleJump(xDest,yDest,color);
     }
     else{
     currentPlayer = c2; 
       
       tdest.whiteMove = function() {
-        kingMovement(yDest, xDest,"white");
+        kingMovement(yDest, xDest,c1);
       }
+   
       tdest.addEventListener('click', tdest.whiteMove);
     }
   
   } else if (color ==c2) {
-    playerStats.decrementPieces('c2');
+    playerStats.decrementPieces('c1');
     kingBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
-     
+    //  alert("in double jump")
       kingdobuleJump(xDest,yDest,color);
     }
     else{
     currentPlayer = c1; 
   
-    
     tdest.grayMove = function () {
       kingMovement(yDest, xDest, c2);
     };
@@ -2452,10 +2453,12 @@ function Wincondtion(){
   if( playerStats.returnPieces('c2') <= 0){
     alert(c1+" wins")
     sendData(c1);
+    currentPlayer = 10;
   }
   if( playerStats.returnPieces('c1') <= 0){
     alert(c2+" wins")
     sendData(c2);
+    currentPlayer = 10;
   }
 
 }
@@ -2488,13 +2491,10 @@ function sendData(winner){
 }
 function giveUp(){
   data = new FormData 
-  alert(playerStats.returnMoves('c1'));
-  alert(playerStats.returnPieces('c1'));
   data.append('moves', playerStats.returnMoves('c1'));
   data.append('pieces', playerStats.returnPieces('c1'));
-  time = document.getElementsByClassName("timer")[0].textContent;
-  var firstWord = time.split(' ')[0];
-  alert(firstWord);
+  temp = time-seconds;
+  data.append('time', temp); 
   data.append('time', time); 
 
  
@@ -2548,9 +2548,11 @@ function timer() {
     if (playerStats.returnPieces('c1') > playerStats.returnPieces('c2')) {
       alert(c1 + " wins");
       sendData(c1);
+      currentPlayer = 10;
     } else if (playerStats.returnPieces('c1') < playerStats.returnPieces('c2')) {
       alert(c2 + " wins");
       sendData(c2);
+      currentPlayer = 10;
     } else {
       alert("tie");
     }

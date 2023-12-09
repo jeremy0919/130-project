@@ -24,7 +24,7 @@ if (isset($_POST['submitL'])) {
    
         if ($password == $data[0]['password'])   {
             $userId = $name;
-            setcookie('user_id', $userId, time() + (86400 * 30), "/"); // cookie valid for 30 days
+            setcookie('user_id', $userId, time() + (86400), "/"); // cookie valid for one day
     
             echo json_encode($data);
             $connection->close();
@@ -33,16 +33,17 @@ if (isset($_POST['submitL'])) {
         } else {
             echo json_encode(array("msg" => "Wrong password"));
             $connection->close();
-            header('Location: login.html');
-            exit;
+            echo '<script type="text/javascript">alert("Wrong password"); window.location.href = "login.html";</script>';
+            exit;}
         }
-    } else {
-        echo json_encode(array("msg" => "Account not found"));
-        $connection->close();
-        header('Location: login.html');
-        exit;
+         else {
+            echo json_encode(array("msg" => "Account not found"));
+            $connection->close();
+            echo '<script type="text/javascript">alert("Account not found"); window.location.href = "login.html";</script>';
+            exit;
     }
 
    
+
 }
 ?>

@@ -1,7 +1,6 @@
 <?php
    include("databaseT.php");
-//rework database to include moves and games if needed, create database per player?? 
-//javscript now includes nummoves object for playerstats.c1/c2.nummoves
+// do not use file unless table creation in database returns error
 $sql = "CREATE TABLE leaderboards ( 
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(20) NOT NULL,

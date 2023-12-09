@@ -22,7 +22,7 @@ class PlayerStats {
     this[character].numMoves += 1;
   }
   setPieces(character, n) {
-    this[character].piecesLeft =n*3/2;
+    this[character].piecesLeft =Math.floor(n*3/2);
   }
 
   resetMoves(character) {
@@ -67,7 +67,7 @@ function updateValues1() {
           n = parseInt(data.size, 10);  // Ensure data.size is parsed as an integer
           color1 = data.bg1;
           color2 = data.bg2;
-          time =data.setTime;
+          time =parseInt(data.setTime);
            lastclickID1 = null;
            lastclickID2 = null;
            lastclickID3 = null;
@@ -764,17 +764,17 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     playerStats.decrementPieces('c2');
     tdest.removeEventListener('click', tdest.whiteMove);
     tdest.removeEventListener('click', tdest.jmove); 
-    if(canDoubleJump(tdest,xDest,yDest,color)){
-      dobuleJump(xDest,yDest,color);
-    }
-    else{
-      
-    tdest.whiteMove = function () {
-      MovePiece(yDest, xDest, c1);
-    };
-    tdest.addEventListener('click', tdest.whiteMove);
-    currentPlayer =c2; 
-    cpuMovement()
+      if(canDoubleJump(tdest,xDest,yDest,color)){
+        dobuleJump(xDest,yDest,color);
+      }
+      else{
+        
+      tdest.whiteMove = function () {
+        MovePiece(yDest, xDest, c1);
+      };
+      tdest.addEventListener('click', tdest.whiteMove);
+      currentPlayer =c2; 
+      cpuMovement()
   }
   }
   } else if (color ==c2) {
@@ -796,7 +796,7 @@ function jumpMovement(tdest, td, tj, x, y, color) {
     playerStats.decrementPieces('c1');
     tdest.removeEventListener('click', tdest.grayMove);
     tdest.removeEventListener('click', tdest.jmove); 
-    if(canDoubleJump(tdest,xDest,yDest,color)){
+    if(canDoubleJump(tdest,xDest,yDest,color) && computer!=c2){
      
       dobuleJump(xDest,yDest,color);
       
@@ -816,8 +816,6 @@ function jumpMovement(tdest, td, tj, x, y, color) {
   td.removeEventListener('click', td.whiteMove);
   tj.removeEventListener('click', tj.grayMove);
   tj.removeEventListener('click', tj.whiteMove);
-  tj.removeEventListener('click', tdest.jmove); 
-  td.removeEventListener('click', tdest.jmove); 
   // Remove the jump destination's background color
   if(canDoubleJump(tdest,xDest,yDest,color)==false){
   tdest.style.backgroundColor = color2;
@@ -1656,8 +1654,6 @@ if(ttl!=null){
 
   function Ai(){
     if(currentPlayer == c2){
-      console.log(Aioptions);
-      console.log(tdb);
       if(Aioptions==1){
         movement1()
       }
@@ -2487,7 +2483,7 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
 
 
   if (color ==c1) {
-    playerStats.decrementPieces('c1');
+    playerStats.decrementPieces('c2');
     kingWHite(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.whiteMove); 
     if(canKingDoubleJump(tdest,xDest,yDest,color)){
@@ -2498,16 +2494,17 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
     currentPlayer = c2; 
       
       tdest.whiteMove = function() {
-        kingMovement(yDest, xDest,"white");
+        kingMovement(yDest, xDest,c1);
       }
       tdest.addEventListener('click', tdest.whiteMove);
     }
   
   } else if (color ==c2) {
-    playerStats.decrementPieces('c2');
+    playerStats.decrementPieces('c1');
     kingBlack(tdest, xDest, yDest);
     tdest.removeEventListener('click', tdest.grayMove);
-    if(canKingDoubleJump(tdest,xDest,yDest,color)){
+    
+    if(canKingDoubleJump(tdest,xDest,yDest,color) && computer!=c2){
      
       kingdobuleJump(xDest,yDest,color);
     }
@@ -2543,11 +2540,15 @@ function jumpMovementKing(tdest, td, tj, x, y, color) {
 function Wincondtion(){
   if( playerStats.returnPieces('c2') <= 0){
     alert(c1+" wins")
+    currentPlayer = 10;
     sendData(c1);
+   
   }
   if( playerStats.returnPieces('c1') <= 0){
     alert(c2+" wins")
+    currentPlayer = 10;
     sendData(c2);
+  
   }
 
 }
@@ -2579,14 +2580,11 @@ function sendData(winner){
 }
 function giveUp(){
   data = new FormData 
-  alert(playerStats.returnMoves('c1'));
-  alert(playerStats.returnPieces('c1'));
+
   data.append('moves', playerStats.returnMoves('c1'));
   data.append('pieces', playerStats.returnPieces('c1'));
-  time = document.getElementsByClassName("timer")[0].textContent;
-  var firstWord = time.split(' ')[0];
-  alert(firstWord);
-  data.append('time', time); 
+  temp = time-seconds;
+  data.append('time', temp); 
 
  
     data.append('win', 0)
@@ -2603,6 +2601,17 @@ function giveUp(){
   xhr.send(data);
 }
 
+
+
+
+function cpuLoss(){
+    alert("computer gives up")
+    sendData(c1)
+    currentPlayer = 10;
+}
+
+
+
 function cpuMovement(){
   let x =1;
   let y =2;
@@ -2615,32 +2624,44 @@ function cpuMovement(){
       x = Math.floor(Math.random() * n);
     
     temp = document.getElementById(x+"s"+y);
-   
+    
     if(temp!=null ){
       var color = temp.querySelector('circle').getAttribute('fill');
      
       if(color == c2){
-    MovePiece(y,x,c2);
+        if(temp.attributes.isking == 1){
+          kingMovement(y,x,c2);
+
+        }
+        else{
+        MovePiece(y,x,c2);
+
+        }
       }
   }
 
     counter+=1;
     if(counter>10000){
+      cpuLoss();
+      currentPlayer = 10;
       break;
     }
   }
  
 }
 
-let timerObject = null;
 
+let timerObject = null;
+let seconds;
 function timer() {
   // Check if a timer is already running
   if (timerObject !== null) {
     clearInterval(timerObject.interval);
   }
 
-  let seconds = time;
+  seconds = time;
+
+  
   let timerElement = document.getElementsByClassName("timer")[0];
 
   function updateTimer() {
@@ -2668,14 +2689,15 @@ function timer() {
     if (playerStats.returnPieces('c1') > playerStats.returnPieces('c2')) {
       alert(c1 + " wins");
       sendData(c1);
+      currentPlayer = 10;
     } else if (playerStats.returnPieces('c1') < playerStats.returnPieces('c2')) {
       alert(c2 + " wins");
       sendData(c2);
+      currentPlayer = 10;
     } else {
       alert("tie");
+      currentPlayer = 10;
     }
-    // Reset the timer after handling the timeout
-    resetTimer();
   }
 
   // Store the timer interval ID in the timerObject
@@ -2687,5 +2709,6 @@ function timer() {
   resetTimer();
 }
 // Call the function to simulate a random click on an element with a 'grayMove' event listener
+
 
 

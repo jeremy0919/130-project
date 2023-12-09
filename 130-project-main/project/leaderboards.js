@@ -50,6 +50,7 @@ function createTable1(data) {
                if( columnName=="id"){
                 columnName = "Game";
                }
+       
                 th.innerHTML = columnName;
                 headerRow.appendChild(th);
             }
@@ -69,7 +70,12 @@ function createTable1(data) {
                        }
                     else{
                         const cell = row.insertCell();
+                        if(columnName == "winRate"){
+                            cell.innerHTML = rowData[columnName]+"%";
+                           }
+                           else{
                         cell.innerHTML = rowData[columnName];
+                           }
                     }
                 }
                 
@@ -113,8 +119,14 @@ function createTable(data) {
                          count +=1;
                        }
                     else{
+                        
                         const cell = row.insertCell();
+                        if(columnName == "winRate"){
+                            cell.innerHTML = rowData[columnName]+"%";
+                           }
+                           else{
                         cell.innerHTML = rowData[columnName];
+                           }
                     }
                 }
                 
